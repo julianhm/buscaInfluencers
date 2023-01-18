@@ -86,13 +86,13 @@
             <div id="accounts" class="row mt-4">
             <?php for ($i=0; $i < count($redes); $i++) { 
                ?>
-            <form action="/influencer/eliminarRedes" method="POST" class="register-form pt-2" id="elminarRedes" name="elminarRedes" enctype="multipart/form-data">
+            <form action="/influencer/eliminarRedes" method="POST" class="col-lg-6 pt-2" id="elminarRedes" name="elminarRedes" enctype="multipart/form-data">
                 
             <input type="hidden" id="redeseliminar" name="redeseliminar" value="<?php echo $redesInfluencer[$i]['id']?>">
             <input type="hidden" id="influencerid2" name="influencerid2" value="<?=$influencer['idinfluencer']?>">
                                    
                 
-                <div id="sm_1" class="col-lg-6">
+                <div id="sm_1">
                     <div class="row mb-3">
                         <div class="col-md-auto">
                             <div>
@@ -133,7 +133,8 @@
                   
                 <div id="topics" class="row mt-4">
 
-                    <?php for ($i=0; $i < count($categorias); $i++) {?>
+                    <?php 
+                    for ($i=0; $i < count($categorias); $i++) {?>
                         <input type="hidden" id="categoriaeliminar" name="categoriaeliminar" value="<?php echo $categoriainfluencer[$i]['id']?>">
                         <input type="hidden" id="influencerid3" name="influencerid3" value="<?=$influencer['idinfluencer']?>">
              
@@ -171,34 +172,31 @@
 <!-- ============================================================== -->
 <!-- ------------------ ELIMINAR IDIOMAS ----------------------------->
 <!-- ============================================================== --> 
-
-            <div id="languages" class="row mt-4">
-                
-                <form action="/influencer/eliminarLenguaje" method="POST" class="register-form pt-2" id="eliminarLenguaje" name="eliminarLenguaje" enctype="multipart/form-data">
+            
+                <div id="languages" class="row mt-4">
+                         
                     <?php for ($i=0; $i <count($idiomas) ; $i++) {?>
-                       
-                       <input type="hidden" id="idiomaeliminar" name="idiomaeliminar" value="<?php echo $idiomainfluencer[$i]['id']?>">
-                       <input type="hidden" id="influencerid5" name="influencerid5" value="<?=$influencer['idinfluencer']?>">
-             
-                        <div id="lang_1" class="col-lg-3">
-                            <div class="row mb-3">
-                                <div class="col-md-auto my-profile-width-remove">
-                                    <div>
-                                    <input style="cursor:pointer" type="image" src="<?php echo base_url("img/remove-acc.png")?>" >
-    
+                        <form action="/influencer/eliminarLenguaje" method="POST" class="col-lg-3 pt-2" id="eliminarLenguaje" name="eliminarLenguaje" enctype="multipart/form-data">
+                                                
+                            <input type="hidden" id="idiomaeliminar" name="idiomaeliminar" value="<?php echo $idiomainfluencer[$i]['id']?>">
+                            <input type="hidden" id="influencerid5" name="influencerid5" value="<?=$influencer['idinfluencer']?>">
+                                          
+                            <div id="exp_1" class="row">
+                                <div class="row mb-3">
+                                    <div class="col-md-auto my-profile-width-remove">
+                                        <div>
+                                            <input style="cursor:pointer" type="image" src="<?php echo base_url("img/remove-acc.png")?>" >
+                                        </div>
+                                    </div>
+                                    <div class="col-md-auto user-decription-black my-profile-align-txt-content">
+                                        <?=$idiomas[$i]['nombre'] ?> 
                                     </div>
                                 </div>
-                                <div class="col-md-auto user-decription-black my-profile-align-txt-content">
-                                <?=$idiomas[$i]['nombre'] ?>
-                                </div>
                             </div>
-                        </div>
-
+                        </form>
                     <?php } ?>
+                </div>
 
-                   
-                </form>
-                
 <!-- ============================================================== -->
 <!-- ------------------ CARGA UN MODAL PARA AGREGAR IDIOMAS----------->
 <!-- ============================================================== --> 
@@ -209,7 +207,7 @@
                     </div> 
                 
 
-            </div>
+            
 
             
 
@@ -260,7 +258,7 @@
         <div id="gallery" class="d-flex justify-content-left flex-wrap" style="padding-top: 10px; padding-bottom: 35px;">
             
             <?php foreach ($galeria as $key => $m) {?>
-            <form action="/influencer/eliminarFotoGaleria" method="POST" class="register-form pt-2" id="eliminarFotoGaleria" name="eliminarFotoGaleria" enctype="multipart/form-data">
+            <form action="/influencer/eliminarFotoGaleria" method="POST" class="pt-2" id="eliminarFotoGaleria" name="eliminarFotoGaleria" enctype="multipart/form-data">
                         
                 <input type="hidden" id="fotoGaeliminar" name="fotoGaeliminar" value="<?php echo $m['idfoto']?>">
                 <input type="hidden" id="influencerid10" name="influencerid10" value="<?=$influencer['idinfluencer']?>">
@@ -325,14 +323,14 @@
                          
             
                 <?php for ($i=0; $i <count($influencermarca) ; $i++) {?>
-                <form action="/influencer/eliminarMarcas" method="POST" class="register-form pt-2" id="eliminarMarcas" name="eliminarMarcas" enctype="multipart/form-data">
+                <form action="/influencer/eliminarMarcas" method="POST" class="col-lg-3 pt-2" id="eliminarMarcas" name="eliminarMarcas" enctype="multipart/form-data">
                 
                        
                        <input type="hidden" id="marcaeliminada" name="marcaeliminada" value="<?php echo $influencermarca[$i]['idmarca']?>">
                        <input type="hidden" id="influencerid13" name="influencerid13" value="<?=$influencer['idinfluencer']?>">
                
                  
-                    <div id="exp_1" class="col-lg-3">
+                    <div id="exp_1" class="row">
                         <div class="row mb-3">
                             <div class="col-md-auto my-profile-width-remove">
                                 <div>
@@ -346,7 +344,7 @@
                     </div>
                 </form>
             <?php } ?>
-
+        </div>
 <!-- ============================================================== -->
 <!-- ------------------ MODAL PARA AGREGAR MARCAS -------------------->
 <!-- ============================================================== -->
@@ -355,7 +353,7 @@
                         <button type="button" class="btn btn-white-normal btn-lg"  data-bs-dismiss="modal" data-bs-toggle="modal" data-bs-target="#add-empresa-modal">+ &nbsp; Adicionar</button>
                     </div>
                 
-            </div>
+            
 
             
 
@@ -368,13 +366,14 @@
 <!-- ============================================================== -->
 <!-- ------------------ Eliminar PAGOS ------------------------------>
 <!-- ============================================================== -->
+        <div id="pagos" class="row mt-4">
         <?php for ($i=0; $i <count($pagos) ; $i++) {?>
-            <form action="/influencer/eliminarPagos" method="POST" class="register-form pt-2" id="eliminarPagos" name="eliminarPagos" enctype="multipart/form-data">
+            <form action="/influencer/eliminarPagos" method="POST" class="col-lg-3 pt-2" id="eliminarPagos" name="eliminarPagos" enctype="multipart/form-data">
                 <input type="hidden" id="pagoeliminada" name="pagoeliminada" value="<?php echo $influencerPagos[$i]['id']?>">
                 <input type="hidden" id="influencerid15" name="influencerid15" value="<?=$influencer['idinfluencer']?>">
                   
                   
-                <div id="exp_1" class="col-lg-3">
+                <div id="exp_1" class="row">
                     <div class="row mb-3">
                         <div class="col-md-auto my-profile-width-remove">
                             <div>
@@ -388,7 +387,7 @@
                 </div>
             </form>
         <?php } ?>
-
+        </div>
 <!-- ============================================================== -->
 <!-- ------------------ MODAL PARA AGREGAR PAGOS --------------------->
 <!-- ============================================================== -->
