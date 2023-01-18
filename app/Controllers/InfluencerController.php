@@ -916,11 +916,14 @@ class InfluencerController extends BaseController
         $id= $this->request->getPost('influencerid4');
 
         $idcatagoria= $this->request->getPost('categorianew');
-        
-        if($categoriaInfluencer->insert(['idinfluencer'=>$id,'idcategoria'=>$idcatagoria])!=null){
 
-            return redirect()->to("/influencer/edit/$id")->with('mensaje', 'Tu Categoria se actualizó con exito');
-  
+        if($idcatagoria!=null){
+        
+            if($categoriaInfluencer->insert(['idinfluencer'=>$id,'idcategoria'=>$idcatagoria])!=null){
+
+                return redirect()->to("/influencer/edit/$id")->with('mensaje', 'Tu Categoria se actualizó con exito');
+    
+            }
         }
     
         return redirect()->to("/influencer/edit/$id")->with('mensaje', 'ocurrió un error al actualizar tu categoria');
