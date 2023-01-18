@@ -306,6 +306,7 @@ class InfluencerController extends BaseController
                 array_push($misCategorias,$categoria->find($m['idcategoria']));
                 unset($categoriasNoUso[$m['idcategoria']-1]);
             }
+            //var_dump($misCategorias);
 
             
 
@@ -335,7 +336,7 @@ class InfluencerController extends BaseController
 
            $migaleria= $galeria->where('idinfluencer', $id)->findAll();
 
-            //var_dump($idcateg);
+            //var_dump($misCategorias);
             $validation =  \Config\Services::validation();
     
             $datos=['validation'=>$validation,
