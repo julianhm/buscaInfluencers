@@ -86,13 +86,13 @@
             <div id="accounts" class="row mt-4">
             <?php for ($i=0; $i < count($redes); $i++) { 
                ?>
-            <form action="/influencer/eliminarRedes" method="POST" class="register-form pt-2" id="elminarRedes" name="elminarRedes" enctype="multipart/form-data">
+            <form action="/influencer/eliminarRedes" method="POST" class="col-lg-6 pt-2" id="elminarRedes" name="elminarRedes" enctype="multipart/form-data">
                 
             <input type="hidden" id="redeseliminar" name="redeseliminar" value="<?php echo $redesInfluencer[$i]['id']?>">
             <input type="hidden" id="influencerid2" name="influencerid2" value="<?=$influencer['idinfluencer']?>">
                                    
                 
-                <div id="sm_1" class="col-lg-6">
+                <div id="sm_1">
                     <div class="row mb-3">
                         <div class="col-md-auto">
                             <div>
@@ -133,7 +133,7 @@
                   
                 <div id="topics" class="row mt-4">
 
-                    <?php //var_dump($categorias);
+                    <?php 
                     for ($i=0; $i < count($categorias); $i++) {?>
                         <input type="hidden" id="categoriaeliminar" name="categoriaeliminar" value="<?php echo $categoriainfluencer[$i]['id']?>">
                         <input type="hidden" id="influencerid3" name="influencerid3" value="<?=$influencer['idinfluencer']?>">
@@ -172,35 +172,31 @@
 <!-- ============================================================== -->
 <!-- ------------------ ELIMINAR IDIOMAS ----------------------------->
 <!-- ============================================================== --> 
-
-            <div id="languages" class="row mt-4">
-            <?php for ($i=0; $i <count($idiomas) ; $i++) {?>
-                
-                <form action="/influencer/eliminarLenguaje" method="POST" class="col-lg-3 pt-2" id="eliminarLenguaje" name="eliminarLenguaje" enctype="multipart/form-data">
-                    
-                       
-                       <input type="hidden" id="idiomaeliminar" name="idiomaeliminar" value="<?php echo $idiomainfluencer[$i]['id']?>">
-                       <input type="hidden" id="influencerid5" name="influencerid5" value="<?=$influencer['idinfluencer']?>">
-             
-                        <div id="lang_1" class="row">
-                            <div class="row mb-3">
-                                <div class="col-md-auto my-profile-width-remove">
-                                    <div>
-                                    <input style="cursor:pointer" type="image" src="<?php echo base_url("img/remove-acc.png")?>" >
-    
+            
+                <div id="languages" class="row mt-4">
+                         
+                    <?php for ($i=0; $i <count($idiomas) ; $i++) {?>
+                        <form action="/influencer/eliminarLenguaje" method="POST" class="col-lg-3 pt-2" id="eliminarLenguaje" name="eliminarLenguaje" enctype="multipart/form-data">
+                                                
+                            <input type="hidden" id="idiomaeliminar" name="idiomaeliminar" value="<?php echo $idiomainfluencer[$i]['id']?>">
+                            <input type="hidden" id="influencerid5" name="influencerid5" value="<?=$influencer['idinfluencer']?>">
+                                          
+                            <div id="exp_1" class="row">
+                                <div class="row mb-3">
+                                    <div class="col-md-auto my-profile-width-remove">
+                                        <div>
+                                            <input style="cursor:pointer" type="image" src="<?php echo base_url("img/remove-acc.png")?>" >
+                                        </div>
+                                    </div>
+                                    <div class="col-md-auto user-decription-black my-profile-align-txt-content">
+                                        <?=$idiomas[$i]['nombre'] ?> 
                                     </div>
                                 </div>
-                                <div class="col-md-auto user-decription-black my-profile-align-txt-content">
-                                <?=$idiomas[$i]['nombre'] ?>
-                                </div>
                             </div>
-                        </div>
-
+                        </form>
                     <?php } ?>
+                </div>
 
-                   
-                </form>
-            </div>  
 <!-- ============================================================== -->
 <!-- ------------------ CARGA UN MODAL PARA AGREGAR IDIOMAS----------->
 <!-- ============================================================== --> 
