@@ -22,8 +22,7 @@
     </div>
     <!-- Header End -->
 
-    <form action="busqueda/resultado" method="POST" class="buscar-form pt-2" id="buscar" name="buscar" enctype="multipart/form-data">
-                <?= csrf_field() ?>    
+   
                 
    
      <!-- Content search Start -->
@@ -31,7 +30,8 @@
         <div class="row">
             <div class="text-center signup-form" >
                 <div>
-                    <form class="register-form pt-2">
+                <form action="busqueda/resultado" method="POST" class="buscar-form pt-2" id="buscar" name="buscar" enctype="multipart/form-data">
+                <?= csrf_field() ?>    
                         <div class="mb-3 user-decription-black" style="padding-left: 20%; padding-right: 20%;">
                             <p style="font-weight: bold;">Selecciona el influencer que buscas de acuerdo al tema que se especialice</p>
                         
@@ -260,7 +260,7 @@
 
                         <div class="d-flex justify-content-center my-5">
                             <div class="btn-register">
-                                <button type="submit" class="btn btn-login btn-lg btn-register-width user-decription-black" style="font-size: 20px; width: fit-content; padding-left: 40px; padding-right: 40px;" data-bs-dismiss="modal" data-bs-toggle="modal" data-bs-target="#confirmation-modal">BUSCAR</button>
+                                <button type="submit" class="btn btn-login btn-lg btn-register-width user-decription-black" style="font-size: 20px; width: fit-content; padding-left: 40px; padding-right: 40px;" >BUSCAR</button>
                             </div>
                         </div>
 

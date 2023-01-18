@@ -166,13 +166,137 @@ class UsuarioController extends BaseController
         foreach ($misPagos as $key => $p) {
             if (isset($_REQUEST[$p['idpago']])) {
                 array_push($arrayDePagos,$p);
-                $textoPagos= $textoPagos."/".$p['nombre'];
+               // $textoPagos= $textoPagos."/".$p['nombre'];
                  
              }
         }
         if(count($misPagos)>0){
             $influencerBuscado=$this->_filtrarPorPago($influencerBuscado,$arrayDePagos);
-            $criteriosBusqueda['pago']=$textoPagos;
+            $criteriosBusqueda['pago']=$arrayDePagos;
+
+        }
+        
+        if($idpais!=null && $idpais>0){
+            $miPais=$pais->find($idpais);
+            if($idregion!=null && $idregion>0){
+                    $miCiudad=$ciudad->find($idregion);
+                    $influencerBuscado=$this->_filtrarPorCiudadYPais($influencerBuscado,$idpais,$idregion);
+                    $criteriosBusqueda['pais']=$miPais['nombre'];
+                    $criteriosBusqueda['ciudad']=$miCiudad['nombre'];
+                
+            }else{
+                $influencerBuscado=$this->_filtrarPorCiudadYPais($influencerBuscado,$idpais,null);
+                
+                $criteriosBusqueda['pais']=$miPais['nombre'];
+            }
+        }
+        
+        
+       
+
+        $data=['influencer'=>$influencerBuscado,
+                'categorias'=>$categorias->findAll(),
+                'criteriosBusqueda'=>$criteriosBusqueda,
+        ];
+
+        $this-> _loadDefaultView('Buscar Influencer',$data,'resultados');
+        
+    }
+
+     //BUSCAR INFLUENCERS OTRA BUSQUEDA
+     public function nuevaBusquedaInfluencers(){
+
+        $idcategoria= $this->request->getPost('categoriaselect');
+        $idredsocial= $this->request->getPost('redsocialselect');
+        $cant_seguidores= $this->request->getPost('seguidores');
+        $ididioma= $this->request->getPost('idiomaSelect');
+        $arrayDeIdPagos=$this->_arregloDePago();
+        $idpais= $this->request->getPost('pais2');
+        $idregion= $this->request->getPost('ciudades2');
+
+        $categorias = new CategoriasModel();
+        $redes = new RedesModel();
+        $idioma = new IdiomaModel();
+        $pagos = new PagoModel();
+        $pais = new PaisModel();
+        $ciudad = new CiudadModel();
+       
+        
+
+        $criteriosBusqueda=[
+            'categoria'=>"-",
+            'redes'=>"-",
+            'cantidad'=>"-",
+            'idioma'=>"-",
+            'pago'=>"-",
+            'pais'=>"-",
+            'ciudad'=>"-",
+        ];
+       
+
+
+        $influencerBuscado=[];
+
+        $db      = \Config\Database::connect();
+
+        $builder = $db->table('influencers_redes');
+        $builder->select('*');
+        $builder->where('categorias.mostradas', 1);
+        $builder->join('influencers', 'influencers_redes.idinfluencer = influencers.idinfluencer');
+        $builder->join('redes_sociales', 'redes_sociales.idredes = influencers_redes.idredes');
+        $builder->join('influencers_categorias', 'influencers_categorias.idinfluencer = influencers.idinfluencer');
+        $builder->join('categorias', 'categorias.idcategoria = influencers_categorias.idcategoria');
+        $builder->join('idiomas_influencers', 'idiomas_influencers.idinfluencer = influencers.idinfluencer');
+        $builder->join('idiomas', 'idiomas.ididioma = idiomas_influencers.ididioma');
+        $builder->join('influencers_pagos', 'influencers_pagos.idinfluencer = influencers.idinfluencer');
+        $builder->join('tipos_pagos', 'tipos_pagos.idpago = influencers_pagos.idpago');
+        $query = $builder->get();
+        $influencerBuscado =$query->getResultArray();
+           
+       
+        if($idcategoria!=null && $idcategoria>0){
+            $influencerBuscado=$this->_filtrarPorCategorias($influencerBuscado,$idcategoria);
+            $cat=$categorias->find($idcategoria);
+            $criteriosBusqueda['categoria']=$cat['nombrecat'];
+        }
+
+        if($idredsocial!=null && $idredsocial>0){
+            $influencerBuscado=$this->_filtrarPorRedSocial($influencerBuscado,$idredsocial);
+            $red=$redes->find($idredsocial);
+            $criteriosBusqueda['redes']=$red['nombre'];
+            
+        }
+        
+        if($cant_seguidores>0){
+            
+            $influencerBuscado=$this->_filtrarPorCantidadSeguidores($influencerBuscado,$cant_seguidores);
+            
+            $criteriosBusqueda['cantidad']=$cant_seguidores;
+            
+        }
+
+        if($ididioma!=null && $ididioma>0){
+           
+            $influencerBuscado=$this->_filtrarPorIdioma($influencerBuscado,$ididioma);
+            $idi=$idioma->find($ididioma);
+            $criteriosBusqueda['idioma']=$idi['nombre'];
+            
+        }
+
+        $misPagos= $pagos->findAll();
+        $textoPagos="";
+        $arrayDePagos=[];
+
+        foreach ($misPagos as $key => $p) {
+            if (isset($_REQUEST[$p['idpago']])) {
+                array_push($arrayDePagos,$p);
+               // $textoPagos= $textoPagos."/".$p['nombre'];
+                 
+             }
+        }
+        if(count($misPagos)>0){
+            $influencerBuscado=$this->_filtrarPorPago($influencerBuscado,$arrayDePagos);
+            $criteriosBusqueda['pago']=$arrayDePagos;
 
         }
         

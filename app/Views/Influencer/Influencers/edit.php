@@ -593,7 +593,7 @@
                     <div class="file-upload">
                         
                         <div class="image-upload-wrap">
-                            <input id="newvideo" name="newvideo" class="file-upload-input" type='file' accept="video/mp4, video/*"/>
+                            <input id="newvideo" name="newvideo" class="" type='file' accept="video/mp4, video/*"/>
                             
                         </div>
                         </br>
