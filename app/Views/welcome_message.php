@@ -5,7 +5,9 @@
     <title>Welcome to CodeIgniter 4!</title>
     <meta name="description" content="The small framework with powerful features">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="shortcut icon" type="image/png" href="/favicon.ico"/>
+
+    <link rel="shortcut icon" type="image/png" href="/favicon.ico">
+
 
     <!-- STYLES -->
 
@@ -270,7 +272,11 @@
         <p>CodeIgniter is a community-developed open source project, with several
              venues for the community members to gather and exchange ideas. View all
              the threads on <a href="https://forum.codeigniter.com/"
+<<<<<<< HEAD
              target="_blank">CodeIgniter's forum</a>, or <a href="https://codeigniterchat.slack.com/"
+=======
+             target="_blank">CodeIgniter's forum</a>, or <a href="https://join.slack.com/t/codeigniterchat/shared_invite/zt-rl30zw00-obL1Hr1q1ATvkzVkFp8S0Q"
+>>>>>>> 5433b2f62ab061a030954900a99805757d5b4857
              target="_blank">chat on Slack</a> !</p>
 
         <h2>
