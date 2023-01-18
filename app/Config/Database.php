@@ -42,7 +42,6 @@ class Database extends Config
         'strictOn' => false,
         'failover' => [],
         'port'     => 3307,
-
     ];
 
     /**

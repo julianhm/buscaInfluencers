@@ -303,6 +303,7 @@
                 <input type="hidden" id="influencerid12" name="influencerid12" value="<?=$influencer['idinfluencer']?>">
                        
                 <div class="mb-4 ">
+                    <div>oeee</div>
                     <textarea class="input-redes" id="reseniaInfluencer" name="reseniaInfluencer" style="resize: none; width: 100%;" rows="6" placeholder=""><?php echo $influencer['resenia']; ?></textarea>
                 </div>
 
