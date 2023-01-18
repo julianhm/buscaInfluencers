@@ -105,6 +105,8 @@ class UsuarioController extends BaseController
             'cantidad'=>"-",
             'idioma'=>"-",
             'pago'=>"-",
+            'pais'=>"-",
+            'ciudad'=>"-",
         ];
        
 
@@ -153,7 +155,7 @@ class UsuarioController extends BaseController
            
             $influencerBuscado=$this->_filtrarPorIdioma($influencerBuscado,$ididioma);
             $idi=$idioma->find($ididioma);
-            $criteriosBusqueda['idioma']=$idi;
+            $criteriosBusqueda['idioma']=$idi['nombre'];
             
         }
 
