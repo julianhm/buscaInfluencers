@@ -123,7 +123,7 @@ $(document).ready(function() {
                  <?php foreach ($datos as $key => $m) {?>
                     <div>
                         <div class="product-item position-relative d-flex flex-column text-center">
-                            <img class="img-fluid mb-4" width="80" height="80" src=<?php echo base_url('uploads')."/".$m['foto_perfil']?> alt="" >
+                            <img class="img-fluid mb-4" style="height: 130px" src=<?php echo base_url('uploads')."/".$m['foto_perfil']?> alt="" >
                             <h6 class="user-decription-black"><?=$m['nombreinflu']?> <br> <?=$m['alias']?> <br> <?=$m['nombrecat']?> </h6>
                             <div class="container-fluid">
                                 <a href="<?php echo base_url('perfil')."/".$m['idinfluencer']?>"><button type="button" class="btn btn-ver-perfil btn-sm btn-on-white">Ver perfil</button></a>
@@ -159,7 +159,7 @@ $(document).ready(function() {
                     <div class="position-relative d-flex flex-column user-decription">
                     <div class="mundo-description"><?=$m['titulo']?>
                     </div>
-                    <img class="img-fluid-mundo-influencer mb-4" src="<?=base_url('fotosnoticias')."/".$m['url_foto']?>">
+                    <img class="img-fluid-mundo-influencer mb-4" style="height: 350px; object-fit: cover;" src="<?=base_url('fotosnoticias')."/".$m['url_foto']?>">
                 </div>
                 <?php }?>
                 
@@ -262,12 +262,15 @@ $(document).ready(function() {
                                    <div class="tag-categoria">
                                        <?=$m['nombrecat']?>
                                    </div>
-                                   <img class="img-fluid-el-mas mb-2" src="<?=base_url('uploads')."/".$m['foto_perfil']?>" >
+                                   <img class="img-fluid-el-mas mb-2" style="" src="<?=base_url('uploads')."/".$m['foto_perfil']?>" >
                                    <h6 class="user-decription-black"><?=$m['nombreinflu']?> <br> <?=$m['alias']?></h6>
                                    <div class="container-fluid">
                                        <div class="row mb-3">
                                            <div class="col" style="padding-right: 0px;">
-                                               <img class="img-sm-main" src="<?=base_url('img')."/iconos/".$m['icono']?>" >
+                                                <div style="width: 40px" >
+                                                    <img class="img-sm-main" style="object-fit: cover;" src="<?=base_url('img')."/iconos/".$m['icono']?>" >
+                                                </div>
+                                                 
                                            </div>
                                            <div class="col" >
                                                <p class="followers-sm-main"><?=$m['cant_seguidores']?></p>
