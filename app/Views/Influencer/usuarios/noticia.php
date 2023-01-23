@@ -80,7 +80,7 @@
                     </div>
                     <br>
                     <br>
-                    
+
                     <div class="row " style="font-size: 20px">
                         <p style="text-align:center"><span style="color:#e74c3c">En el nuevo mundo digital, la publicidad encontr&oacute; nuevas formas y canales de comunicaci&oacute;n para llegar a sus audiencias de manera m&aacute;s precisa y efectiva, aprovechando otras formas de hablar y generar contenido con la irrupci&oacute;n de otras figuras que ahora son las nuevas celebridades. Para lograr este objetivo, el alcance org&aacute;nico es la clave.&nbsp;</span></p>
 
