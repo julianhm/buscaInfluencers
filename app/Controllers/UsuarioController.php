@@ -38,6 +38,7 @@ class UsuarioController extends BaseController
         $this-> _loadDefaultView('Buscar Influencer',$data,'buscar');
     }
 
+
      //METODO QUE ME PERMITE CARGAR PAGINAS
      private function _loadDefaultView($title,$data,$view){
 
@@ -104,11 +105,20 @@ class UsuarioController extends BaseController
             'redes'=>"-",
             'cantidad'=>"-",
             'idioma'=>"-",
-            'pago'=>"-",
+            'pago'=>[],
             'pais'=>"-",
             'ciudad'=>"-",
         ];
        
+        $busquedaActual=[
+            'categoria'=>[],
+            'redes'=>[],
+            'cantidad'=>"-",
+            'idioma'=>"-",
+            'pago'=>[],
+            'pais'=>"-",
+            'ciudad'=>"-",
+        ];
 
 
         $influencerBuscado=[];
@@ -191,12 +201,23 @@ class UsuarioController extends BaseController
             }
         }
         
-        
+       // $categorias = new CategoriasModel();
+        //$redes = new RedesModel();
+        $idiomas = new IdiomaModel();
+        $pagos = new PagoModel();
+        $misPaises= $pais->findAll();
+        $ciudades=$this->_cargarCiudades($misPaises);
        
 
         $data=['influencer'=>$influencerBuscado,
-                'categorias'=>$categorias->findAll(),
                 'criteriosBusqueda'=>$criteriosBusqueda,
+                'busquedaActual'=>$busquedaActual,
+                'categorias'=> $categorias->orderBy('nombrecat', 'ASC')->where('mostradas',1)->findAll(),
+                'redes'=> $redes->orderBy('nombre', 'ASC')->where('activa',1)->findAll(),
+                'idiomas'=> $idiomas->orderBy('nombre', 'ASC')->findAll(),
+                'pagos'=> $pagos->findAll(),
+                'paises'=> $misPaises,
+                'ciudades'=> $ciudades,
         ];
 
         $this-> _loadDefaultView('Buscar Influencer',$data,'resultados');
@@ -206,13 +227,12 @@ class UsuarioController extends BaseController
      //BUSCAR INFLUENCERS OTRA BUSQUEDA
      public function nuevaBusquedaInfluencers(){
 
-        $idcategoria= $this->request->getPost('categoriaselect');
-        $idredsocial= $this->request->getPost('redsocialselect');
-        $cant_seguidores= $this->request->getPost('seguidores');
-        $ididioma= $this->request->getPost('idiomaSelect');
+        
+        $cant_seguidores= $this->request->getPost('seguidores2');
+        $ididioma= $this->request->getPost('idiomaSelect2');
         $arrayDeIdPagos=$this->_arregloDePago();
-        $idpais= $this->request->getPost('pais2');
-        $idregion= $this->request->getPost('ciudades2');
+        $idpais= $this->request->getPost('pais3');
+        $idregion= $this->request->getPost('ciudades3');
 
         $categorias = new CategoriasModel();
         $redes = new RedesModel();
@@ -228,7 +248,18 @@ class UsuarioController extends BaseController
             'redes'=>"-",
             'cantidad'=>"-",
             'idioma'=>"-",
-            'pago'=>"-",
+            'pago'=>[],
+            'pais'=>"-",
+            'ciudad'=>"-",
+        ];
+
+
+        $busquedaActual=[
+            'categoria'=>[],
+            'redes'=>[],
+            'cantidad'=>"-",
+            'idioma'=>"-",
+            'pago'=>[],
             'pais'=>"-",
             'ciudad'=>"-",
         ];
@@ -252,35 +283,42 @@ class UsuarioController extends BaseController
         $builder->join('tipos_pagos', 'tipos_pagos.idpago = influencers_pagos.idpago');
         $query = $builder->get();
         $influencerBuscado =$query->getResultArray();
-           
+        
        
-        if($idcategoria!=null && $idcategoria>0){
-            $influencerBuscado=$this->_filtrarPorCategorias($influencerBuscado,$idcategoria);
-            $cat=$categorias->find($idcategoria);
-            $criteriosBusqueda['categoria']=$cat['nombrecat'];
+       
+        $misCategorias = $categorias->orderBy('nombrecat', 'ASC')->where('mostradas',1)->findAll();
+        $categoriaBuscada=[];
+        foreach ($misCategorias as $key => $m) { 
+            if (isset($_POST["cat".$m['idcategoria']])) {   
+                //var_dump("ENTRE y LLEGO ".$m['nombrecat']) ;
+                    $influencerBuscado=$this->_filtrarPorCategorias($influencerBuscado,$m['idcategoria']);
+                    array_push($categoriaBuscada,$m['idcategoria']);
+            }
         }
-
-        if($idredsocial!=null && $idredsocial>0){
-            $influencerBuscado=$this->_filtrarPorRedSocial($influencerBuscado,$idredsocial);
-            $red=$redes->find($idredsocial);
-            $criteriosBusqueda['redes']=$red['nombre'];
-            
+        $busquedaActual['categoria']=$categoriaBuscada;
+       
+       
+        $misredes=$redes->orderBy('nombre', 'ASC')->where('activa',1)->findAll(); 
+        $redBuscada=[];
+        foreach ($misredes as $key => $m) {
+            if (isset($_POST["red".$m['idredes']])) {  
+                //var_dump("ENTRE y LLEGO ".$m['nombre']) ;
+                $influencerBuscado=$this->_filtrarPorRedSocial($influencerBuscado,$m['idredes']);
+                array_push($redBuscada,$m['idredes']);               
+            }
         }
+        $busquedaActual['redes']=$redBuscada;
         
         if($cant_seguidores>0){
-            
+            //var_dump("ENTRE y LLEGO ".$cant_seguidores) ;
             $influencerBuscado=$this->_filtrarPorCantidadSeguidores($influencerBuscado,$cant_seguidores);
-            
-            $criteriosBusqueda['cantidad']=$cant_seguidores;
-            
+            $busquedaActual['cantidad']=$cant_seguidores;
         }
 
         if($ididioma!=null && $ididioma>0){
-           
-            $influencerBuscado=$this->_filtrarPorIdioma($influencerBuscado,$ididioma);
-            $idi=$idioma->find($ididioma);
-            $criteriosBusqueda['idioma']=$idi['nombre'];
-            
+            //var_dump("ENTRE y LLEGO ".$ididioma) ;
+            $influencerBuscado=$this->_filtrarPorIdioma($influencerBuscado,$ididioma); 
+            $busquedaActual['idioma']=$ididioma;  
         }
 
         $misPagos= $pagos->findAll();
@@ -288,16 +326,15 @@ class UsuarioController extends BaseController
         $arrayDePagos=[];
 
         foreach ($misPagos as $key => $p) {
-            if (isset($_REQUEST[$p['idpago']])) {
+            if (isset($_REQUEST["pago".$p['idpago']])) {
+                //var_dump("ENTRE y LLEGO ".$p['nombre']) ;
                 array_push($arrayDePagos,$p);
-               // $textoPagos= $textoPagos."/".$p['nombre'];
-                 
+               // $textoPagos= $textoPagos."/".$p['nombre'];  
              }
         }
-        if(count($misPagos)>0){
+        if(count($arrayDePagos)>0){
             $influencerBuscado=$this->_filtrarPorPago($influencerBuscado,$arrayDePagos);
-            $criteriosBusqueda['pago']=$arrayDePagos;
-
+            $busquedaActual['pago']=$arrayDePagos; 
         }
         
         if($idpais!=null && $idpais>0){
@@ -305,23 +342,34 @@ class UsuarioController extends BaseController
             if($idregion!=null && $idregion>0){
                     $miCiudad=$ciudad->find($idregion);
                     $influencerBuscado=$this->_filtrarPorCiudadYPais($influencerBuscado,$idpais,$idregion);
-                    $criteriosBusqueda['pais']=$miPais['nombre'];
-                    $criteriosBusqueda['ciudad']=$miCiudad['nombre'];
+                    $busquedaActual['pais']=$idpais;
+                    $busquedaActual['ciudad']=$idregion;
                 
             }else{
                 $influencerBuscado=$this->_filtrarPorCiudadYPais($influencerBuscado,$idpais,null);
                 
-                $criteriosBusqueda['pais']=$miPais['nombre'];
+                $busquedaActual['pais']=$idpais;
             }
         }
+
+        $idiomas = new IdiomaModel();
+        $pagos = new PagoModel();
+        $misPaises= $pais->findAll();
+        $ciudades=$this->_cargarCiudades($misPaises);
         
-        
+        $data=['influencer'=>$influencerBuscado,
+                'criteriosBusqueda'=>$criteriosBusqueda,
+                'busquedaActual'=>$busquedaActual,
+                'categorias'=> $categorias->orderBy('nombrecat', 'ASC')->where('mostradas',1)->findAll(),
+                'redes'=> $redes->orderBy('nombre', 'ASC')->where('activa',1)->findAll(),
+                'idiomas'=> $idiomas->orderBy('nombre', 'ASC')->findAll(),
+                'pagos'=> $pagos->findAll(),
+                'paises'=> $misPaises,
+                'ciudades'=> $ciudades,
+        ];
        
 
-        $data=['influencer'=>$influencerBuscado,
-                'categorias'=>$categorias->findAll(),
-                'criteriosBusqueda'=>$criteriosBusqueda,
-        ];
+        
 
         $this-> _loadDefaultView('Buscar Influencer',$data,'resultados');
         

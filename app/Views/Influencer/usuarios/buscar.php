@@ -30,8 +30,8 @@
         <div class="row">
             <div class="text-center signup-form" >
                 <div>
-                <form action="busqueda/resultado" method="POST" class="buscar-form pt-2" id="buscar" name="buscar" enctype="multipart/form-data">
-                <?= csrf_field() ?>    
+                    <form action="busqueda/resultado" method="POST" class="buscar-form pt-2" id="buscar" name="buscar" enctype="multipart/form-data">
+                        <?= csrf_field() ?>    
                         <div class="mb-3 user-decription-black" style="padding-left: 20%; padding-right: 20%;">
                             <p style="font-weight: bold;">Selecciona el influencer que buscas de acuerdo al tema que se especialice</p>
                         

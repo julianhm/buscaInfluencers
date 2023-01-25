@@ -24,7 +24,7 @@
     
     <!-- Content search result Start -->
     <div class="container-fluid px-5  py-3">
-    <form action="busqueda/resultado" method="POST" class="register-form pt-2" id="busqueda" name="busqueda" enctype="multipart/form-data">
+    <form action="nuevoresultado" method="POST" class="register-form pt-2" id="otrabusqueda" name="otrabusqueda" enctype="multipart/form-data">
                   
             <div class="row">
                 <div class="col sidebar-width">
@@ -85,139 +85,37 @@
                                     </h2>
                                     <div id="collapseOne" class="accordion-collapse collapse show"  aria-labelledby="headingOne" data-bs-parent="#accordionExample">
                                         <div class="accordion-body">
-                                            <div class="select_custom_small user-decription-black">
-                                                <span>Amor</span>
-                                                <input class="form-check-input img_remove_filter" type="radio" name="flexRadioDefault" id="flexRadioDefault1">
-                                            </div>
-                                            <div class="select_custom_small user-decription-black">
-                                                <span>Arte y Diseño</span>
-                                                <input class="form-check-input img_remove_filter" type="radio" name="flexRadioDefault" id="flexRadioDefault1">
-                                            </div>
-                                            <div class="select_custom_small user-decription-black">
-                                                <span>Astrología</span>
-                                                <input class="form-check-input img_remove_filter" type="radio" name="flexRadioDefault" id="flexRadioDefault1">
-                                            </div>
-                                            <div class="select_custom_small user-decription-black">
-                                                <span>Aventura</span>
-                                                <input class="form-check-input img_remove_filter" type="radio" name="flexRadioDefault" id="flexRadioDefault1">
-                                            </div>
-                                            <div class="select_custom_small user-decription-black">
-                                                <span>Belleza</span>
-                                                <input class="form-check-input img_remove_filter" type="radio" name="flexRadioDefault" id="flexRadioDefault1">
-                                            </div>
-                                            <div class="select_custom_small user-decription-black">
-                                                <span>Ciencia</span>
-                                                <input class="form-check-input img_remove_filter" type="radio" name="flexRadioDefault" id="flexRadioDefault1">
-                                            </div>
-                                            <div class="select_custom_small user-decription-black">
-                                                <span>Cine</span>
-                                                <input class="form-check-input img_remove_filter" type="radio" name="flexRadioDefault" id="flexRadioDefault1">
-                                            </div>
-                                            <div class="select_custom_small user-decription-black">
-                                                <span>De todo</span>
-                                                <input class="form-check-input img_remove_filter" type="radio" name="flexRadioDefault" id="flexRadioDefault1">
-                                            </div>
-                                            <div class="select_custom_small user-decription-black">
-                                                <span>Deportes</span>
-                                                <input class="form-check-input img_remove_filter" type="radio" name="flexRadioDefault" id="flexRadioDefault1">
-                                            </div>
-                                            <div class="select_custom_small user-decription-black">
-                                                <span>Educación</span>
-                                                <input class="form-check-input img_remove_filter" type="radio" name="flexRadioDefault" id="flexRadioDefault1">
-                                            </div>
-                                            <div class="select_custom_small user-decription-black">
-                                                <span>Entrenamiento</span>
-                                                <input class="form-check-input img_remove_filter" type="radio" name="flexRadioDefault" id="flexRadioDefault1">
-                                            </div>
-                                            <div class="select_custom_small user-decription-black">
-                                                <span>Entretenimiento</span>
-                                                <input class="form-check-input img_remove_filter" type="radio" name="flexRadioDefault" id="flexRadioDefault1">
-                                            </div>
-                                            <div class="select_custom_small user-decription-black">
-                                                <span>Esoterismo</span>
-                                                <input class="form-check-input img_remove_filter" type="radio" name="flexRadioDefault" id="flexRadioDefault1">
-                                            </div>
-                                            <div class="select_custom_small user-decription-black">
-                                                <span>Estilo de vida</span>
-                                                <input class="form-check-input img_remove_filter" type="radio" name="flexRadioDefault" id="flexRadioDefault1">
-                                            </div>
-                                            <div class="select_custom_small user-decription-black">
-                                                <span>Farándula</span>
-                                                <input class="form-check-input img_remove_filter" type="radio" name="flexRadioDefault" id="flexRadioDefault1">
-                                            </div>
-                                            <div class="select_custom_small user-decription-black">
-                                                <span>Finanzas</span>
-                                                <input class="form-check-input img_remove_filter" type="radio" name="flexRadioDefault" id="flexRadioDefault1">
-                                            </div>
-                                            <div class="select_custom_small user-decription-black">
-                                                <span>Gastronomía</span>
-                                                <input class="form-check-input img_remove_filter" type="radio" name="flexRadioDefault" id="flexRadioDefault1">
-                                            </div>
-                                            <div class="select_custom_small user-decription-black">
-                                                <span>Humanidades</span>
-                                                <input class="form-check-input img_remove_filter" type="radio" name="flexRadioDefault" id="flexRadioDefault1">
-                                            </div>
-                                            <div class="select_custom_small user-decription-black">
-                                                <span>Identidad</span>
-                                                <input class="form-check-input img_remove_filter" type="radio" name="flexRadioDefault" id="flexRadioDefault1">
-                                            </div>
-                                            <div class="select_custom_small user-decription-black">
-                                                <span>Juegos</span>
-                                                <input class="form-check-input img_remove_filter" type="radio" name="flexRadioDefault" id="flexRadioDefault1">
-                                            </div>
-                                            <div class="select_custom_small user-decription-black">
-                                                <span>Moda</span>
-                                                <input class="form-check-input img_remove_filter" type="radio" name="flexRadioDefault" id="flexRadioDefault1">
-                                            </div>
-                                            <div class="select_custom_small user-decription-black">
-                                                <span>Música</span>
-                                                <input class="form-check-input img_remove_filter" type="radio" name="flexRadioDefault" id="flexRadioDefault1">
-                                            </div>
-                                            <div class="select_custom_small user-decription-black">
-                                                <span>Nutrición</span>
-                                                <input class="form-check-input img_remove_filter" type="radio" name="flexRadioDefault" id="flexRadioDefault1">
-                                            </div>
-                                            <div class="select_custom_small user-decription-black">
-                                                <span>Opinión</span>
-                                                <input class="form-check-input img_remove_filter" type="radio" name="flexRadioDefault" id="flexRadioDefault1">
-                                            </div>
-                                            <div class="select_custom_small user-decription-black">
-                                                <span>Política y sociedad</span>
-                                                <input class="form-check-input img_remove_filter" type="radio" name="flexRadioDefault" id="flexRadioDefault1">
-                                            </div>
-                                            <div class="select_custom_small user-decription-black">
-                                                <span>Salud</span>
-                                                <input class="form-check-input img_remove_filter" type="radio" name="flexRadioDefault" id="flexRadioDefault1">
-                                            </div>
-                                            <div class="select_custom_small user-decription-black">
-                                                <span>Sexo</span>
-                                                <input class="form-check-input img_remove_filter" type="radio" name="flexRadioDefault" id="flexRadioDefault1">
-                                            </div>
-                                            <div class="select_custom_small user-decription-black">
-                                                <span>Superación</span>
-                                                <input class="form-check-input img_remove_filter" type="radio" name="flexRadioDefault" id="flexRadioDefault1">
-                                            </div>
-                                            <div class="select_custom_small user-decription-black">
-                                                <span>Religión</span>
-                                                <input class="form-check-input img_remove_filter" type="radio" name="flexRadioDefault" id="flexRadioDefault1">
-                                            </div>
-                                            <div class="select_custom_small user-decription-black">
-                                                <span>Talentos especiales</span>
-                                                <input class="form-check-input img_remove_filter" type="radio" name="flexRadioDefault" id="flexRadioDefault1">
-                                            </div>
-                                            <div class="select_custom_small user-decription-black">
-                                                <span>Tecnología</span>
-                                                <input class="form-check-input img_remove_filter" type="radio" name="flexRadioDefault" id="flexRadioDefault1">
-                                            </div>
-                                            <div class="select_custom_small user-decription-black">
-                                                <span>Transporte</span>
-                                                <input class="form-check-input img_remove_filter" type="radio" name="flexRadioDefault" id="flexRadioDefault1">
-                                            </div>
-                                            <div class="select_custom_small user-decription-black">
-                                                <span>Turismo y viajes</span>
-                                                <input class="form-check-input img_remove_filter" type="radio" name="flexRadioDefault" id="flexRadioDefault1">
-                                            </div>
-                                            
+                                            <?php if(count($busquedaActual['categoria'])>0){
+                                                    foreach ($categorias as $key => $m) {
+                                                        $encontrado=true;
+                                                        foreach ($busquedaActual['categoria'] as $key => $cate) {
+                                                            if($m['idcategoria']==$cate){?>
+                                                                <div class="select_custom_small user-decription-black">
+                                                                    <span><?=$m['nombrecat']?></span>
+                                                                    <input class="form-check-input img_remove_filter" type="checkbox" name="<?="cat".$m['idcategoria']?>" id="<?="cat".$m['idcategoria']?>" checked>
+                                                                </div>
+                                                <?php       $encontrado=false;
+                                                            }
+                                                        }
+                                                        if($encontrado){?>
+                                                            <div class="select_custom_small user-decription-black">
+                                                                <span><?=$m['nombrecat']?></span>
+                                                                <input class="form-check-input img_remove_filter" type="checkbox" name="<?="cat".$m['idcategoria']?>" id="<?="cat".$m['idcategoria']?>">
+                                                            </div>
+
+                                                  <?php      
+                                                        }
+                                                    }
+                                                  }else{
+                                                    foreach ($categorias as $key => $m) {?>
+                                                            <div class="select_custom_small user-decription-black">
+                                                                <span><?=$m['nombrecat']?></span>
+                                                                <input class="form-check-input img_remove_filter" type="checkbox" name="<?="cat".$m['idcategoria']?>" id="<?="cat".$m['idcategoria']?>">
+                                                            </div>
+                                                   <?php }
+                                                }                                     
+                                            ?>
+                  
                                         </div>
                                     </div>
                                 </div>
@@ -231,86 +129,13 @@
                                     </h2>
                                     <div id="collapseTwo" class="accordion-collapse collapse" aria-labelledby="headingTwo" data-bs-parent="#accordionExample">
                                         <div class="accordion-body">
-                                            <div class="select_custom_small user-decription-black">
-                                                <span>Behance</span>
-                                                <input class="form-check-input img_remove_filter" type="radio" name="flexRadioDefault" id="flexRadioDefault1">
-                                            </div>
-                                            <div class="select_custom_small user-decription-black">
-                                                <span>Ello</span>
-                                                <input class="form-check-input img_remove_filter" type="radio" name="flexRadioDefault" id="flexRadioDefault1">
-                                            </div>
-                                            <div class="select_custom_small user-decription-black">
-                                                <span>Facebook</span>
-                                                <input class="form-check-input img_remove_filter" type="radio" name="flexRadioDefault" id="flexRadioDefault1">
-                                            </div>
-                                            <div class="select_custom_small user-decription-black">
-                                                <span>Instagram</span>
-                                                <input class="form-check-input img_remove_filter" type="radio" name="flexRadioDefault" id="flexRadioDefault1">
-                                            </div>
-                                            <div class="select_custom_small user-decription-black">
-                                                <span>Linkedin</span>
-                                                <input class="form-check-input img_remove_filter" type="radio" name="flexRadioDefault" id="flexRadioDefault1">
-                                            </div>
-                                            <div class="select_custom_small user-decription-black">
-                                                <span>OnlyFans</span>
-                                                <input class="form-check-input img_remove_filter" type="radio" name="flexRadioDefault" id="flexRadioDefault1">
-                                            </div>
-                                            <div class="select_custom_small user-decription-black">
-                                                <span>Pinterest</span>
-                                                <input class="form-check-input img_remove_filter" type="radio" name="flexRadioDefault" id="flexRadioDefault1">
-                                            </div>
-                                            <div class="select_custom_small user-decription-black">
-                                                <span>QQ</span>
-                                                <input class="form-check-input img_remove_filter" type="radio" name="flexRadioDefault" id="flexRadioDefault1">
-                                            </div>
-                                            <div class="select_custom_small user-decription-black">
-                                                <span>Qzone</span>
-                                                <input class="form-check-input img_remove_filter" type="radio" name="flexRadioDefault" id="flexRadioDefault1">
-                                            </div>
-                                            <div class="select_custom_small user-decription-black">
-                                                <span>Reddit</span>
-                                                <input class="form-check-input img_remove_filter" type="radio" name="flexRadioDefault" id="flexRadioDefault1">
-                                            </div>
-                                            <div class="select_custom_small user-decription-black">
-                                                <span>Snapchat</span>
-                                                <input class="form-check-input img_remove_filter" type="radio" name="flexRadioDefault" id="flexRadioDefault1">
-                                            </div>
-                                            <div class="select_custom_small user-decription-black">
-                                                <span>Telegram</span>
-                                                <input class="form-check-input img_remove_filter" type="radio" name="flexRadioDefault" id="flexRadioDefault1">
-                                            </div>
-                                            <div class="select_custom_small user-decription-black">
-                                                <span>TikTok</span>
-                                                <input class="form-check-input img_remove_filter" type="radio" name="flexRadioDefault" id="flexRadioDefault1">
-                                            </div>
-                                            <div class="select_custom_small user-decription-black">
-                                                <span>Tumblr</span>
-                                                <input class="form-check-input img_remove_filter" type="radio" name="flexRadioDefault" id="flexRadioDefault1">
-                                            </div>
-                                            <div class="select_custom_small user-decription-black">
-                                                <span>Twitter</span>
-                                                <input class="form-check-input img_remove_filter" type="radio" name="flexRadioDefault" id="flexRadioDefault1">
-                                            </div>
-                                            <div class="select_custom_small user-decription-black">
-                                                <span>Twitch</span>
-                                                <input class="form-check-input img_remove_filter" type="radio" name="flexRadioDefault" id="flexRadioDefault1">
-                                            </div>
-                                            <div class="select_custom_small user-decription-black">
-                                                <span>Vimeo</span>
-                                                <input class="form-check-input img_remove_filter" type="radio" name="flexRadioDefault" id="flexRadioDefault1">
-                                            </div>
-                                            <div class="select_custom_small user-decription-black">
-                                                <span>Wechat</span>
-                                                <input class="form-check-input img_remove_filter" type="radio" name="flexRadioDefault" id="flexRadioDefault1">
-                                            </div>
-                                            <div class="select_custom_small user-decription-black">
-                                                <span>Weibo</span>
-                                                <input class="form-check-input img_remove_filter" type="radio" name="flexRadioDefault" id="flexRadioDefault1">
-                                            </div>
-                                            <div class="select_custom_small user-decription-black">
-                                                <span>Youtube</span>
-                                                <input class="form-check-input img_remove_filter" type="radio" name="flexRadioDefault" id="flexRadioDefault1">
-                                            </div>
+
+                                                <?php foreach ($redes as $key => $m) {?>
+                                                    <div class="select_custom_small user-decription-black">
+                                                        <span><?=$m['nombre'] ?></span>
+                                                        <input class="form-check-input img_remove_filter" type="radio" name="<?="red".$m['idredes'] ?>" id="<?="red".$m['idredes'] ?>">
+                                                    </div>
+                                                <?php } ?>
                                         </div>
                                     </div>
                                 </div>
@@ -329,6 +154,7 @@
                                         </div>
                                         <div class="col" style="text-align: center;">
                                             <p><span id="output"></span></p>
+                                            <input type="hidden" id="seguidores2" name="seguidores2" >
                                         </div>
                                         <div class="col" style="text-align: right;">
                                             <p>+1 millon</p>
@@ -345,6 +171,7 @@
 
                                     input.oninput = function(){
                                         output.innerHTML = values[this.value];
+                                        document.getElementById('seguidores2').value=values[this.value];
                                     };
                                     input.oninput();
 
@@ -362,16 +189,11 @@
                                             <div id="languages" class="row mt-4 justify-content-left" ></div>
 
                                             <div style="padding-left: 15%; padding-right: 15%">
-                                                <select id="langSelect" onchange="addLanguageSearch()" class="form-select select-sm-profile" aria-label="Default select example">
+                                                <select id="idiomaSelect2"  class="form-select select-sm-profile" aria-label="Default select example">
                                                     <option selected disabled="">Selecciona un idioma</option>
-                                                    <option value="lang_1">Español</option>
-                                                    <option value="lang_2">Inglés</option>
-                                                    <option value="lang_3">Frances</option>
-                                                    <option value="lang_4">Aleman</option>
-                                                    <option value="lang_5">Ruso</option>
-                                                    <option value="lang_6">Chino</option>
-                                                    <option value="lang_7">Japones</option>
-                                                    <option value="lang_8">Portugues</option>
+                                                    <?php foreach ($idiomas as $key => $m) {?>
+                                                        <option value="<?=$m['ididioma']?>"><?=$m['nombre']?></option>
+                                                    <?php } ?>
                                                 </select>
                                             </div>
                                     
@@ -388,23 +210,14 @@
                                     </h2>
                                     <div id="collapseFour" class="accordion-collapse collapse" aria-labelledby="headingFour" data-bs-parent="#accordionExample">
                                         <div class="accordion-body">
-                                            <div class="select_custom_small user-decription-black">
-                                                <span>Caje x producto</span>
-                                                <input class="form-check-input img_remove_filter" type="checkbox" value="" id="flexCheckDefault">
-                                            </div>
-                                            <div class="select_custom_small user-decription-black">
-                                                <span>Dinero</span>
-                                                <input class="form-check-input img_remove_filter" type="checkbox" value="" id="flexCheckDefault">
-                                            </div>
-                                            <div class="select_custom_small user-decription-black">
-                                                <span>Servicios</span>
-                                                <input class="form-check-input img_remove_filter" type="checkbox" value="" id="flexCheckDefault">
-                                            </div>
-                                            <div class="select_custom_small user-decription-black">
-                                                <span>Todos los anteriores</span>
-                                                <input class="form-check-input img_remove_filter" type="checkbox" value="" id="flexCheckDefault">
-                                            </div>
-                                    
+
+                                            <?php foreach ($pagos as $key => $m) {?>
+                                            
+                                                <div class="select_custom_small user-decription-black">
+                                                    <span><?=$m['nombre']?></span>
+                                                    <input class="form-check-input" type="checkbox" value="<?="pago".$m['idpago']?>" id="<?="pago".$m['idpago']?>" name="<?="pago".$m['idpago']?>">
+                                                </div>
+                                            <?php } ?>                                   
                                         </div>
                                     </div>
                                 </div>
@@ -419,19 +232,110 @@
                                     <div id="collapseFive" class="accordion-collapse collapse" aria-labelledby="headingFive" data-bs-parent="#accordionExample">
                                         <div class="accordion-body">
                                             <div class="select_custom_small user-decription-black" style="margin-bottom: 8px;">
-                                                <select class="form-select form-select-sm user-decription-black select_custom_small" style="width: 200px" aria-label=".form-select-sm example">
-                                                        <option selected>Selecciona pais</option>
-                                                        <option value="1">Colombia</option>
-                                                        <option value="2">Venezuela</option>
+                                                <select class="form-select select_custom" aria-label="Default select example" name="pais3" id="pais3" onchange='cambia_ciudades3();'>
+                                                    <option value="0" selected>Selecciona país</option>
+                                                    <?php foreach ($paises as $key => $m) {?>
+                                                        <option value="<?=$m['idpais']?>"><?=$m['nombre']?></option>
+                                                    <?php } ?>
                                                 </select>
                                             </div>
+                                            <script>
+                                    function cambia_ciudades3(){
+                                        //tomamos el valor del select paises elegido
+                                        var idpais
+                                    
+                                        idpais = document.getElementById('pais3').value	
+                                        
+                                        // verificamos si el Pais está definido
+                                
+                                        if (idpais!=0) { 
+                                            //si estaba definido, entonces coloco las opciones del pais correspondiente. 
+                                            //selecciono el array del departamento adecuado 
+                                            //alert("LLEGUE");
+                                            document.getElementById('ciudades3').disabled=false;
+                                            mis_ciudades=eval("pais_"+idpais) 
+                                            mis_ciudades_id=eval("pais_"+idpais+"_id") 
+                                            //alert(mis_ciudades); 
+                                            //calculo el numero de municipios 
+                                            num_ciudades = mis_ciudades.length +1
+                                            //marco el número de municipios en el select 
+                                            document.otrabusqueda.ciudades3.length = num_ciudades 
+                                            //para cada pais del array, lo introduzco en el select 
+                                                
+                                            for(i=0;i<num_ciudades+1;i++){ 
+                                                document.otrabusqueda.ciudades3.options[i+1].value=mis_ciudades_id[i]
+                                                document.otrabusqueda.ciudades3.options[i+1].text=mis_ciudades[i] 
+                                            }	
+                                            }else{ 
+                                            //si no había pais seleccionado, elimino los municipios del select 
+                                            document.otrabusqueda.ciudades3.length = 1 
+                                            //coloco un guión en la única opción que he dejado 
+                                            document.otrabusqueda.ciudades3.options[0].value = "0" 
+                                            document.otrabusqueda.ciudades3.options[0].text = "SELECCIONE UN DEPARTAMENTO" 
+                                            } 
+                                        }// FIN DE FUNCIONcambia_departamento
+                                    </script>
+
                                             <div class="select_custom_small user-decription-black">
-                                                <select class="form-select form-select-sm user-decription-black select_custom_small" style="width: 200px" aria-label=".form-select-sm example">
-                                                        <option selected>Ciudad</option>
-                                                        <option value="1">Bogota</option>
-                                                        <option value="2">Cali</option>
+                                                <select class="form-select select_custom" aria-label="Default select example" name="ciudades3" id="ciudades3" disabled>
+                                                    <option value="0" selected>Elije tu región</option>
                                                 </select>
+                                    </br>
+                                    </br>
                                             </div>
+
+                                            <?php 
+                                                $ciudadesarray=[];
+                                                $ciudadesarrayid=[];
+                                                for ($i=0; $i < count($ciudades[1]) ; $i++) { 
+                                                    array_push($ciudadesarray,$ciudades[1][$i]['nombre']);
+                                                    array_push($ciudadesarrayid,$ciudades[1][$i]['idciudad']);
+                                                }
+
+                                                $ciudadesarray2=[];
+                                                $ciudadesarrayid2=[];
+                                                for ($i=0; $i < count($ciudades[2]) ; $i++) { 
+                                                    array_push($ciudadesarray2,$ciudades[2][$i]['nombre']);
+                                                    array_push($ciudadesarrayid2,$ciudades[2][$i]['idciudad']);
+                                                }
+
+                                                $ciudadesarray3=[];
+                                                $ciudadesarrayid3=[];
+                                                for ($i=0; $i < count($ciudades[3]) ; $i++) { 
+                                                    array_push($ciudadesarray3,$ciudades[3][$i]['nombre']);
+                                                    array_push($ciudadesarrayid3,$ciudades[3][$i]['idciudad']);
+                                                }
+
+                                                $ciudadesarray4=[];
+                                                $ciudadesarrayid4=[];
+                                                for ($i=0; $i < count($ciudades[4]) ; $i++) { 
+                                                    array_push($ciudadesarray4,$ciudades[4][$i]['nombre']);
+                                                    array_push($ciudadesarrayid4,$ciudades[4][$i]['idciudad']);
+                                                }
+
+                                                $ciudadesarray5=[];
+                                                $ciudadesarrayid5=[];
+                                                for ($i=0; $i < count($ciudades[5]) ; $i++) { 
+                                                    array_push($ciudadesarray5,$ciudades[5][$i]['nombre']);
+                                                    array_push($ciudadesarrayid5,$ciudades[5][$i]['idciudad']);
+                                                }
+                                            
+                                            ?>
+                                            <script type="text/javascript">
+                                                //creamos variableas array para cada departamento
+                                                
+                                                var pais_1 = <?php echo json_encode($ciudadesarray);?>;
+                                                var pais_1_id = <?php echo json_encode($ciudadesarrayid);?>;
+                                                var pais_2 = <?php echo json_encode($ciudadesarray2);?>;
+                                                var pais_2_id = <?php echo json_encode($ciudadesarrayid2);?>; 
+                                                var pais_3 = <?php echo json_encode($ciudadesarray3);?>;
+                                                var pais_3_id = <?php echo json_encode($ciudadesarrayid3);?>;
+                                                var pais_4 = <?php echo json_encode($ciudadesarray4);?>;
+                                                var pais_4_id = <?php echo json_encode($ciudadesarrayid4);?>;
+                                                var pais_5 = <?php echo json_encode($ciudadesarray5);?>;
+                                                var pais_5_id = <?php echo json_encode($ciudadesarrayid5);?>;
+
+                                            </script>
                                     
                                         </div>
                                     </div>
@@ -493,7 +397,7 @@
 
                             <div class="my-5 d-flex justify-content-center text-center">
                                 <div class="btn-register">
-                                    <button type="button" class="btn btn-login btn-lg btn-register-width user-decription-black" style="font-size: 20px; width: fit-content;" data-bs-dismiss="modal" data-bs-toggle="modal" data-bs-target="#confirmation-modal">VOLVER A BUSCAR</button>
+                                    <button type="submit" class="btn btn-login btn-lg btn-register-width user-decription-black" style="font-size: 20px; width: fit-content;" data-bs-dismiss="modal" data-bs-toggle="modal" data-bs-target="#confirmation-modal">VOLVER A BUSCAR</button>
                                 </div>
                             </div>
                 
