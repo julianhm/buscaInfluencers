@@ -130,12 +130,37 @@
                                     <div id="collapseTwo" class="accordion-collapse collapse" aria-labelledby="headingTwo" data-bs-parent="#accordionExample">
                                         <div class="accordion-body">
 
-                                                <?php foreach ($redes as $key => $m) {?>
-                                                    <div class="select_custom_small user-decription-black">
-                                                        <span><?=$m['nombre'] ?></span>
-                                                        <input class="form-check-input img_remove_filter" type="radio" name="<?="red".$m['idredes'] ?>" id="<?="red".$m['idredes'] ?>">
-                                                    </div>
-                                                <?php } ?>
+                                        <?php if(count($busquedaActual['redes'])>0){
+                                                    foreach ($redes as $key => $m) {
+                                                        $encontrado=true;
+                                                        foreach ($busquedaActual['redes'] as $key => $cate) {
+                                                            if($m['idredes']==$cate){?>
+                                                                <div class="select_custom_small user-decription-black">
+                                                                    <span><?=$m['nombre']?></span>
+                                                                    <input class="form-check-input img_remove_filter" type="checkbox" name="<?="red".$m['idredes']?>" id="<?="red".$m['idredes']?>" checked>
+                                                                </div>
+                                                <?php       $encontrado=false;
+                                                            }
+                                                        }
+                                                        if($encontrado){?>
+                                                            <div class="select_custom_small user-decription-black">
+                                                                <span><?=$m['nombre']?></span>
+                                                                <input class="form-check-input img_remove_filter" type="checkbox" name="<?="red".$m['idredes']?>" id="<?="red".$m['idredes']?>">
+                                                            </div>
+
+                                                  <?php      
+                                                        }
+                                                    }
+                                                  }else{
+                                                    foreach ($redes as $key => $m) {?>
+                                                            <div class="select_custom_small user-decription-black">
+                                                                <span><?=$m['nombre']?></span>
+                                                                <input class="form-check-input img_remove_filter" type="checkbox" name="<?="red".$m['idredes']?>" id="<?="red".$m['idredes']?>">
+                                                            </div>
+                                                   <?php }
+                                                }                                     
+                                            ?>
+
                                         </div>
                                     </div>
                                 </div>
@@ -154,7 +179,7 @@
                                         </div>
                                         <div class="col" style="text-align: center;">
                                             <p><span id="output"></span></p>
-                                            <input type="hidden" id="seguidores2" name="seguidores2" >
+                                            <input type="hidden" id="seguidores2" name="seguidores2" value="<?=$busquedaActual['cantidad']?>" >
                                         </div>
                                         <div class="col" style="text-align: right;">
                                             <p>+1 millon</p>
@@ -165,13 +190,27 @@
 
                                 <script>
                                     var values = [0,3000,5000,10000,15000,20000,25000, 30000, 50000, 100000, 300000, 500000, "+1M"];
-
+                                    var item=6,cont=0;
+                                    var valor= document.getElementById('seguidores2').value;
+                                    values.forEach(element => {
+                                        
+                                        if (element==valor) {
+                                            item=cont;
+                                        }
+                                        cont++;
+                                    });
+                                    document.getElementById('input').value=item;
                                     var input = document.getElementById('input'),
                                     output = document.getElementById('output');
 
                                     input.oninput = function(){
                                         output.innerHTML = values[this.value];
-                                        document.getElementById('seguidores2').value=values[this.value];
+                                        if (values[this.value]!="+1M") {
+                                            document.getElementById('seguidores2').value=values[this.value];
+                                        } else {
+                                            document.getElementById('seguidores2').value=1000000; 
+                                        }
+                                        
                                     };
                                     input.oninput();
 
@@ -189,10 +228,10 @@
                                             <div id="languages" class="row mt-4 justify-content-left" ></div>
 
                                             <div style="padding-left: 15%; padding-right: 15%">
-                                                <select id="idiomaSelect2"  class="form-select select-sm-profile" aria-label="Default select example">
-                                                    <option selected disabled="">Selecciona un idioma</option>
+                                                <select id="idiomaSelect2" name="idiomaSelect2"  class="form-select select-sm-profile" aria-label="Default select example">
+                                                    <option <?php if ($busquedaActual['idioma']==""){?> selected <?php } ?> value="0">Selecciona un idioma</option>
                                                     <?php foreach ($idiomas as $key => $m) {?>
-                                                        <option value="<?=$m['ididioma']?>"><?=$m['nombre']?></option>
+                                                        <option value="<?=$m['ididioma']?>" <?php if ($busquedaActual['idioma']==$m['ididioma']){?> selected <?php } ?>><?=$m['nombre']?></option>
                                                     <?php } ?>
                                                 </select>
                                             </div>
@@ -211,13 +250,41 @@
                                     <div id="collapseFour" class="accordion-collapse collapse" aria-labelledby="headingFour" data-bs-parent="#accordionExample">
                                         <div class="accordion-body">
 
-                                            <?php foreach ($pagos as $key => $m) {?>
-                                            
-                                                <div class="select_custom_small user-decription-black">
-                                                    <span><?=$m['nombre']?></span>
-                                                    <input class="form-check-input" type="checkbox" value="<?="pago".$m['idpago']?>" id="<?="pago".$m['idpago']?>" name="<?="pago".$m['idpago']?>">
-                                                </div>
-                                            <?php } ?>                                   
+                                        <?php if(count($busquedaActual['pago'])>0){
+                                                    foreach ($pagos as $key => $m) {
+                                                        $encontrado=true;
+                                                        foreach ($busquedaActual['pago'] as $key => $cate) {
+                                                            if($m['idpago']==$cate['idpago']){?>
+                                                                <div class="select_custom_small user-decription-black">
+                                                                    <span><?=$m['nombre']?></span>
+                                                                    <input class="form-check-input img_remove_filter" type="checkbox" name="<?="pago".$m['idpago']?>" id="<?="pago".$m['idpago']?>" checked>
+                                                                </div>
+                                                <?php       $encontrado=false;
+                                                            }
+                                                        }
+                                                        if($encontrado){?>
+                                                            <div class="select_custom_small user-decription-black">
+                                                                <span><?=$m['nombre']?></span>
+                                                                <input class="form-check-input img_remove_filter" type="checkbox" name="<?="pago".$m['idpago']?>" id="<?="pago".$m['idpago']?>">
+                                                            </div>
+
+                                                  <?php      
+                                                        }
+                                                    }
+                                                  }else{
+                                                    foreach ($pagos as $key => $m) {?>
+                                                            <div class="select_custom_small user-decription-black">
+                                                                <span><?=$m['nombre']?></span>
+                                                                <input class="form-check-input img_remove_filter" type="checkbox" name="<?="pago".$m['idpago']?>" id="<?="pago".$m['idpago']?>">
+                                                            </div>
+                                                   <?php }
+                                                }                                     
+                                            ?>
+
+
+
+
+                                                                              
                                         </div>
                                     </div>
                                 </div>

@@ -113,11 +113,11 @@ class UsuarioController extends BaseController
         $busquedaActual=[
             'categoria'=>[],
             'redes'=>[],
-            'cantidad'=>"-",
-            'idioma'=>"-",
+            'cantidad'=>"",
+            'idioma'=>"",
             'pago'=>[],
-            'pais'=>"-",
-            'ciudad'=>"-",
+            'pais'=>"",
+            'ciudad'=>"",
         ];
 
 
@@ -257,11 +257,11 @@ class UsuarioController extends BaseController
         $busquedaActual=[
             'categoria'=>[],
             'redes'=>[],
-            'cantidad'=>"-",
-            'idioma'=>"-",
+            'cantidad'=>"",
+            'idioma'=>"",
             'pago'=>[],
-            'pais'=>"-",
-            'ciudad'=>"-",
+            'pais'=>"",
+            'ciudad'=>"",
         ];
        
 
@@ -290,12 +290,13 @@ class UsuarioController extends BaseController
         $categoriaBuscada=[];
         foreach ($misCategorias as $key => $m) { 
             if (isset($_POST["cat".$m['idcategoria']])) {   
-                //var_dump("ENTRE y LLEGO ".$m['nombrecat']) ;
+                   // var_dump("ENTRE y LLEGO ".$m['nombrecat']) ;
                     $influencerBuscado=$this->_filtrarPorCategorias($influencerBuscado,$m['idcategoria']);
                     array_push($categoriaBuscada,$m['idcategoria']);
             }
         }
         $busquedaActual['categoria']=$categoriaBuscada;
+        
        
        
         $misredes=$redes->orderBy('nombre', 'ASC')->where('activa',1)->findAll(); 
@@ -309,17 +310,20 @@ class UsuarioController extends BaseController
         }
         $busquedaActual['redes']=$redBuscada;
         
+
         if($cant_seguidores>0){
             //var_dump("ENTRE y LLEGO ".$cant_seguidores) ;
             $influencerBuscado=$this->_filtrarPorCantidadSeguidores($influencerBuscado,$cant_seguidores);
             $busquedaActual['cantidad']=$cant_seguidores;
         }
+        
 
         if($ididioma!=null && $ididioma>0){
             //var_dump("ENTRE y LLEGO ".$ididioma) ;
             $influencerBuscado=$this->_filtrarPorIdioma($influencerBuscado,$ididioma); 
             $busquedaActual['idioma']=$ididioma;  
         }
+        //var_dump($influencerBuscado) ;
 
         $misPagos= $pagos->findAll();
         $textoPagos="";
