@@ -70,7 +70,9 @@
     <script type="text/javascript" src=<?php echo base_url('js/jquery-3.4.1.js')?>></script>
     <script type="text/javascript" src=<?php echo base_url('js/cargarciudades.js')?>></script>
     <script type="text/javascript" src=<?php echo base_url('js/checkbox.js')?>></script>
-
+    
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/paginationjs/2.1.4/pagination.min.js"></script>
     <!-- Template Javascript -->
     <script src=<?php echo base_url('js/main.js');?>></script>
 

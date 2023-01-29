@@ -24,7 +24,9 @@
 
     <!-- Template Stylesheet -->
     <link href=<?php echo base_url('css/style.css');?> rel="stylesheet">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/paginationjs/2.1.4/pagination.min.js"></script>
 
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/paginationjs/2.1.4/pagination.css"/>
 
   <link rel='stylesheet' href=<?php echo base_url('lib/owlcarousel/assets/owl.carousel.min.css');?>>
   <link rel='stylesheet' href=<?php echo base_url('lib/owlcarousel/assets/owl.theme.green.min.css');?>>
