@@ -35,27 +35,27 @@
 
                             <div id="filter_1" class="select_custom_small user-decription-black filter_searched">
                                 <span><?=$criteriosBusqueda['categoria'];?></span>
-                                <a style="cursor:pointer" onclick="removeAcc('filter_1')" ><img class="img_remove_filter" src="<?=base_url(),"/img/remove.png"?>" alt="Remove"></a>
+                                <a style="cursor:pointer" onclick="removeAcc('filter_1')" ></a>
                             </div>
 
                             <div id="filter_2" class="select_custom_small user-decription-black filter_searched">
                                 <span><?=$criteriosBusqueda['redes'];?></span>
-                                <a style="cursor:pointer" onclick="removeAcc('filter_2')" ><img class="img_remove_filter" src="<?=base_url(),"/img/remove.png"?>" alt="Remove"></a>
+                                <a style="cursor:pointer" onclick="removeAcc('filter_2')" ></a>
                             </div>
                             
                             <div id="filter_3" class="select_custom_small user-decription-black filter_searched">
                                 <span><?=$criteriosBusqueda['cantidad']." seguidores";?> </span>
-                                <a style="cursor:pointer" onclick="removeAcc('filter_3')" ><img class="img_remove_filter" src="<?=base_url(),"/img/remove.png"?>" alt="Remove"></a>
+                                <a style="cursor:pointer" onclick="removeAcc('filter_3')" ></a>
                             </div>
 
                             <div id="filter_4" class="select_custom_small user-decription-black filter_searched">
                                 <span><?=$criteriosBusqueda['idioma'];?></span>
-                                <a style="cursor:pointer" onclick="removeAcc('filter_4')" ><img class="img_remove_filter" src="<?=base_url(),"/img/remove.png"?>" alt="Remove"></a>
+                                <a style="cursor:pointer" onclick="removeAcc('filter_4')" ></a>
                             </div>
                             <?php foreach ($criteriosBusqueda['pago'] as $key => $pag) { ?>
                                 <div id="<?="filter_5".$pag['idpago']?>" class="select_custom_small user-decription-black filter_searched">
                                     <span><?=$pag['nombre'];?></span>
-                                    <a style="cursor:pointer" onclick="removeAcc('<?="filter_5".$pag["idpago"];?>')" ><img class="img_remove_filter" src="<?=base_url(),"/img/remove.png"?>" alt="Remove"></a>
+                                    <a style="cursor:pointer" onclick="removeAcc('<?="filter_5".$pag["idpago"];?>')" ></a>
                                 </div>
                         <?php } ?>
                             
@@ -413,53 +413,107 @@
                     </div>
                 </div>
                 
-                    <div class="col">
+                 <div class="col">
                         
-                        <?php $cont=4; $cerrar=false;
-                            foreach ($influencer as $key => $m) { 
+                    <div id="TableList" ></div>
                             
-                                if($cont==4){?>
-                            <div class="row mb-3">
-                                <?php 
-                                    $cont=0; 
-                                    $cerrar=true;  
+                                <div id="container"></div>
+                                <div id="pagination"></div>
+                             
+                    </div>
+                    <div class="pagination" align="center">
+                            
+                            <a href="javascript:prevPage()" id="btn_prev">&laquo;Anterior</a>
+                            <a href="javascript:nextPage()" id="btn_next">Siguiente&raquo;</a><br>
+                            <span id="pa" style="align:center"></span>
+                            
+                            
+                    </div>
+                                
+                               
+                                                        
+
+                </div>
+
+                       
+                            
+                        <script>
+                                var obj = <?=json_encode($influencer); ?>;
+                                //alert(obj);
+                                var current_page = 1;
+                                var obj_per_page = 3;
+                                
+
+                                function totNumPages()
+                                {
+                                    return Math.ceil(obj.length / obj_per_page);
+                                }
+
+                                function prevPage()
+                                {
+                                    if (current_page > 1) {
+                                        current_page--;
+                                        change(current_page);
                                     }
-                                    $cont++;
-                                ?>
-                                <div class="col">
-                                    <div class="product-item position-relative d-flex flex-column text-center">
-                                        <img class="img-fluid mb-2" src="<?php echo base_url('uploads')."/".$m['foto_perfil'];?>" alt="">
-                                        <h6 class="user-decription-black"><?=$m['nombreinflu'] ?><br> <?=$m['alias'] ?> <br><?=$m['nombrecat']?> </h6>
-                                        <div class="container-fluid">
-                                            <a href="<?php echo base_url()."/perfil/".$m['idinfluencer'];?>"><button type="button" class="btn btn-ver-perfil btn-sm btn-on-white">Ver perfil</button></a>
-                                        </div>
-                                    </div>
-                                </div>
+                                }
+                                function nextPage()
+                                {
+                                    if (current_page < totNumPages()) {
+                                        current_page++;
+                                        change(current_page);
+                                    }
+                                }
+                                function change(page)
+                                {
+                                    var btn_next = document.getElementById("btn_next");
+                                    var btn_prev = document.getElementById("btn_prev");
+                                    var listing_table = document.getElementById("container");
+                                    var page_span = document.getElementById("pa");
+                                    
+
+                                    if (page < 1) page = 1;
+                                    if (page > totNumPages()) page = totNumPages();
+                                    
+                                    page_span.innerHTML = page;
+                                    
+                                    if (page == 1) {
+                                        btn_prev.style.visibility = "hidden";
+                                    } else {
+                                        btn_prev.style.visibility = "visible";
+                                    }
+                                    if (page == totNumPages()) {
+                                        btn_next.style.visibility = "hidden";
+                                    } else {
+                                        btn_next.style.visibility = "visible";
+                                    }
+
+                                    listing_table.innerHTML = "";
+                                    for (var i = (page-1) * obj_per_page; i < (page * obj_per_page); i++) {
+                                        listing_table.innerHTML += "<div class='col'>"+
+                                                "<div class='product-item position-relative d-flex flex-column text-center'>"+
+                                                "<img class='img-fluid mb-2' src='"+"<?php echo base_url('uploads').'/'?>"+obj[i].foto_perfil+"'>"+
+                                                "<h6 class='user-decription-black'>"+obj[i].nombreinflu+"<br>"+ obj[i].alias+"<br>"+obj[i].nombrecat +" </h6>"+
+                                                "<div class='container-fluid'>"+
+                                                        "<a href='"+"<?php echo base_url()?>"+"/perfil/"+obj[i].idinfluencer+"' type='button' class='btn btn-ver-perfil btn-sm btn-on-white'>Ver perfil</a>"+
+                                                    "</div>"+
+                                                    "</div>"+
+                                            "</div>";
+                                            page_span.innerHTML = page;
+                                            
+                                    }
+
+                                    alert(page);
+                                    
+                                }
+                                
+                                window.onload = function() {
+                                    change(1);
+                                };
+                        </script>
+
                             
-                        <?php if($cerrar){?>
-                            </div>
-                        <?php $cerrar=false; } ?>
-
-                        <?php  } ?>
-                        
-                            
 
 
-                            
-
-
-                            <div class="text-center">
-                                <div class="pagination">
-                                    <a href="#">&laquo;</a>
-                                    <a href="#">1</a>
-                                    <a class="active" href="#">2</a>
-                                    <a href="#">3</a>
-                                    <a href="#">4</a>
-                                    <a href="#">5</a>
-                                    <a href="#">6</a>
-                                    <a href="#">&raquo;</a>
-                                </div>
-                            </div>
 
 
                             <div class="my-5 d-flex justify-content-center text-center">
@@ -468,9 +522,9 @@
                                 </div>
                             </div>
                 
-
+                            </div>
                     </div>
-                        </form>
+                       
             </div>
         </form>
     </div>
