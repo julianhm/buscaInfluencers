@@ -51,6 +51,7 @@ $routes->get('/', 'IndexController::index');
 
 
 $routes->group('influencer', static function ($routes) {
+
 $routes->get('new', 'InfluencerController::new');
 $routes->post('create', 'InfluencerController::create');
 $routes->get('edit/(:any)', 'InfluencerController::edit/$1');
@@ -92,6 +93,7 @@ $routes->post('/perfil/correo', 'PerfilController::enviarCorreoLocal');
 $routes->get('busqueda', 'UsuarioController::index');
 $routes->post('busqueda/resultado', 'UsuarioController::buscarInfluencers');
 $routes->post('busqueda/nuevoresultado', 'UsuarioController::nuevaBusquedaInfluencers');
+$routes->get('busqueda/nuevoresultado/(:any)', 'UsuarioController::paginador/$1');
 
 $routes->get('privacidad', 'InfluencerController::privacidad');
 
