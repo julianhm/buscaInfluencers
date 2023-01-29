@@ -348,20 +348,16 @@
                 
                     <div class="col">
                         
-                        <?php $cont=4; $cerrar=false;
-                            foreach ($influencer as $key => $m) { 
-                            
-                                if($cont==4){?>
+                        
                             <div class="row mb-3">
-                                <?php 
-                                    $cont=0; 
-                                    $cerrar=true;  
-                                    }
-                                    $cont++;
-                                ?>
-                                <div class="col">
+                                <?php $cont=4; $cerrar=false;
+                                foreach ($influencer as $key => $m) { 
+                                    ?>
+                                    
+
+                                <div class="col-lg-3">
                                     <div class="product-item position-relative d-flex flex-column text-center">
-                                        <img class="img-fluid mb-2" src="<?php echo base_url('uploads')."/".$m['foto_perfil'];?>" alt="">
+                                        <img class="img-fluid mb-2" style="height: 160px" src="<?php echo base_url('uploads')."/".$m['foto_perfil'];?>" alt="">
                                         <h6 class="user-decription-black"><?=$m['nombreinflu'] ?><br> <?=$m['alias'] ?> <br><?=$m['nombrecat']?> </h6>
                                         <div class="container-fluid">
                                             <a href="<?php echo base_url()."/perfil/".$m['idinfluencer'];?>"><button type="button" class="btn btn-ver-perfil btn-sm btn-on-white">Ver perfil</button></a>
