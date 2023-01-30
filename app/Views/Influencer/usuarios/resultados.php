@@ -415,43 +415,34 @@
                 
                  <div class="col">
                         
-<<<<<<< HEAD
-                        
-                            <div class="row mb-3">
-                                <?php $cont=4; $cerrar=false;
-                                foreach ($influencer as $key => $m) { 
-                                    ?>
-                                    
-
-                                <div class="col-lg-3">
-                                    <div class="product-item position-relative d-flex flex-column text-center">
-                                        <img class="img-fluid mb-2" style="height: 160px" src="<?php echo base_url('uploads')."/".$m['foto_perfil'];?>" alt="">
-                                        <h6 class="user-decription-black"><?=$m['nombreinflu'] ?><br> <?=$m['alias'] ?> <br><?=$m['nombrecat']?> </h6>
-                                        <div class="container-fluid">
-                                            <a href="<?php echo base_url()."/perfil/".$m['idinfluencer'];?>"><button type="button" class="btn btn-ver-perfil btn-sm btn-on-white">Ver perfil</button></a>
-                                        </div>
-                                    </div>
-                                </div>
-                            
-                        <?php if($cerrar){?>
-                            </div>
-                        <?php $cerrar=false; } ?>
-=======
                     <div id="TableList" ></div>
                             
-                                <div id="container"></div>
+                                <div class="row mb-3" id="container"></div>
+                                <!-- No working
                                 <div id="pagination"></div>
-                             
+                                -->
                     </div>
-                    <div class="pagination" align="center">
+
+
+                <div class="text-center">
+                    <div class="pagination mt-4">
+                        <a href="javascript:prevPage()" id="btn_prev">&laquo;Anterior</a>
+                        <a id="pa" style="align:center"></a>
+                        <a href="javascript:nextPage()" id="btn_next">Siguiente&raquo;</a>
+                    </div>
+                </div>
+
+                    <!-- Original
+                    <div class="pagination" >
                             
                             <a href="javascript:prevPage()" id="btn_prev">&laquo;Anterior</a>
+                            <span id="pa" style="align:center" ></span>
                             <a href="javascript:nextPage()" id="btn_next">Siguiente&raquo;</a><br>
-                            <span id="pa" style="align:center"></span>
+                            
                             
                             
                     </div>
-                                
+                      -->          
                                
                                                         
 
@@ -488,11 +479,11 @@
                                 function change(page)
                                 {
                                     var btn_next = document.getElementById("btn_next");
+                                    var page_span = document.getElementById("pa");
                                     var btn_prev = document.getElementById("btn_prev");
                                     var listing_table = document.getElementById("container");
-                                    var page_span = document.getElementById("pa");
                                     
->>>>>>> main
+                                    
 
                                     if (page < 1) page = 1;
                                     if (page > totNumPages()) page = totNumPages();
@@ -501,6 +492,7 @@
                                     
                                     if (page == 1) {
                                         btn_prev.style.visibility = "hidden";
+                                        page_span.classList.add("active");
                                     } else {
                                         btn_prev.style.visibility = "visible";
                                     }
@@ -511,10 +503,12 @@
                                     }
 
                                     listing_table.innerHTML = "";
+                                    
                                     for (var i = (page-1) * obj_per_page; i < (page * obj_per_page); i++) {
-                                        listing_table.innerHTML += "<div class='col'>"+
+
+                                        listing_table.innerHTML += "<div class='col-lg-3'>"+
                                                 "<div class='product-item position-relative d-flex flex-column text-center'>"+
-                                                "<img class='img-fluid mb-2' src='"+"<?php echo base_url('uploads').'/'?>"+obj[i].foto_perfil+"'>"+
+                                                "<img class='img-fluid mb-2' style='height: 165px' src='"+"<?php echo base_url('uploads').'/'?>"+obj[i].foto_perfil+"'>"+
                                                 "<h6 class='user-decription-black'>"+obj[i].nombreinflu+"<br>"+ obj[i].alias+"<br>"+obj[i].nombrecat +" </h6>"+
                                                 "<div class='container-fluid'>"+
                                                         "<a href='"+"<?php echo base_url()?>"+"/perfil/"+obj[i].idinfluencer+"' type='button' class='btn btn-ver-perfil btn-sm btn-on-white'>Ver perfil</a>"+
@@ -524,6 +518,7 @@
                                             page_span.innerHTML = page;
                                             
                                     }
+                                    
 
                                     alert(page);
                                     
