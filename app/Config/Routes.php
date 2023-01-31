@@ -93,7 +93,8 @@ $routes->post('/perfil/correo', 'PerfilController::enviarCorreoLocal');
 $routes->get('busqueda', 'UsuarioController::index');
 $routes->post('busqueda/resultado', 'UsuarioController::buscarInfluencers');
 $routes->post('busqueda/nuevoresultado', 'UsuarioController::nuevaBusquedaInfluencers');
-$routes->get('busqueda/nuevoresultado/(:any)', 'UsuarioController::paginador/$1');
+
+$routes->get('noticia/(:any)', 'IndexController::buscarNoticia/$1');
 
 $routes->get('privacidad', 'InfluencerController::privacidad');
 

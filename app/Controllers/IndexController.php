@@ -5,7 +5,9 @@ namespace App\Controllers;
 use App\Models\NoticiasModel;
 use App\Models\CategoriasModel;
 use App\Models\InfluencerModel;
+use App\Models\FuenteNoticiasModel;
 use App\Models\InfluencerCategoriaModel;
+use App\Models\NoticiasRecomendadaModel;
 
 class IndexController extends BaseController
 {
@@ -98,9 +100,9 @@ class IndexController extends BaseController
 
         $noticias=new NoticiasModel();
 
-        $misNoticias=$noticias->findAll();
+        $misNoticias=$noticias->where('favorito',1)->findAll();
         
-        //var_dump($misNoticias);
+        //var_dump($misNoticias);)
         $data= ['mensaje'=>"",'validation'=>$validacion,'datos'=>$arregloPerfiles,
                 'noticias'=>$misNoticias,'informacion'=>$arregloMostrarMayorPorCategoria,
             'categorias'=>$miscat];
@@ -124,6 +126,36 @@ class IndexController extends BaseController
         echo view("influencer/templates/footerindex");
        
 
+    }
+
+
+    public function buscarNoticia($id=null)
+    {
+        
+        //var_dump($id);
+        $noticias=new NoticiasModel();
+        $recomendada=new NoticiasRecomendadaModel();
+        $fuente = new FuenteNoticiasModel();
+
+        $misNoticias=$noticias->find($id);
+        $misFuentes=$fuente->where('idnoticia',$id)->findAll();
+
+        $misRecomendadas = $recomendada->where('idnoticia',$id)->findAll();
+        $misNoticiasRecomendadas=[];
+        foreach ($misRecomendadas as $key => $m) {
+           array_push($misNoticiasRecomendadas,$noticias->find($m['otroidnoticia'])); 
+        }
+        
+        //var_dump($misNoticias);)
+        $data= ['mensaje'=>"",
+                'noticias'=>$misNoticias,
+            'recomendada'=>$misNoticiasRecomendadas,
+        'fuente'=> $misFuentes];
+
+        //var_dump($informacioncate);
+        echo view("influencer/templates/header",['titulo'=>"Noticias"]);
+        echo view("influencer/usuarios/noticia",$data);
+        echo view("influencer/templates/footer");
     }
 
     

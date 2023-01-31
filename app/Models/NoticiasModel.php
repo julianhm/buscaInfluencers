@@ -8,14 +8,14 @@ class NoticiasModel extends Model
 {
     
     protected $table      = 'noticias';
-    protected $primaryKey = 'id';
+    protected $primaryKey = 'idnoticia';
 
     //protected $useAutoIncrement = true;
 
     //protected $returnType     = 'array';
     //protected $useSoftDeletes = true;
 
-    protected $allowedFields = ['titulo','cuerpo','url_foto','created_at'];
+    protected $allowedFields = ['titulo','cuerpo','url_foto','favorito','created_at'];
 
     protected $useTimestamps = true;
     protected $createdField  = 'created_at';

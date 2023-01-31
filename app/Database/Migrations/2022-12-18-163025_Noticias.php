@@ -28,6 +28,27 @@ class Noticias extends Migration
                 'constraint' => '5000',
                 'null' => true,
                 
+            ],'favorito' => [
+                'type'       => 'INT',
+                'constraint' => '5',
+                'null' => true,
+                
+            ],
+            'create' => [
+                'type'       => 'INT',
+                'constraint' => '5',
+                'null' => true,
+                
+            ],'favorito' => [
+                'type'       => 'INT',
+                'constraint' => '5',
+                'null' => true,
+                
+            ],'favorito' => [
+                'type'       => 'INT',
+                'constraint' => '5',
+                'null' => true,
+                
             ],
         ]);
         $this->forge->addKey('idnoticia', true);

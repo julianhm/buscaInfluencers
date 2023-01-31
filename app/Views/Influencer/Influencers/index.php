@@ -156,11 +156,11 @@ $(document).ready(function() {
             </div>
             <div class="owl-two owl-carousel owl-theme">
                 <?php  foreach ($noticias as $key => $m) {?>
+                    <a href="<?=base_url('noticia')."/".$m['idnoticia']?>">
                     <div class="position-relative d-flex flex-column user-decription">
-                    <div class="mundo-description"><?=$m['titulo']?>
-                    </div>
-                    <img class="img-fluid-mundo-influencer mb-4" style="height: 350px; object-fit: cover;" src="<?=base_url('fotosnoticias')."/".$m['url_foto']?>">
-                </div>
+                        <div class="mundo-description"><?=$m['titulo']?></div>
+                        <img class="img-fluid-mundo-influencer mb-4" style="height: 350px; object-fit: cover;" src="<?=base_url('fotosnoticias')."/".$m['url_foto']?>">
+                    </div></a>
                 <?php }?>
                 
             </div>
@@ -190,54 +190,7 @@ $(document).ready(function() {
                    </div>
    
                    <?php } ?>
-                <div >
-                    <div class="product-item position-relative d-flex flex-column text-center" >
-                        <img class="img-fluid-categoria" src="img/cat2.png" alt="Gamer">
-                        <div class="py-2 categoria-description " style="background-color: #00a9a9;">
-                            Gamer
-                        </div>  
-                    </div>
-                </div>
-                <div >
-                    <div class="product-item position-relative  d-flex flex-column text-center">
-                        <img class="img-fluid-categoria" src="img/cat3.png" alt="Nutricion">
-                        <div class="py-2 categoria-description " style="background-color: #e88082;">
-                            Nutrición
-                        </div> 
-                    </div>
-                </div>
-                <div >
-                    <div class="product-item position-relative  d-flex flex-column text-center" >
-                        <img class="img-fluid-categoria" src="img/cat4.png" alt="Belleza">
-                        <div class="py-2 categoria-description " style="background-color: #ffacff;">
-                            Belleza
-                        </div> 
-                    </div>
-                </div>
-                <div >
-                    <div class="product-item position-relative  d-flex flex-column text-center">
-                        <img class="img-fluid-categoria" src="img/cat5.png" alt="Viajes">
-                        <div class="py-2 categoria-description " style="background-color: #ffd856; border: 0px;">
-                            Viajes
-                        </div> 
-                    </div>
-                </div>
-                <div >
-                    <div class="product-item position-relative  d-flex flex-column text-center">
-                        <img class="img-fluid-categoria" src="img/cat1.png" alt="Otra">
-                        <div class="py-2 categoria-description " style="background-color: #32244e;">
-                            Otra
-                        </div>  
-                    </div>
-                </div>
-                <div >
-                    <div class="product-item position-relative  d-flex flex-column text-center">
-                        <img class="img-fluid-categoria" src="img/cat2.png" alt="Otra 2">
-                        <div class="py-2 categoria-description " style="background-color: #00a9a9;">
-                            Otra 2
-                        </div>
-                    </div>
-                </div>
+                
                 
             </div>
             
