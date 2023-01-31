@@ -38,7 +38,7 @@
                     </div>
                     <br>
                     <br>
-                    
+
                     <div class="row " style="font-size: 20px">
                         <p style="text-align:center"><span style="color:#e74c3c"><?=$noticias['cuerpo']?></span></p>
 
