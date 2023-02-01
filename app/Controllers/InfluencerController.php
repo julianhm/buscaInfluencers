@@ -1237,6 +1237,54 @@ class InfluencerController extends BaseController
 
    }
 
+
+   
+
+
+   public function facebook(){
+
+
+    $fb = new \Facebook\Facebook([
+        'app_id' => '6042482145870114',
+        'app_secret' => 'bd7024d96966faae76d2ab646b05ac98',
+        'default_graph_version' => 'v2.10',
+        //'default_access_token' => '{access-token}', // optional
+      ]);
+      
+      // Use one of the helper classes to get a Facebook\Authentication\AccessToken entity.
+      //   $helper = $fb->getRedirectLoginHelper();
+      //   $helper = $fb->getJavaScriptHelper();
+      //   $helper = $fb->getCanvasHelper();
+      //   $helper = $fb->getPageTabHelper();
+
+      $access_token = 'EABV3mwHdwSIBAFakZBcbkZBywnjZB0PvPX0hGdwL8DgcAHz1cqv8ncrNfhPvQmREEGwRQ4ykuzZAqF0zCBVPrriUjeKN0PNt2kDDeV2Hg023FhCWZCtIMP7ahFPuPZCvdGBeN5Sfl4ZAAr86qH8e9nYi79WPOLc9epomrpaFzA1r1pJtTVfFbbOwmEXRXlXLktZASBke2y5vsGMvr692mSfvdztdTsGtLimUZC9I0PQUKoy4gKQKN2mu9';
+      
+      try {
+        // Get the \Facebook\GraphNode\GraphUser object for the current user.
+        // If you provided a 'default_access_token', the '{access-token}' is optional.
+        //$response = $fb->get('/me', $access_token);
+        // en lugar de me podemos colocar un id
+        $response = $fb->get('/me?fields=id,name,email,friends', $access_token);
+      } catch(\Facebook\Exception\FacebookResponseException $e) {
+        // When Graph returns an error
+        echo 'Graph returned an error: ' . $e->getMessage();
+        exit;
+      } catch(\Facebook\Exception\FacebookSDKException $e) {
+        // When validation fails or other local issues
+        echo 'Facebook SDK returned an error: ' . $e->getMessage();
+        exit;
+      }
+
+      $body = $response->getBody();
+      
+      var_dump($body);
+
+      //$me = $response->getGraphUser();
+      //echo 'Logged in as ' . $me->getName();
+
+    
+   }
+
    
 
 }
