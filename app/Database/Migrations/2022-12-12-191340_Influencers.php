@@ -35,7 +35,7 @@ class Influencers extends Migration
                 'null' => true,
             ], 'usuario' => [
                 'type' => 'VARCHAR',
-                'constraint' => '20',
+                'constraint' => '50',
                 'null' => false,
             ], 'reputacion' => [
                 'type' => 'INT',

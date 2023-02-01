@@ -21,7 +21,7 @@ class Noticias extends Migration
                 'null' => false,
             ],'cuerpo' => [
                 'type'       => 'VARCHAR',
-                'constraint' => '5000',
+                'constraint' => '10000',
                 'null' => false,
             ],'url_foto' => [
                 'type'       => 'VARCHAR',

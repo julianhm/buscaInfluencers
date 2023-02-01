@@ -60,13 +60,13 @@
                         <div class="form-group">
                             <img class="icon-input" src=<?php echo base_url('img/icon-user.png')?> for="nombre">
 
-                            <input class="input-modify" type="text" name="nombre" id="nombre" placeholder="Tu nombre (si lo crees necesario)" value='<?= old('nombre') ?>'>
+                            <input class="input-modify" type="text" name="nombre" id="nombre" maxlength = "20" placeholder="Tu nombre (si lo crees necesario)" value='<?= old('nombre') ?>'>
                             
                         </div>
                         <div class="form-group">
                             <img class="icon-input" src=<?php echo base_url('img/icon-alias.png')?> for="alias" >
 
-                            <input class="input-modify" type="text" name="alias" id="alias" placeholder="Alias (solo si usas)" value='<?= old('alias') ?>'>
+                            <input class="input-modify" type="text" name="alias" id="alias" maxlength = "20" placeholder="Alias (solo si usas)" value='<?= old('alias') ?>'>
                         </div>
                         <div class="form-group">
                             <img class="icon-input" src=<?php echo base_url('img/icon-pass.png')?> for="password">
