@@ -182,7 +182,7 @@ $(document).ready(function() {
                 <?php foreach ($categorias as $key => $m) {?>
                                    <div>
                        <div class="product-item position-relative d-flex flex-column text-center" >
-                           <a href="#" ><img class="img-fluid-categoria" src="<?=base_url('img').'/categorias/'.$m['imagen']?>" alt="Tecnologia"></a>
+                           <a href="busqueda/resultado/<?=$m['idcategoria']?>" ><img class="img-fluid-categoria" src="<?=base_url('img').'/categorias/'.$m['imagen']?>" alt="Tecnologia"></a>
                            <div class="py-2 categoria-description " style="background-color: #B3AFAE; border: 0px;">
                                <?php echo $m['nombrecat'] ?>
                            </div>                                

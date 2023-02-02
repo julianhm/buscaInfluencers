@@ -1,36 +1,4 @@
 
-<body>
-
-<!-- Header Start -->
-    <div id="header" class="container-fluid mb-3 px-4 headerNav">
-        <div class="row ">
-            <div class="row pb-2 position_title profile-position-title">
-                <div class="text-center text-title-normal" >
-                    <b>LOS SEGUIDORES QUE TU MARCA NECESITA SIGUEN A UN INFLUENCER</b>
-                </div>
-            </div>
-                <div class="profile-photo-position">
-                    <img class="profile-photo" src="<?php echo base_url("uploads")."/".$influencer['foto_perfil']?>" >
-                </div>
-                
-                <hr class="profile_header_black_line">
-            <a style="display: contents;" href="index.html"><img class="logo-header-normal profile-logo-header" src="<?php echo base_url("img/logo-blue.png")?>" ></a>
-                
-        </div>
-    </div>
-    <!-- Header End -->
-
-    <?php if(session('mensaje')!=""){  ?>
-    <div class="alert alert-success d-flex align-items-center" role="alert">
-
-        <svg class="bi flex-shrink-0 me-2" width="24" height="24" role="img" aria-label="Success:"><use xlink:href="#check-circle-fill"/></svg>
-        <div>
-        <?php echo session('mensaje'); ?>
-        
-        </div>
-
-        </div>
-    <?php } ?>
    
     <!-- Content Profile Start -->
     <div class="container">

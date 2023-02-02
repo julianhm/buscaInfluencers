@@ -1,25 +1,4 @@
 
-<body>
- 
-
-    <!-- Header Start -->
-    <div id="header" class="container-fluid mb-3 px-4 headerNav">
-        <div class="row ">
-            <div class="row g-0 pb-2 position_title">
-                <div class="text-center text-title-normal" style="color: #000">
-                    <b>LOS SEGUIDORES QUE TU MARCA NECESITA SIGUEN A UN INFLUENCER</b>
-                </div>
-            </div>
-            <div class="mx-auto text-end mb-2 mt-2 main-section-title">
-              Noticias”
-            </div>
-            <hr class="header_black_line">
-            <a style="position: absolute;" href="index.html"><img class="logo-header-normal" src="<?=base_url()."/"?>img/logo-blue.png" > </a>
-                
-        </div>
-
-    </div>
-    <!-- Header End -->
 
     <!-- Content noticia Start -->
     <div class="container">

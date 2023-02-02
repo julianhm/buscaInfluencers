@@ -1,6 +1,30 @@
 
-<body>
-<?php echo view("influencer/influencers/_headeredit"); ?>
+
+     <!-- Content Mi Perfil Start -->
+  
+     <div class="container-fluid my-profile-margin-x">
+
+<div class="sidebar">
+
+    <div class="px-2 user-decription">
+        
+            
+        <div class="user-decription-black filter_searched" style="border-bottom: 1px solid #000;">
+                <a href="<?php echo base_url('influencer')."/edit/".$influencer['idinfluencer']?>">EDITAR PERFIL</a>
+        </div>
+        <div class="user-decription-black filter_searched" style="border-bottom: 1px solid #000;">
+            <a href="<?php echo base_url("/perfil")."/".$influencer['idinfluencer']?>" >VER PERFIL</a>
+        </div>
+
+        <div class="user-decription-black filter_searched" style="border-bottom: 1px solid #000;">
+            <a href="<?php echo base_url("influencer")."/mensajes/".$influencer['idinfluencer']?>">MENSAJES</a>
+        </div>
+            
+        <div class="user-decription-black filter_searched" style="border-bottom: 1px solid #000;"><a href="#">CERRAR SESION</a>
+        </div>
+    </div>
+    
+</div>
 
 
 

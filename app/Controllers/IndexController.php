@@ -21,16 +21,15 @@ class IndexController extends BaseController
         $miscategorias = $categorias->findAll(); 
 
         $cat = new CategoriasModel();
-        $miscat = $cat->findAll(); 
+        $miscat = $cat->where('mostradas',1)->findAll(); 
 
         $db      = \Config\Database::connect();
 
         $arregloMostrarMayorPorCategoria=[];
         $item=0;
         
-        foreach ($miscategorias as $key => $cat) { 
+        foreach ($miscat as $key => $cat) { 
            
-        
             $builder = $db->table('influencers_redes');
             $builder->select('*');
             //$builder->selectMax('influencers_redes.cant_seguidores');
@@ -103,24 +102,20 @@ class IndexController extends BaseController
         $misNoticias=$noticias->where('favorito',1)->findAll();
         
         //var_dump($misNoticias);)
-        $data= ['mensaje'=>"",'validation'=>$validacion,'datos'=>$arregloPerfiles,
+        $data= ['validation'=>$validacion,'datos'=>$arregloPerfiles,
                 'noticias'=>$misNoticias,'informacion'=>$arregloMostrarMayorPorCategoria,
-            'categorias'=>$miscat];
+                'categorias'=>$miscat];
+
+        $dataHeader =['titulo' => 'Busca Influencer',
+                'mensaje'=>"",];
 
         //var_dump($informacioncate);
-        $this-> _loadDefaultView('Busca Influencer',$data,'index');
+        $this-> _loadDefaultView($dataHeader,$data,'index');
 
     }
 
-    private function _loadDefaultView($title,$data,$view){
+    private function _loadDefaultView($dataHeader,$data,$view){
 
-        
-        $dataHeader =[
-            'titulo' => $title,
-            
-        ];
-        
-       
         echo view("influencer/templates/headerindex",$dataHeader);
         echo view("influencer/influencers/$view",$data);
         echo view("influencer/templates/footerindex");
@@ -147,13 +142,15 @@ class IndexController extends BaseController
         }
         
         //var_dump($misNoticias);)
-        $data= ['mensaje'=>"",
-                'noticias'=>$misNoticias,
+        $data= ['noticias'=>$misNoticias,
             'recomendada'=>$misNoticiasRecomendadas,
         'fuente'=> $misFuentes];
+        
+        $dataHeader =['titulo' => 'Noticias',
+                'mensaje'=>"",];
 
         //var_dump($informacioncate);
-        echo view("influencer/templates/header",['titulo'=>"Noticias"]);
+        echo view("influencer/templates/header",$dataHeader);
         echo view("influencer/usuarios/noticia",$data);
         echo view("influencer/templates/footer");
     }

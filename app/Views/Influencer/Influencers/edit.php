@@ -1,16 +1,40 @@
 
-<body>
 
-    <?php echo view("influencer/influencers/_headeredit"); ?>
+     <!-- Content Mi Perfil Start -->
+  
+     <div class="container-fluid my-profile-margin-x">
+
+<div class="sidebar">
+
+    <div class="px-2 user-decription">
+        
+            
+        <div class="user-decription-black filter_searched" style="border-bottom: 1px solid #000;">
+                <a href="<?php echo base_url('influencer')."/edit/".$influencer['idinfluencer']?>">EDITAR PERFIL</a>
+        </div>
+        <div class="user-decription-black filter_searched" style="border-bottom: 1px solid #000;">
+            <a href="<?php echo base_url("/perfil")."/".$influencer['idinfluencer']?>" >VER PERFIL</a>
+        </div>
+
+        <div class="user-decription-black filter_searched" style="border-bottom: 1px solid #000;">
+            <a href="<?php echo base_url("influencer")."/mensajes/".$influencer['idinfluencer']?>">MENSAJES</a>
+        </div>
+            
+        <div class="user-decription-black filter_searched" style="border-bottom: 1px solid #000;"><a href="#">CERRAR SESION</a>
+        </div>
+    </div>
+    
+</div>
 
 
 
         <div class="content">
 
             <div class="user-decription-black my-3" style="font-size: 25px;" >
+            Hola de nuevo! <?=$influencer['nombreinflu'];?><br>
                 EDITAR PERFIL
             </div> 
-            
+           
             
 <!-- ============================================================== -->
 <!-- ------------------CARGAR UNA NUEVA FOTO DE PERFIL --------------->
@@ -25,7 +49,7 @@
 
                       
                     <div class="col-lg-8 d-flex align-items-center my-profile-justify-margin">
-                       <button type="button" data-id="btn-profile" class="open-send btn btn-white-normal btn-lg" onclick="cleanUpload(); showInfoProfile();" data-bs-toggle="modal" data-bs-target="#modal-upload-image">Subir foto de perfil</button> 
+                       <button type="button" data-id="btn-profile" class="open-send btn btn-white-normal btn-lg"  data-bs-toggle="modal" data-bs-target="#modal-upload-image">Subir foto de perfil</button> 
                     </div>  
                 </div>
            
@@ -618,25 +642,26 @@
             <div class="modal-content" style="border-radius: 0rem; border: 2px solid #000;">
                 <div class="modal-header">
 
-                    <div id="info-profile" class="text-center user-decription-black" style="font-weight: bold; font-size: 15px; margin-left: auto; display: none;">
-                        Selecciona una imagen cuadrada!
-                    </div>
+                    
 
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
                 <div class="modal-body ">
+
                 <div class="user-decription-black text-center" style="font-size: 25px;" >
                         <p>Agrega una Foto de Perfil</p>
+                        
                     </div>
+                    
                 <form action="/influencer/cambiarFoto" method="POST" enctype="multipart/form-data">
             
 
-                    <input type="hidden" id="picId" name="picId" value="<?=$influencer['idinfluencer']?>">
+                    <input type="hidden" id="picIdd" name="picIdd" value="<?=$influencer['idinfluencer']?>">
 
                     <div class="file-upload">
                         
                         
-                            <input id="newfoto" name="newfoto" type='file'/>
+                            <input id="newfotoo" name="newfotoo" type='file'/>
                             
                         
                         </br></br></br>
@@ -791,7 +816,7 @@
         <div class="modal-dialog modal-dialog-centered">
             <div class="modal-content" style="border-radius: 0rem; border: 2px solid #000;">
                 <div class="modal-header">
-                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                  <!-- <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>-->
                 </div>
                 <div class="modal-body ">
                     <img class="img-hecho mb-3" src="<?php echo base_url("img/hecho.png")?>" >
@@ -803,6 +828,10 @@
                         <p>Los cambios se han realizado correctamente.</p>
                     </div>
                     
+                    <div class="text-center user-decription-black" style="font-weight: bold; font-size: 35px">
+                     
+                    <a href="<?=base_url()?>" type="button">CERRAR</a>
+                    </div>
                 </div>
                 <div class="modal-footer"></div>
             </div>

@@ -26,37 +26,31 @@ class InfluencerController extends BaseController
     //CARGA LA PAGINA DEL PERFIL DEL INFLUENCER
     public function index()
     {
-        
-        $this-> _loadDefaultView('Busca Influencer',['mensaje'=>"",'validation'=> \Config\Services::validation(),],'index');
+        $dataHeader =['titulo' => 'Busca Influencer',
+                'mensaje'=>"",];
+
+        $this-> _loadDefaultView($dataHeader,['validation'=> \Config\Services::validation(),],'index');
 
     }
 
     //CARGA LA PAGINA DE POLITICA DE PRIVACIDAD
     public function privacidad()
     {
-        $this-> _loadDefaultView('Politica de Privacidad',['mensaje'=>""],'privacidad');
+        $dataHeader =['titulo' => 'Politica de Privacidad',
+                'mensaje'=>"",];
+
+        $this-> _loadDefaultView($dataHeader,[],'privacidad');
 
     }
 
 
     //METODO QUE ME PERMITE CARGAR PAGINAS
-    private function _loadDefaultView($title,$data,$view){
+    private function _loadDefaultView($dataHeader,$data,$view){
 
-        
-        $dataHeader =[
-            'titulo' => $title,
-            
-        ];
-        
-       if($data==null){
-        echo view("influencer/templates/header",$dataHeader);
-        echo view("influencer/influencers/$view");
-        echo view("influencer/templates/footer");
-       }else{
         echo view("influencer/templates/header",$dataHeader);
         echo view("influencer/influencers/$view",$data);
         echo view("influencer/templates/footer");
-       }
+       
 
     }
 
@@ -75,11 +69,14 @@ class InfluencerController extends BaseController
         
         $validation =  \Config\Services::validation();
         
+        $dataHeader =['titulo' => 'Crear Influencer',
+                'mensaje'=>"",];
+        $data=['validation'=>$validation, 
+                'paises'=> $misPaises,
+                'ciudades'=> $ciudades,];
+
         //CARGAR LA VISTA
-        $this->_loadDefaultView('Crear Influencer',['validation'=>$validation, 
-        'paises'=> $misPaises,
-        'ciudades'=> $ciudades,
-        'mensaje'=>""],'new');
+        $this->_loadDefaultView($dataHeader,$data,'new');
 
     }
 
@@ -91,9 +88,9 @@ class InfluencerController extends BaseController
        
         //SE CREAN LAS REGLAS DE VALIDACION PARA LOS CAMPOS
         $rules=[
-            'nombre'=>'required|min_length[4]|max_length[50]',
+            'nombre'=>'required|min_length[4]|max_length[20]',
             'alias'=>'required|min_length[2]|max_length[20]',
-            'password'=>'required|min_length[5]|max_length[20]',
+            'password'=>'required|min_length[8]|max_length[20]',
             'correo'=>'required|valid_email',
             'pais'=>'required|max_length[50]',
             'ciudades'=>'required|max_length[50]',
@@ -102,33 +99,48 @@ class InfluencerController extends BaseController
 
         $imagefile = $this->request->getFiles();
 
+        $password= $this->request->getPost('password');
+        $passwordotro= $this->request->getPost('passwordver');
+
         //SI SE VALIDAN LAS REGLAS
         if($this->validate($rules)){
-            $nombreinflu= $this->request->getPost('nombre');
-            $alias= $this->request->getPost('alias');
-            $password= $this->request->getPost('password');
-            $usuario= $this->request->getPost('password');
-            $ciudad= $this->request->getPost('ciudades');
-            $correo= $this->request->getPost('correo');
-            $resenia= $this->request->getPost('resenia');
-            $archivofoto=$this->_upload2('fotoperfil');
+            if($password==$passwordotro){
+
+                // Opciones de contraseña:
+                $newpass= password_hash($password, PASSWORD_DEFAULT, [15]);
+
+                $nombreinflu= $this->request->getPost('nombre');
+                $alias= $this->request->getPost('alias');
+                
+                $ciudad= $this->request->getPost('ciudades');
+                $correo= $this->request->getPost('correo');
+                $resenia= $this->request->getPost('resenia');
+                $archivofoto=$this->_upload2('fotoperfil');
+                
+                $datainsertar = [
+                    'nombreinflu' => $nombreinflu,
+                    'alias' => $alias,
+                    'password' => $newpass,
+                    'correo' => $correo,
+                    'resenia' => $resenia,
+                    'usuario' => $correo,
+                    'foto_perfil'=>$archivofoto,
+                    'idciudad'=>$ciudad,
+                ];
+
+                //SE CREA EL INFLUENCER
+                $id=$influencerModel->insert($datainsertar);
+                
+
+                return redirect()->to("/influencer/new2/$id")->with('mensaje', 'Tu cuenta se creo con exito');
+
+            }else{
+                $mensaje="Los password son diferentes";
+                session();
+                $_SESSION['mensaje'] = $mensaje;
+                return redirect()->back()->withinput();
+            }
             
-            $datainsertar = [
-                'nombreinflu' => $nombreinflu,
-                'alias' => $alias,
-                'password' => $password,
-                'correo' => $correo,
-                'resenia' => $resenia,
-                'usuario' => $correo,
-                'foto_perfil'=>$archivofoto,
-                'idciudad'=>$ciudad,
-            ];
-
-            //SE CREA EL INFLUENCER
-            $id=$influencerModel->insert($datainsertar);
-            $mensajes=$mensajes." "."Se crea el influencer correctamente";
-            return redirect()->to("/influencer/new2/$id")->with('mensaje', 'Tu cuenta se creo con exito');
-
         }
       return redirect()->back()->withinput();
    }
@@ -144,10 +156,12 @@ class InfluencerController extends BaseController
          
          $validation =  \Config\Services::validation();
          
+         $dataHeader =['titulo' => 'Crear Influencer',
+                'mensaje'=>"",];
+
          //CARGAR LA VISTA
-         $this->_loadDefaultView('Crear Influencer',['validation'=>$validation, 
-         'influencer'=>$miInfluencer,
-         'mensaje'=>""],'new2');
+         $this->_loadDefaultView($dataHeader,['validation'=>$validation, 
+         'influencer'=>$miInfluencer,],'new2');
 
     }
 
@@ -156,6 +170,7 @@ class InfluencerController extends BaseController
     public function guardarRedesSociales(){
         
         $id=$this->request->getPost('influencerid3');
+
         $influencerModel=new InfluencerModel();
 
         //SE CREA EL INFLUENCER
@@ -186,11 +201,13 @@ class InfluencerController extends BaseController
         session();
         
         $validation =  \Config\Services::validation();
+
+        $dataHeader =['titulo' => 'Crear Influencer',
+                'mensaje'=>"",];
         
         //CARGAR LA VISTA
-        $this->_loadDefaultView('Crear Influencer',['validation'=>$validation,
-        'categorias'=>$misCategorias, 'influencer'=>$miInfluencer, 'idiomas'=>$misIdiomas,
-        'mensaje'=>""],'new3');
+        $this->_loadDefaultView($dataHeader,['validation'=>$validation,
+        'categorias'=>$misCategorias, 'influencer'=>$miInfluencer, 'idiomas'=>$misIdiomas],'new3');
     }
 
 
@@ -358,9 +375,11 @@ class InfluencerController extends BaseController
             'categoriainfluencer'=>$idcateg,
             'idiomainfluencer'=>$ididioma,
             'idimanousado'=>$misIdiomasNoUsados ];
+
+            $dataHeader=['titulo'=>'Crear influencer','mensaje'=>""];
     
             
-            $this->_loadDefaultView('Crear influencer',$datos,'edit');
+            $this->_loadDefaultView($dataHeader,$datos,'edit');
 
             
         } else {
@@ -799,11 +818,11 @@ class InfluencerController extends BaseController
         
         var_dump("LLEGUE ");
         $influencer=new InfluencerModel();
-        $id= $this->request->getPost('picId');
+        $id= $this->request->getPost('picIdd');
         
 
         
-        if($imagefile = $this->request->getFile('newfoto')){
+        if($imagefile = $this->request->getFile('newfotoo')){
             
             if ($imagefile->isValid() && ! $imagefile->hasMoved())
             {
@@ -1229,11 +1248,11 @@ class InfluencerController extends BaseController
         $data=['validation'=>$validation, 
         'influencer'=>$miInfluencer,
         'mensaje'=>"",'correos'=>$misCorreos];
-        
+        $dataHeader=['titulo'=>'Mis Mensajes','mensaje'=>""];
         
         
         //CARGAR LA VISTA
-        $this->_loadDefaultView('Mis Mensajes',$data,'mensajes');
+        $this->_loadDefaultView($dataHeader,$data,'mensajes');
 
    }
 

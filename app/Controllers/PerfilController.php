@@ -61,23 +61,22 @@ class PerfilController extends BaseController
             array_push($arregloDeMarcas,$pago->find($m['idmarca']));
         }
        
-        $data=['mensaje'=>"", 'influencer'=>$influ,'redes'=>$misredes,'arregloredes'=>$arregloDeredes,
+        $data=[ 'influencer'=>$influ,'redes'=>$misredes,'arregloredes'=>$arregloDeredes,
     'mensajes'=>$misMensajes,'misfotos'=>$misFotos, 'misidiomas'=>$arregloDeidiomas,'pagos'=>$arregloDepagos,
 'marcas'=>$mismarcas];
+$dataHeader=['titulo'=>'Perfil-Busca Influencer','mensaje'=>""];
 
         if($influ!=null){
-            $this-> _loadDefaultView('Perfil-Busca Influencer',$data,'perfil');
+            $this-> _loadDefaultView($dataHeader,$data,'perfil');
         }
         
         
     }
 
-    private function _loadDefaultView($title,$data,$view){
+    private function _loadDefaultView($dataHeader,$data,$view){
 
         
-        $dataHeader =[
-            'titulo' => $title
-        ];
+       
 
        
         echo view("influencer/templates/header",$dataHeader);

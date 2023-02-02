@@ -95,8 +95,9 @@ $routes->post('busqueda/resultado', 'UsuarioController::buscarInfluencers');
 $routes->post('busqueda/nuevoresultado', 'UsuarioController::nuevaBusquedaInfluencers');
 
 $routes->get('noticia/(:any)', 'IndexController::buscarNoticia/$1');
+$routes->get('noticia/(:any)', 'IndexController::buscarNoticia/$1');
 
-$routes->get('privacidad', 'InfluencerController::privacidad');
+$routes->get('busqueda/resultado/(:any)', 'UsuarioController::busquedaPorCategoria/$1');
 
 
 

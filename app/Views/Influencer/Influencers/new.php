@@ -1,39 +1,5 @@
 
-<body>
 
-
-    <!-- Header Start -->
-    <div id="header" class="container-fluid mb-3 px-4 headerNav">
-        <div class="row ">
-            <div class="row g-0 pb-2 position_title">
-                <div class="text-center text-title-normal" >
-                    <b>LOS SEGUIDORES QUE TU MARCA NECESITA SIGUEN A UN INFLUENCER</b>
-                </div>
-            </div>
-            <div class="mx-auto text-end mb-2 mt-2 main-section-title">
-               Regístrate
-            </div>
-            <hr class="header_black_line">
-            <a style="display: contents;" href="index.html"><img class="logo-header-normal" src=<?php echo base_url('img/logo-blue.png')?> > </a>
-
-                
-        </div>
-
-    </div>
-    
-    <!--MENSAJES FLASH-->
-    <?php if($mensaje!=""){  ?>
-        <div class="alert alert-success d-flex align-items-center" role="alert">
-
-        <svg class="bi flex-shrink-0 me-2" width="24" height="24" role="img" aria-label="Alert:"><use xlink:href="#check-circle-fill"/></svg>
-        <div>
-        <?php echo session('mensaje'); ?>
-        
-        </div>
-
-        </div>
-    <?php } ?>
-    <!-- Header End -->
 
 
    
@@ -48,7 +14,7 @@
                 
 
                 <form action="create" method="POST" class="register-form pt-2" id="registro" name="registro" enctype="multipart/form-data">
-                <?= csrf_field() ?>    
+                <?= csrf_field() ?>     
                 
                         
                         <div class="d-flex justify-content-center mb-4">
@@ -222,7 +188,7 @@
                                 <img src=<?php echo base_url('img/doc.png')?>>
                             </div>
                             <div style="padding: 10px;">
-                                <a style="color: #000; text-decoration: underline;" href="/privacidad" target="_blank">Ver documento</a>
+                                <a style="color: #000; text-decoration: underline;" href="privacidad" target="_blank">Ver documento</a>
                             </div>
            
                         </div>

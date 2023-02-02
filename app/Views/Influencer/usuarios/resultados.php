@@ -1,26 +1,4 @@
 
-<body>
-
-
-    <!-- Header Start -->
-    <div id="header" class="container-fluid mb-3 px-4 headerNav">
-        <div class="row ">
-            <div class="row g-0 pb-2 position_title">
-                <div class="text-center text-title-normal" >
-                    <b>LOS SEGUIDORES QUE TU MARCA NECESITA SIGUEN A UN INFLUENCER</b>
-                </div>
-            </div>
-            <div class="mx-auto text-end mb-2 mt-2 main-section-title">
-               Resultados de búsqueda
-            </div>
-            <hr class="header_black_line">
-            <a style="display: contents;" href="index.html"><img class="logo-header-normal" src="<?=base_url(),"/img/logo-blue.png"?>" > </a>
-                
-        </div>
-    </div>
-    <!-- Header End -->
-
-
     
     <!-- Content search result Start -->
     <div class="container-fluid px-5  py-3">
@@ -62,12 +40,12 @@
 
                             <div id="filter_6" class="select_custom_small user-decription-black filter_searched">
                                 <span><?=$criteriosBusqueda['pais']."/".$criteriosBusqueda['ciudad'];?></span>
-                                <a style="cursor:pointer" onclick="removeAcc('filter_6')" ><img class="img_remove_filter" src="<?=base_url(),"/img/remove.png"?>" alt="Remove"></a>
+                                <a style="cursor:pointer" onclick="removeAcc('filter_6')" ></a>
                             </div>
 
-                            <div >
+                            <!--<div >
                                 <button type="button" class="btn btn-gray-clean-all btn-sm" style="margin-top: 10px;">Limpiar todo</button>
-                            </div>
+                            </div>-->
 
                         </div>
                     </div>
@@ -454,7 +432,7 @@
                                 var obj = <?=json_encode($influencer); ?>;
                                 //alert(obj);
                                 var current_page = 1;
-                                var obj_per_page = 3;
+                                var obj_per_page = 8;
                                 
 
                                 function totNumPages()
@@ -520,7 +498,7 @@
                                     }
                                     
 
-                                    alert(page);
+                                    //alert(page);
                                     
                                 }
                                 
