@@ -175,6 +175,7 @@ class InfluencerController extends BaseController
 
         //SE CREA EL INFLUENCER
         $ide=$influencerModel->find($id);
+        
 
         //CREACION DE REDES SOCIALES EN LA BASE DE DATOS
         if($this->_crearRedesSociales($id)){
@@ -604,9 +605,28 @@ class InfluencerController extends BaseController
                     }
                 }else
                 if($m['nombre']=="Twitter"){
+
                     $twitter= $this->request->getPost('twitter');
+
+
                     if(!($twitter=="" || $twitter==null)){
-                        $influencerredesmodel->insert(['idinfluencer'=>$id,'idredes'=>$m['idredes'],'user'=>$twitter,'cant_seguidores'=>rand(1000,5000000)]);
+
+                        $url = "https://api.twitter.com/2/users/by/username/".$twitter."?user.fields=public_metrics&expansions=pinned_tweet_id";
+                        $authorization = 'Authorization: Bearer AAAAAAAAAAAAAAAAAAAAAOxtlgEAAAAA3fOKvy7k3FDtO9g73Bt85ctj%2Bow%3DYBG4inA8Sy7lgTDkXeyowhlI0aIOomaIMfBKi8XS3fOmsSR3EU';
+                        $ch = curl_init();
+
+                        curl_setopt($ch, CURLOPT_URL, $url);
+                        curl_setopt($ch, CURLOPT_HTTPHEADER, array('Content-Type: application/json' , $authorization ));
+                        curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+                        curl_setopt($ch, CURLOPT_FOLLOWLOCATION, 1);
+                        $result = curl_exec($ch);
+
+                        $r= (array)json_decode($result,true);
+                        curl_close($ch);
+                        //var_dump(json_decode($result)); die();
+                        
+                        
+                        $influencerredesmodel->insert(['idinfluencer'=>$id,'idredes'=>$m['idredes'],'user'=>$twitter,'cant_seguidores'=>$r['data']['public_metrics']['followers_count']]);
                     }
                 }else
                 if($m['nombre']=="Twitch"){
