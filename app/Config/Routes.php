@@ -80,7 +80,6 @@ $routes->get('new3/(:any)', 'InfluencerController::registrofinal/$1');
 $routes->post('continuarregistro', 'InfluencerController::continuarregistro');
 $routes->get('mensajes/(:any)', 'InfluencerController::mensajesInfluencer/$1');
 
-$routes->get('facebook', 'InfluencerController::facebook');
 
 });
 
@@ -105,6 +104,8 @@ $routes->get('busqueda/resultado/(:any)', 'UsuarioController::busquedaPorCategor
 //RUTAS DE EJEMPLOS
 $routes->get('/ejemplo', 'EnsayoController::index');
 $routes->post('/crear', 'EnsayoController::crear');
+
+
 
 
 
