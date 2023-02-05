@@ -20,7 +20,7 @@
             <a href="<?php echo base_url("influencer")."/mensajes/".$influencer['idinfluencer']?>">MENSAJES</a>
         </div>
             
-        <div class="user-decription-black filter_searched" style="border-bottom: 1px solid #000;"><a href="#">CERRAR SESION</a>
+        <div class="user-decription-black filter_searched" style="border-bottom: 1px solid #000;"><a href="<?php echo base_url("logout")?>">CERRAR SESION</a>
         </div>
     </div>
     
@@ -43,7 +43,7 @@
                                             <div class="col-sm-12 col-md-6">
                                                 <h3 class="mb-0 user-decription-black"><i class="ti-email mr-2"></i><?=count($correos) ?> MENSAJES</h3>
                                             </div>
-                                            <div class="col-sm-12 col-md-6">
+                                          <!--  <div class="col-sm-12 col-md-6">
                                                 <ul class="list-inline dl mb-0 float-left float-md-right">
                                                     
                                                     <li class="list-inline-item text-danger" style="float: right;">
@@ -55,7 +55,7 @@
                                                         </a>
                                                     </li>
                                                 </ul>
-                                            </div>
+                                            </div>-->
                                         </div>
                                         <script>function viewMessagee(fecha,nombre,empresa,correo,celular,cuerpo) {
     
@@ -99,6 +99,15 @@
                                                        
                                                         <!-- Time -->
                                                         <td class="text-muted"><?=$m['created_at']?></td>
+                                                        <td>
+                                                        
+                                                            <a class="btn btn-circle" style="color: #000;" href="<?=base_url("influencer/eliminarmensaje")."/".$m['idinfluencer']."/".$m['id'] ?>">
+                                                                <i class="fa fa-trash"></i>
+                                                            </a>
+                                                       
+
+
+                                                        </td>
                                                     </tr>
                                                     <?php } ?>
                                                     

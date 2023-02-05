@@ -1,4 +1,6 @@
-
+<?php if(session()->get('idinfluencer')==$influencer['idinfluencer']){
+            return redirect()->to(base_url())->with('mensaje', 'Error de Validación');
+        } ?>
 
      <!-- Content Mi Perfil Start -->
   
@@ -20,7 +22,7 @@
             <a href="<?php echo base_url("influencer")."/mensajes/".$influencer['idinfluencer']?>">MENSAJES</a>
         </div>
             
-        <div class="user-decription-black filter_searched" style="border-bottom: 1px solid #000;"><a href="#">CERRAR SESION</a>
+        <div class="user-decription-black filter_searched" style="border-bottom: 1px solid #000;"><a href="<?php echo base_url("logout")?>">CERRAR SESION</a>
         </div>
     </div>
     

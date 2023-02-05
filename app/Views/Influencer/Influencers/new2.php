@@ -1,4 +1,7 @@
 
+<?php if(session()->get('idinfluencer')==$influencer['idinfluencer']){
+            return redirect()->to(base_url())->with('mensaje', 'Error de Validación');
+        } ?>
 
 
    

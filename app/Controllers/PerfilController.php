@@ -40,6 +40,16 @@ class PerfilController extends BaseController
         $mispagos = $influpago->where(['idinfluencer'=>$id])->find();
         $mismarcas = $marcas->where(['idinfluencer'=>$id])->find();
 
+        $suma=0;
+        $cont=0;
+        foreach($misMensajes as $key=>$m){
+            $suma=$suma+$m['valoracion'];
+            $cont++;
+        }
+        if($cont>0){
+            $influencermodel->update($id,['reputacion'=>$suma/$cont]);
+        }
+
 
         $arregloDeredes=[];
         foreach ($misredes as $key => $m) {
@@ -100,7 +110,7 @@ $dataHeader=['titulo'=>'Perfil-Busca Influencer','mensaje'=>""];
         echo $valoracion;
                
         if($mensaje->insert($data)!=null){
-            return redirect()->to("/")->with('mensaje', 'Tu mensaje de envió con exito');
+            return redirect()->to("/perfil/$id")->with('mensaje', 'Tu mensaje de envió con exito');
         }
         return redirect()->back()->withinput();
  
