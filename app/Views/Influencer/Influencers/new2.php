@@ -32,362 +32,38 @@
                 </div>
                 
                 <div>
-                    <div class="row mb-2">
-                        <div class="col">
-                            <div class="row">
-                                <div class="col-md-auto check-align">
-                                    <div class="form-check">
-                                        <input class="form-check-input" type="checkbox" value="" id="checkbox_sm1" onclick="smInputState('checkbox_sm1', 'behance')">
+                    
+                        <?php $cont=4;
+                        foreach($misredes as $key => $m){ ?>
+                           <?php if($cont==4){
+                            $cont=1;?>
+                            <div class="row mb-2">
+                            <?php }?> 
+                            <div class="col">
+                                <div class="row">
+                                    <div class="col-md-auto check-align">
+                                        <div class="form-check">
+                                            <input class="form-check-input" type="checkbox" value="" id="<?=$m['nombre']?>" onclick="smInputState('<?=$m['nombre']?>', '<?=$m['idredes']?>')">
+                                        </div>
+                                    </div>
+                                    <div class="col-md-auto logo-sm-align">
+                                        <img src='<?=base_url('img/iconos')."/".$m['icono']?>' >
+                                    </div>
+                                    <div class="col input-sm-align">
+                                        <input class="input-redes disable-sm-input" type="text" name="<?=$m['idredes']?>" id="<?=$m['idredes']?>" placeholder="<?=$m['nombre']?>" disabled>
                                     </div>
                                 </div>
-                                <div class="col-md-auto logo-sm-align">
-                                    <img src=<?php echo base_url('img/iconos/behance.png')?> >
-                                </div>
-                                <div class="col input-sm-align">
-                                    <input class="input-redes disable-sm-input" type="text" name="behance" id="behance" placeholder="Behance" disabled>
-                                </div>
                             </div>
-                        </div>
-                        <div class="col">
-                            <div class="row">
-                                <div class="col-md-auto check-align">
-                                    <div class="form-check">
-                                        <input class="form-check-input" type="checkbox" value="" id="checkbox_sm2" onclick="smInputState('checkbox_sm2', 'ello')">
-                                    </div>
-                                </div>
-                                <div class="col-md-auto logo-sm-align">
-                                    <img src=<?php echo base_url('img/iconos/ello.png')?> >
-                                </div>
-                                <div class="col input-sm-align">
-                                    <input class="input-redes disable-sm-input" type="text" name="ello" id="ello" placeholder="Ello" disabled>
-                                </div>
+                        <?php if($cont==3){?>
                             </div>
-                        </div>
-                        <div class="col">
-                            <div class="row">
-                                <div class="col-md-auto check-align">
-                                    <div class="form-check">
-                                        <input class="form-check-input" type="checkbox" value="" id="checkbox_sm3" onclick="smInputState('checkbox_sm3', 'facebook')">
-                                    </div>
-                                </div>
-                                <div class="col-md-auto logo-sm-align">
-                                    <img src=<?php echo base_url('img/iconos/facebook.png')?> >
-                                </div>
-                                <div class="col input-sm-align">
-                                    <input class="input-redes disable-sm-input" type="text" name="facebook" id="facebook" placeholder="Facebook" disabled>
-                                </div>
-                                
-                            </div>
-                        </div>
+                        <?php }
+                        $cont++;
+                     } ?>
+
+                       
                     </div>
 
-                    <div class="row mb-2">
-                        <div class="col">
-                            <div class="row">
-                                <div class="col-md-auto check-align">
-                                    <div class="form-check ">
-                                        <input class="form-check-input" type="checkbox" value="" id="checkbox_sm4" onclick="smInputState('checkbox_sm4', 'instagram')">
-                                    </div>
-                                </div>
-                                <div class="col-md-auto logo-sm-align">
-                                    <img src=<?php echo base_url('img/iconos/instagram.png')?> >
-                                </div>
-                                <div class="col input-sm-align">
-                                    <input class="input-redes disable-sm-input" type="text" name="instagram" id="instagram" placeholder="Instagram" disabled>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="col">
-                            <div class="row">
-                                <div class="col-md-auto check-align">
-                                    <div class="form-check">
-                                        <input class="form-check-input" type="checkbox" value="" id="checkbox_sm5" onclick="smInputState('checkbox_sm5', 'linkedin')">
-                                    </div>
-                                </div>
-                                <div class="col-md-auto logo-sm-align">
-                                    <img src=<?php echo base_url('img/iconos/linkedin.png')?> >
-                                </div>
-                                <div class="col input-sm-align">
-                                    <input class="input-redes disable-sm-input" type="text" name="linkedin" id="linkedin" placeholder="Linkedin" disabled>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="col">
-                            <div class="row">
-                                <div class="col-md-auto check-align">
-                                    <div class="form-check">
-                                        <input class="form-check-input" type="checkbox" value="" id="checkbox_sm6" onclick="smInputState('checkbox_sm6', 'onlyfans')">
-                                    </div>
-                                </div>
-                                <div class="col-md-auto logo-sm-align">
-                                    <img src=<?php echo base_url('img/iconos/onlyfans.png')?> >
-                                </div>
-                                <div class="col input-sm-align">
-                                    <input class="input-redes disable-sm-input" type="text" name="onlyfans" id="onlyfans" placeholder="OnlyFans" disabled>
-                                </div>
-                                
-                            </div>
-                        </div>
-                    </div>
-
-                    <div class="row mb-2">
-                        <div class="col">
-                            <div class="row">
-                                <div class="col-md-auto check-align">
-                                    <div class="form-check">
-                                        <input class="form-check-input" type="checkbox" value="" id="checkbox_sm7" onclick="smInputState('checkbox_sm7', 'pinterest')">
-                                    </div>
-                                </div>
-                                <div class="col-md-auto logo-sm-align">
-                                    <img src=<?php echo base_url('img/iconos/pinterest.png')?> >
-                                </div>
-                                <div class="col input-sm-align">
-                                    <input class="input-redes disable-sm-input" type="text" name="pinterest" id="pinterest" placeholder="Pinterest" disabled>
-                                </div>
-                                
-                            </div>
-                        </div>
-                        <div class="col">
-                            <div class="row">
-                                <div class="col-md-auto check-align">
-                                    <div class="form-check">
-                                        <input class="form-check-input" type="checkbox" value="" id="checkbox_sm8" onclick="smInputState('checkbox_sm8', 'qq')">
-                                    </div>
-                                </div>
-                                <div class="col-md-auto logo-sm-align">
-                                    <img src=<?php echo base_url('img/iconos/qq.png')?> >
-                                </div>
-                                <div class="col input-sm-align">
-                                    <input class="input-redes disable-sm-input" type="text" name="qq" id="qq" placeholder="QQ" disabled>
-                                </div>
-                                
-                            </div>
-                        </div>
-                        <div class="col">
-                            <div class="row">
-                                <div class="col-md-auto check-align">
-                                    <div class="form-check">
-                                        <input class="form-check-input" type="checkbox" value="" id="checkbox_sm9" onclick="smInputState('checkbox_sm9', 'qzone')">
-                                    </div>
-                                </div>
-                                <div class="col-md-auto logo-sm-align">
-                                    <img src=<?php echo base_url('img/iconos/qzone.png')?> >
-                                </div>
-                                <div class="col input-sm-align">
-                                    <input class="input-redes disable-sm-input" type="text" name="qzone" id="qzone" placeholder="Qzone" disabled>
-                                </div>
-                                
-                            </div>
-                        </div>
-                    </div>
-
-                    <div class="row mb-2">
-                        <div class="col">
-                            <div class="row">
-                                <div class="col-md-auto check-align">
-                                    <div class="form-check">
-                                        <input class="form-check-input" type="checkbox" value="" id="checkbox_sm10" onclick="smInputState('checkbox_sm10', 'reddit')">
-                                    </div>
-                                </div>
-                                <div class="col-md-auto logo-sm-align">
-                                    <img src=<?php echo base_url('img/iconos/reddit.png')?> >
-                                </div>
-                                <div class="col input-sm-align">
-                                    <input class="input-redes disable-sm-input" type="text" name="reddit" id="reddit" placeholder="Reddit" disabled>
-                                </div>
-                                
-                            </div>
-                            
-                        </div>
-                        <div class="col">
-                            <div class="row">
-                                <div class="col-md-auto check-align">
-                                    <div class="form-check">
-                                        <input class="form-check-input" type="checkbox" value="" id="checkbox_sm11" onclick="smInputState('checkbox_sm11', 'snapchat')">
-                                    </div>
-                                </div>
-                                <div class="col-md-auto logo-sm-align">
-                                    <img src=<?php echo base_url('img/iconos/snapchat.png')?> >
-                                </div>
-                                <div class="col input-sm-align">
-                                    <input class="input-redes disable-sm-input" type="text" name="snapchat" id="snapchat" placeholder="Snapchat" disabled>
-                                </div>
-                                
-                            </div>
-                        </div>
-                        <div class="col">
-                            <div class="row">
-                                <div class="col-md-auto check-align">
-                                    <div class="form-check">
-                                        <input class="form-check-input" type="checkbox" value="" id="checkbox_sm12" onclick="smInputState('checkbox_sm12', 'telegram')">
-                                    </div>
-                                </div>
-                                <div class="col-md-auto logo-sm-align">
-                                    <img src=<?php echo base_url('img/iconos/telegram.png')?> >
-                                </div>
-                                <div class="col input-sm-align">
-                                    <input class="input-redes disable-sm-input" type="text" name="telegram" id="telegram" placeholder="Telegram" disabled>
-                                </div>
-                                
-                            </div>
-                        </div>
-                    </div>
-
-                    <div class="row mb-2">
-                        <div class="col">
-                            <div class="row">
-                                <div class="col-md-auto check-align">
-                                    <div class="form-check">
-                                        <input class="form-check-input" type="checkbox" value="" id="checkbox_sm13" onclick="smInputState('checkbox_sm13', 'tiktok')">
-                                    </div>
-                                </div>
-                                <div class="col-md-auto logo-sm-align">
-                                    <img src=<?php echo base_url('img/iconos/tiktok.png')?> >
-                                </div>
-                                <div class="col input-sm-align">
-                                    <input class="input-redes disable-sm-input" type="text" name="tiktok" id="tiktok" placeholder="TikTok" disabled>
-                                </div>
-                                
-                            </div>
-                            
-                        </div>
-                        <div class="col">
-                            <div class="row">
-                                <div class="col-md-auto check-align">
-                                    <div class="form-check">
-                                        <input class="form-check-input" type="checkbox" value="" id="checkbox_sm14" onclick="smInputState('checkbox_sm14', 'tumblr')">
-                                    </div>
-                                </div>
-                                <div class="col-md-auto logo-sm-align">
-                                    <img src=<?php echo base_url('img/iconos/tumblr.png')?> >
-                                </div>
-                                <div class="col input-sm-align">
-                                    <input class="input-redes disable-sm-input" type="text" name="tumblr" id="tumblr" placeholder="Tumblr" disabled>
-                                </div>
-                                
-                            </div>
-                        </div>
-                        <div class="col">
-                            <div class="row">
-                                <div class="col-md-auto check-align">
-                                    <div class="form-check">
-                                        <input class="form-check-input" type="checkbox" value="" id="checkbox_sm15" onclick="smInputState('checkbox_sm15', 'twitter')">
-                                    </div>
-                                </div>
-                                <div class="col-md-auto logo-sm-align">
-                                    <img src=<?php echo base_url('img/iconos/twitter.png')?>>
-                                </div>
-                                <div class="col input-sm-align">
-                                    <input class="input-redes disable-sm-input" type="text" name="twitter" id="twitter" placeholder="Twitter" disabled>
-                                </div>
-                                
-                            </div>
-                        </div>
-                    </div>
-
-                    <div class="row mb-2">
-                        <div class="col">
-                            <div class="row">
-                                <div class="col-md-auto check-align">
-                                    <div class="form-check">
-                                        <input class="form-check-input" type="checkbox" value="" id="checkbox_sm16" onclick="smInputState('checkbox_sm16', 'twitch')">
-                                    </div>
-                                </div>
-                                <div class="col-md-auto logo-sm-align">
-                                    <img src=<?php echo base_url('img/iconos/twitch.png')?> >
-                                </div>
-                                <div class="col input-sm-align">
-                                    <input class="input-redes disable-sm-input" type="text" name="twitch" id="twitch" placeholder="Twitch" disabled>
-                                </div>
-                                
-                            </div>
-                            
-                        </div>
-                        <div class="col">
-                            <div class="row">
-                                <div class="col-md-auto check-align">
-                                    <div class="form-check">
-                                        <input class="form-check-input" type="checkbox" value="" id="checkbox_sm17" onclick="smInputState('checkbox_sm17', 'vimeo')">
-                                    </div>
-                                </div>
-                                <div class="col-md-auto logo-sm-align">
-                                    <img src=<?php echo base_url('img/iconos/vimeo.png')?> >
-                                </div>
-                                <div class="col input-sm-align">
-                                    <input class="input-redes disable-sm-input" type="text" name="vimeo" id="vimeo" placeholder="Vimeo" disabled>
-                                </div>
-                                
-                            </div>
-                        </div>
-                        <div class="col">
-                            <div class="row">
-                                <div class="col-md-auto check-align">
-                                    <div class="form-check">
-                                        <input class="form-check-input" type="checkbox" value="" id="checkbox_sm18" onclick="smInputState('checkbox_sm18', 'wechat')">
-                                    </div>
-                                </div>
-                                <div class="col-md-auto logo-sm-align">
-                                    <img src=<?php echo base_url('img/iconos/wechat.png')?>>
-                                </div>
-                                <div class="col input-sm-align">
-                                    <input class="input-redes disable-sm-input" type="text" name="wechat" id="wechat" placeholder="Wechat" disabled>
-                                </div>
-                                
-                            </div>
-                        </div>
-                    </div>
-
-                    <div class="row mb-3">
-                        <div class="col">
-                            <div class="row">
-                                <div class="col-md-auto check-align">
-                                    <div class="form-check">
-                                        <input class="form-check-input" type="checkbox" value="" id="checkbox_sm19" onclick="smInputState('checkbox_sm19', 'weibo')">
-                                    </div>
-                                </div>
-                                <div class="col-md-auto logo-sm-align">
-                                    <img src=<?php echo base_url('img/iconos/weibo.png')?> >
-                                </div>
-                                <div class="col input-sm-align">
-                                    <input class="input-redes disable-sm-input" type="text" name="Weibo" id="Weibo" placeholder="Weibo" disabled>
-                                </div>
-                                
-                            </div>
-                            
-                        </div>
-                        <div class="col">
-                            <div class="row">
-                                <div class="col-md-auto check-align">
-                                    <div class="form-check">
-                                        <input class="form-check-input" type="checkbox" value="" id="checkbox_sm20" onclick="smInputState('checkbox_sm20', 'youtube')">
-                                    </div>
-                                </div>
-                                <div class="col-md-auto logo-sm-align">
-                                    <img src=<?php echo base_url('img/iconos/youtube.png')?> >
-                                </div>
-                                <div class="col input-sm-align">
-                                    <input class="input-redes disable-sm-input" type="text" name="youtube" id="youtube" placeholder="Youtube" disabled>
-                                </div>
-                                
-                            </div>
-                        </div>
-                        <div class="col">
-                            <div class="row">
-                                <div class="col-md-auto check-align">
-                                    <div class="form-check">
-                                        <input class="form-check-input" type="checkbox" value="" id="checkbox_sm21" onclick="smInputState('checkbox_sm21', 'blog')">
-                                    </div>
-                                </div>
-                                <div class="col-md-auto logo-sm-align">
-                                    <img src=<?php echo base_url('img/iconos/blog.png')?> >
-                                </div>
-                                <div class="col input-sm-align">
-                                    <input class="input-redes disable-sm-input" type="text" name="blog" id="blog" placeholder="¿Tienes un Blog?" disabled>
-                                </div>
-                                
-                            </div>
-                        </div>
-                    </div>
+                    
 
                 </div>
 

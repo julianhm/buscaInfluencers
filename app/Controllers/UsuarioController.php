@@ -297,7 +297,7 @@ class UsuarioController extends BaseController
         $influencerBuscado =$query->getResultArray();
         
         //BUSQUEDA POR CATEGORIAS USANDO LA Y
-        //var_dump($influencerBuscado) ;
+       //var_dump($influencerBuscado) ;
       /*  $misCategorias = $categorias->orderBy('nombrecat', 'ASC')->where('mostradas',1)->findAll();
         $categoriaBuscada=[];
         foreach ($misCategorias as $key => $m) { 
@@ -313,18 +313,26 @@ class UsuarioController extends BaseController
         //BUSQUEDA POR CATEGORIAS USANDO LA O
         $misCategorias = $categorias->orderBy('nombrecat', 'ASC')->where('mostradas',1)->findAll();
         $categoriaBuscada=[];
-        for ($i=0; $i < count($misCategorias) ; $i++) { 
-                     
-            if (isset($_POST["cat".$misCategorias[$i]['idcategoria']])) {  
-                array_push($categoriaBuscada,$misCategorias[$i]); 
-                  
-                array_push($categoriaBuscada,$misCategorias[$i]['idcategoria']);
-                unset($misCategorias[$i]); 
+        $influencerEncontrado=[];
+        
+        foreach ($misCategorias as $key => $m) { 
+            
+            if (isset($_POST["cat".$m['idcategoria']])) { 
+                
+                array_push($categoriaBuscada,$m['idcategoria']);
+                foreach ($influencerBuscado as $key => $infl) { 
+                          
+                    if($m['idcategoria']==$infl['idcategoria']) {
+                        array_push($influencerEncontrado,$infl);
+                    }  
+                }
             }
         }
         $busquedaActual['categoria']=$categoriaBuscada;
-       
-       
+        $influencerBuscado=$influencerEncontrado;
+        
+
+        /*
         $misredes=$redes->orderBy('nombre', 'ASC')->where('activa',1)->findAll(); 
         $redBuscada=[];
         foreach ($misredes as $key => $m) {
@@ -335,6 +343,31 @@ class UsuarioController extends BaseController
             }
         }
         $busquedaActual['redes']=$redBuscada;
+        */
+
+        //BUSQUEDA POR REDES USANDO LA O
+        $misredes=$redes->orderBy('nombre', 'ASC')->where('activa',1)->findAll(); 
+        $redBuscada=[];
+        $influencerEncontrado=[];
+        
+        foreach ($misredes as $key => $m) { 
+            
+            if (isset($_POST["red".$m['idredes']])) { 
+                
+                array_push($redBuscada,$m['idredes']);
+                foreach ($influencerBuscado as $key => $infl) {       
+                    if($m['idredes']==$infl['idredes']) {
+                        //var_dump($m['nombrecat']);
+                        array_push($influencerEncontrado,$infl);
+                    }  
+                }
+            }
+        }
+        $busquedaActual['redes']=$redBuscada;
+        if(count($influencerEncontrado)>0){
+        $influencerBuscado=$influencerEncontrado;
+        }
+        
         
 
         if($cant_seguidores>=0){
@@ -349,7 +382,7 @@ class UsuarioController extends BaseController
             $influencerBuscado=$this->_filtrarPorIdioma($influencerBuscado,$ididioma); 
             $busquedaActual['idioma']=$ididioma;  
         }
-        
+        //var_dump($influencerBuscado);
 
         $misPagos= $pagos->findAll();
         $textoPagos="";
@@ -381,6 +414,24 @@ class UsuarioController extends BaseController
                 $busquedaActual['pais']=$idpais;
             }
         }
+
+        $influencerEncontrado=[];
+        foreach ($influencerBuscado as $key => $infl) {
+            if(count($influencerEncontrado)>0){
+                $cont=0;
+                foreach ($influencerEncontrado as $key => $in) {
+                if($in['idinfluencer']==$infl['idinfluencer']){
+                    $cont++;
+                }
+                }
+                if($cont==0){
+                    array_push($influencerEncontrado,$infl);
+                }
+            }else{
+                array_push($influencerEncontrado,$infl);
+            }
+        }
+        $influencerBuscado=$influencerEncontrado;
 
         $idiomas = new IdiomaModel();
         $pagos = new PagoModel();
@@ -590,21 +641,7 @@ class UsuarioController extends BaseController
         foreach ($misInfluencer as $key => $in) {
             
             if($in['cant_seguidores']>$cantidad){
-                    if(count($arrayDeIdInfluencers)==0){
-                        array_push($arrayDeIdInfluencers,$in['idinfluencer']);
-                        array_push($arrayInfluencerBuscado,$in);
-                    } else {
-                        $cont=0;
-                        foreach ($arrayDeIdInfluencers as $key => $idinf) {
-                            if($idinf==$in['idinfluencer']){
-                                $cont++;
-                            }
-                        }
-                        if($cont==0){
-                            array_push($arrayDeIdInfluencers,$in['idinfluencer']);
-                            array_push($arrayInfluencerBuscado,$in); 
-                        }
-                    }
+                array_push($arrayInfluencerBuscado,$in);
                
             }
         }
@@ -620,25 +657,11 @@ class UsuarioController extends BaseController
         $arrayDeIdInfluencers=[];
 
         foreach ($misInfluencer as $key => $in) {
-            
             if($in['ididioma']==$idIdioma){
-                    if(count($arrayDeIdInfluencers)==0){
-                        array_push($arrayDeIdInfluencers,$in['idinfluencer']);
-                        array_push($arrayInfluencerBuscado,$in);
-                    } else {
-                        $cont=0;
-                        foreach ($arrayDeIdInfluencers as $key => $idinf) {
-                            if($idinf==$in['idinfluencer']){
-                                $cont++;
-                            }
-                        }
-                        if($cont==0){
-                            array_push($arrayDeIdInfluencers,$in['idinfluencer']);
-                            array_push($arrayInfluencerBuscado,$in); 
-                        }
-                    }
-               
+            array_push($arrayInfluencerBuscado,$in);
+            
             }
+            
         }
         return $arrayInfluencerBuscado;
 
@@ -649,27 +672,13 @@ class UsuarioController extends BaseController
         
               
         $arrayInfluencerBuscado=[];
-        $arrayDeIdInfluencers=[];
+        
 
         foreach ($misInfluencer as $key => $in) {
             foreach ($arrayPagos as $key => $pa) {
                         
                 if($in['idpago']==$pa['idpago']){
-                        if(count($arrayDeIdInfluencers)==0){
-                            array_push($arrayDeIdInfluencers,$in['idinfluencer']);
-                            array_push($arrayInfluencerBuscado,$in);
-                        } else {
-                            $cont=0;
-                            foreach ($arrayDeIdInfluencers as $key => $idinf) {
-                                if($idinf==$in['idinfluencer']){
-                                    $cont++;
-                                }
-                            }
-                            if($cont==0){
-                                array_push($arrayDeIdInfluencers,$in['idinfluencer']);
-                                array_push($arrayInfluencerBuscado,$in); 
-                            }
-                        }
+                    array_push($arrayInfluencerBuscado,$in); 
                 
                 }
             }
@@ -691,21 +700,8 @@ class UsuarioController extends BaseController
 
                 $miCiudad= $ciudad->find($in['idciudad']);
                 if($miCiudad['idpais']==$idpais){
-                    if(count($arrayDeIdInfluencers)==0){
-                        array_push($arrayDeIdInfluencers,$in['idinfluencer']);
-                        array_push($arrayInfluencerBuscado,$in);
-                    } else {
-                        $cont=0;
-                        foreach ($arrayDeIdInfluencers as $key => $idinf) {
-                            if($idinf==$in['idinfluencer']){
-                                $cont++;
-                            }
-                        }
-                        if($cont==0){
-                            array_push($arrayDeIdInfluencers,$in['idinfluencer']);
-                            array_push($arrayInfluencerBuscado,$in); 
-                         }
-                    }
+                    array_push($arrayInfluencerBuscado,$in); 
+                    
                 
                 }
             
@@ -714,23 +710,11 @@ class UsuarioController extends BaseController
         }else{
             foreach ($misInfluencer as $key => $in) {
                 if($in['idciudad']==$idciudad){
-                        if(count($arrayDeIdInfluencers)==0){
-                            array_push($arrayDeIdInfluencers,$in['idinfluencer']);
-                            array_push($arrayInfluencerBuscado,$in);
-                        } else {
-                            $cont=0;
-                            foreach ($arrayDeIdInfluencers as $key => $idinf) {
-                                if($idinf==$in['idinfluencer']){
-                                    $cont++;
-                                }
-                            }
-                            if($cont==0){
-                                array_push($arrayDeIdInfluencers,$in['idinfluencer']);
-                                array_push($arrayInfluencerBuscado,$in); 
-                            }
-                        }
+                    array_push($arrayInfluencerBuscado,$in); 
+                        
+                 }
                 
-                }
+                
             
              }
 

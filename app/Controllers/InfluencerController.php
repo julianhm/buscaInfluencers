@@ -34,7 +34,12 @@ class InfluencerController extends BaseController
 
     }
 
+<<<<<<< HEAD
     
+=======
+
+
+>>>>>>> main
     //CARGA LA PAGINA DE POLITICA DE PRIVACIDAD
     public function privacidad()
     {
@@ -46,6 +51,8 @@ class InfluencerController extends BaseController
     }
 
 
+
+
     //METODO QUE ME PERMITE CARGAR PAGINAS
     private function _loadDefaultView($dataHeader,$data,$view){
 
@@ -55,6 +62,8 @@ class InfluencerController extends BaseController
        
 
     }
+
+
 
     //METODO QUE CARGA LA VISTA DE REGISTRO DE INFLUENCER
     public function new(){
@@ -81,6 +90,8 @@ class InfluencerController extends BaseController
         $this->_loadDefaultView($dataHeader,$data,'new');
 
     }
+
+
 
     //CREA EL NUEVO INFLUENCER
     public function create(){
@@ -147,15 +158,18 @@ class InfluencerController extends BaseController
       return redirect()->back()->withinput();
    }
 
+
+
    //CARGA LA VISTA DE REGISTRO DE REDES SOCIALES
     public function registro($id=null){
  
          $influencer=new InfluencerModel();
                   
          $miInfluencer=$influencer->find($id);
+         $misRedes=new RedesModel();
+
          
          session();
-         
          $validation =  \Config\Services::validation();
          
          $dataHeader =['titulo' => 'Crear Influencer',
@@ -163,9 +177,10 @@ class InfluencerController extends BaseController
 
          //CARGAR LA VISTA
          $this->_loadDefaultView($dataHeader,['validation'=>$validation, 
-         'influencer'=>$miInfluencer,],'new2');
+         'influencer'=>$miInfluencer,'misredes'=>$misRedes->where('activa',1)->findAll()],'new2');
 
     }
+
 
 
     //SE GUARDAN LAS REDES SOCIALES
@@ -175,17 +190,21 @@ class InfluencerController extends BaseController
 
         $influencerModel=new InfluencerModel();
 
-        //SE CREA EL INFLUENCER
+        //SE BUSCA EL INFLUENCER en BD
         $ide=$influencerModel->find($id);
+        
 
         //CREACION DE REDES SOCIALES EN LA BASE DE DATOS
-        if($this->_crearRedesSociales($id)){
+        $mensaje=$this->_crearRedesSociales($id);
+        if($mensaje==""){
             //CARGAR LA VISTA
             return redirect()->to("/influencer/new3/$id")->with('mensaje', 'Tus redes se agregaron correctamente');
 
+        }else{
+            return redirect()->back()->with('mensaje', $mensaje);
         }
    
-        return redirect()->back()->withinput();
+        
     }
 
 //SE CARGA LA VISTA FINAL DEL REGISTRO
@@ -199,7 +218,7 @@ class InfluencerController extends BaseController
 
         //CARGAR LOS ARREGLOS DESDE LAS VISTAS
         $categorias = new CategoriasModel();
-        $misCategorias=$categorias->findAll();
+        $misCategorias=$categorias->where('mostradas',1)->findAll();
         session();
         
         $validation =  \Config\Services::validation();
@@ -225,37 +244,30 @@ class InfluencerController extends BaseController
        
         //SE CREA EL INFLUENCER
         $ide=$influencerModel->find($id);
-       
-        //SE CREAN LAS REGLAS DE VALIDACION PARA LOS CAMPOS
-        $rules=[
-            
-        ];
-
         $imagefile = $this->request->getFiles();
 
         
-            
+        
             $archivofoto=$this->_upload2('fotoperfil');
             $archivovideo=$this->_uploadvideo('videoperfil');
-            
             $tipoMarca= $this->request->getPost('tipoMarca');
             $marcanuevaempresa =$this->request->getPost('marcatxt');
-            
-
+            $idioma=new IdiomaInfluencerModel();
+            $miIdioma=$this->request->getPost('langSelect');
+        
+        if($miIdioma!=null || $miIdioma!=""){
             $influencerModel->UPDATE($ide,['video'=>$archivovideo]);
-
-            
-            //SE CREA EL INFLUENCER
-            $mensajes=$mensajes." "."Se crea el influencer correctamente";
-
              
             //SE VALIDAN LAS CATEGORIAS            
             $this->_guardarCategorias($id);
 
-            //SE CARGA EL IDIOMA
-            $idioma=new IdiomaInfluencerModel();
-            $miIdioma=$this->request->getPost('langSelect');
-            $idioma->insert(['ididioma'=>$miIdioma,'idinfluencer'=>$id]);
+                
+            
+                $idioma->insert(['ididioma'=>$miIdioma,'idinfluencer'=>$id]);
+        }else{
+                return redirect()->back()->with('mensaje', "No se agregó ningún idioma");
+         }
+            
             
 
             //SE CARGA LA GALERIA
@@ -274,6 +286,8 @@ class InfluencerController extends BaseController
             //SE CARGAN LAS EMPRESAS O MARCAS
             if(!($marcanuevaempresa==""||$marcanuevaempresa==null)){
                 $idmarca=$marca->insert(['nombre'=>$marcanuevaempresa,'tipo'=>$tipoMarca,'idinfluencer'=>$id]); 
+            }else{
+
             }
 
             //SE CARGAN LOS PAGOS
@@ -337,7 +351,7 @@ class InfluencerController extends BaseController
             }
 
             $misRedes=[];
-            $misRedesNoUsadas=$redes->findAll();
+            $misRedesNoUsadas=$redes->where('activa',1)->findAll();
             $misUsuariosRedes=[];
             foreach ($idredes as $key => $m) {
                 array_push($misRedes,$redes->find($m['idredes']));
@@ -514,251 +528,20 @@ class InfluencerController extends BaseController
     
 
 
-    private function _crearRedesSociales($id){
-        $redesmodel=new RedesModel();
-        $influencerredesmodel=new InfluencersRedesModel();
-        $redesSociales= $redesmodel->findAll();
-            
-        foreach ($redesSociales as $key => $m) {
-            
-                if($m['nombre']=="Behance"){
-                    $behance= $this->request->getPost('behance');
-                    if(!($behance=="" || $behance==null)){
-                        $influencerredesmodel->insert(['idinfluencer'=>$id,'idredes'=>$m['idredes'],'user'=>$behance,'cant_seguidores'=>rand(1000,5000000)]);
-                    }
-                }else
-                if($m['nombre']=="Ello"){
-                    $ello= $this->request->getPost('ello');
-                    if(!($ello=="" || $ello==null)){
-                        $influencerredesmodel->insert(['idinfluencer'=>$id,'idredes'=>$m['idredes'],'user'=>$ello,'cant_seguidores'=>rand(1000,5000000)]);
-                    }
-                }else
-                if($m['nombre']=="Facebook"){
-                    $facebook= $this->request->getPost('facebook');
-                    if(!($facebook=="" || $facebook==null)){
-                        $influencerredesmodel->insert(['idinfluencer'=>$id,'idredes'=>$m['idredes'],'user'=>$facebook,'cant_seguidores'=>rand(1000,5000000)]);
-                    }
-                }else
-                if($m['nombre']=="Instagram"){
-                    $instagram= $this->request->getPost('instagram');
-                    if(!($instagram=="" || $instagram==null)){
-                        $influencerredesmodel->insert(['idinfluencer'=>$id,'idredes'=>$m['idredes'],'user'=>$instagram,'cant_seguidores'=>rand(1000,5000000)]);
-                    }
-                }else
-                if($m['nombre']=="Linkedin"){
-                    $linkedin= $this->request->getPost('linkedin');
-                    if(!($linkedin=="" || $linkedin==null)){
-                        $influencerredesmodel->insert(['idinfluencer'=>$id,'idredes'=>$m['idredes'],'user'=>$linkedin,'cant_seguidores'=>rand(1000,5000000)]);
-                    }
-                }else
-                if($m['nombre']=="OnlyFans"){
-                    $onlyfans= $this->request->getPost('onlyfans');
-                    if(!($onlyfans=="" || $onlyfans==null)){
-                        $influencerredesmodel->insert(['idinfluencer'=>$id,'idredes'=>$m['idredes'],'user'=>$onlyfans,'cant_seguidores'=>rand(1000,5000000)]);
-                    }
-                }else
-                if($m['nombre']=="Pinterest"){
-                    $pinterest= $this->request->getPost('pinterest');
-                    if(!($pinterest=="" || $pinterest==null)){
-                        $influencerredesmodel->insert(['idinfluencer'=>$id,'idredes'=>$m['idredes'],'user'=>$pinterest,'cant_seguidores'=>rand(1000,5000000)]);
-                    }
-                }else
-                if($m['nombre']=="QQ"){
-                    $qq= $this->request->getPost('qq');
-                    if(!($qq=="" || $qq==null)){
-                        $influencerredesmodel->insert(['idinfluencer'=>$id,'idredes'=>$m['idredes'],'user'=>$qq,'cant_seguidores'=>rand(1000,5000000)]);
-                    }
-                }else
-                if($m['nombre']=="Qzone"){
-                    $qzone= $this->request->getPost('qzone');
-                    if(!($qzone=="" || $qzone==null)){
-                        $influencerredesmodel->insert(['idinfluencer'=>$id,'idredes'=>$m['idredes'],'user'=>$qzone,'cant_seguidores'=>rand(1000,5000000)]);
-                    }
-                }else
-                if($m['nombre']=="Reddit"){
-                    $reddit= $this->request->getPost('reddit');
-                    if(!($reddit=="" || $reddit==null)){
-                        $influencerredesmodel->insert(['idinfluencer'=>$id,'idredes'=>$m['idredes'],'user'=>$reddit,'cant_seguidores'=>rand(1000,5000000)]);
-                    }
-                }else
-                if($m['nombre']=="Snapchat"){
-                    $snapchat= $this->request->getPost('snapchat');
-                    if(!($snapchat=="" || $snapchat==null)){
-                        $influencerredesmodel->insert(['idinfluencer'=>$id,'idredes'=>$m['idredes'],'user'=>$snapchat,'cant_seguidores'=>rand(1000,5000000)]);
-                    }
-                }else
-                if($m['nombre']=="Telegram"){
-                    $telegram= $this->request->getPost('telegram');
-                    if(!($telegram=="" || $telegram==null)){
-                        $influencerredesmodel->insert(['idinfluencer'=>$id,'idredes'=>$m['idredes'],'user'=>$telegram,'cant_seguidores'=>rand(1000,5000000)]);
-                    }
-                }else
-                if($m['nombre']=="TikTok"){
-                    $tiktok= $this->request->getPost('tiktok');
-                    if(!($tiktok=="" || $tiktok==null)){
-                        $influencerredesmodel->insert(['idinfluencer'=>$id,'idredes'=>$m['idredes'],'user'=>$tiktok,'cant_seguidores'=>rand(1000,5000000)]);
-                    }
-                }else
-                if($m['nombre']=="Tumblr"){
-                    $tumblr= $this->request->getPost('tumblr');
-                    if(!($tumblr=="" || $tumblr==null)){
-                        $influencerredesmodel->insert(['idinfluencer'=>$id,'idredes'=>$m['idredes'],'user'=>$tumblr,'cant_seguidores'=>rand(1000,5000000)]);
-                    }
-                }else
-                if($m['nombre']=="Twitter"){
-                    $twitter= $this->request->getPost('twitter');
-                    if(!($twitter=="" || $twitter==null)){
-                        $influencerredesmodel->insert(['idinfluencer'=>$id,'idredes'=>$m['idredes'],'user'=>$twitter,'cant_seguidores'=>rand(1000,5000000)]);
-                    }
-                }else
-                if($m['nombre']=="Twitch"){
-                    $twitch= $this->request->getPost('twitch');
-                    if(!($twitch=="" || $twitch==null)){
-                        $influencerredesmodel->insert(['idinfluencer'=>$id,'idredes'=>$m['idredes'],'user'=>$twitch,'cant_seguidores'=>rand(1000,5000000)]);
-                    }
-                }else
-                if($m['nombre']=="Vimeo"){
-                    $vimeo= $this->request->getPost('vimeo');
-                    if(!($vimeo=="" || $vimeo==null)){
-                        $influencerredesmodel->insert(['idinfluencer'=>$id,'idredes'=>$m['idredes'],'user'=>$vimeo,'cant_seguidores'=>rand(1000,5000000)]);
-                    }
-                }else
-                if($m['nombre']=="Wechat"){
-                    $wechat= $this->request->getPost('wechat');
-                    if(!($wechat=="" || $wechat==null)){
-                        $influencerredesmodel->insert(['idinfluencer'=>$id,'idredes'=>$m['idredes'],'user'=>$wechat,'cant_seguidores'=>rand(1000,5000000)]);
-                    }
-                }else
-                if($m['nombre']=="Weibo"){
-                    $Weibo= $this->request->getPost('Weibo');
-                    if(!($Weibo=="" || $Weibo==null)){
-                        $influencerredesmodel->insert(['idinfluencer'=>$id,'idredes'=>$m['idredes'],'user'=>$Weibo,'cant_seguidores'=>rand(1000,5000000)]);
-                    }
-                }else
-                if($m['nombre']=="Youtube"){
-                    $youtube= $this->request->getPost('youtube');
-                    if(!($youtube=="" || $youtube==null)){
-                        $influencerredesmodel->insert(['idinfluencer'=>$id,'idredes'=>$m['idredes'],'user'=>$youtube,'cant_seguidores'=>rand(1000,5000000)]);
-                    }
-                }else
-                if($m['nombre']=="blog"){
-                    $blog= $this->request->getPost('blog');
-                    if(!($blog=="" || $blog==null)){
-                        $influencerredesmodel->insert(['idinfluencer'=>$id,'idredes'=>$m['idredes'],'user'=>$blog,'cant_seguidores'=>rand(1000,5000000)]);
-                    }
-                }
-        }
-        return true;
-        
-    }
+    
 
     private function _guardarCategorias($id){
         $categoriasmodel= new CategoriasModel();
         $influencercategoriamodel= new InfluencerCategoriaModel();
         $array=[];
+        $cate=$categoriasmodel->findAll(); 
         
-        if (isset($_REQUEST['gastronomia'])) {
-            array_push($array,'Gastronomia'); 
-         }
-         if (isset($_REQUEST['tecnologia'])) {
-             array_push($array,'Tecnologia'); 
-         }  
-         if (isset($_REQUEST['ciencia'])) {
-             array_push($array,'Ciencia'); 
-         }  
-         if (isset($_REQUEST['arte'])) {
-             array_push($array,'Arte y Diseño'); 
-         } 
-         if (isset($_REQUEST['moda'])) {
-             array_push($array,'Moda'); 
-         } 
-         if (isset($_REQUEST['educacion'])) {
-             array_push($array,'Educacion'); 
-         }    
-         if (isset($_REQUEST['farandula'])) {
-             array_push($array,'Farandula'); 
-         }    
-         if (isset($_REQUEST['entretenimiento'])) {
-             array_push($array,'Entretenimiento '); 
-         }    
-         if (isset($_REQUEST['cine'])) {
-             array_push($array,'Cine'); 
-         }    
-         if (isset($_REQUEST['politica'])) {
-             array_push($array,'Politica y Sociedad'); 
-         }    
-         if (isset($_REQUEST['juegos'])) {
-             array_push($array,'Juegos'); 
-         }    
-         if (isset($_REQUEST['deportes'])) {
-             array_push($array,'Deportes'); 
-         }  
-         if (isset($_REQUEST['estilo'])) {
-             array_push($array,'Estilo de vida'); 
-         }
-         if (isset($_REQUEST['belleza'])) {
-             array_push($array,'Belleza'); 
-         }
-         if (isset($_REQUEST['talentos'])) {
-             array_push($array,'Talentos especiales'); 
-         }
-         if (isset($_REQUEST['nutricion'])) {
-             array_push($array,'Nutricion'); 
-         }
-         if (isset($_REQUEST['salud'])) {
-             array_push($array,'Salud'); 
-         }
-         if (isset($_REQUEST['amor'])) {
-             array_push($array,'Amor'); 
-         }  
-         if (isset($_REQUEST['humanidades'])) {
-             array_push($array,'Humanidades'); 
-         }
-         if (isset($_REQUEST['transporte'])) {
-             array_push($array,'Transporte'); 
-         }
-         if (isset($_REQUEST['sexo'])) {
-             array_push($array,'Sexo'); 
-         }
-         if (isset($_REQUEST['musica'])) {
-             array_push($array,'Musica'); 
-         }
-         if (isset($_REQUEST['turismo'])) {
-             array_push($array,'Turismo y viajes'); 
-         }
-         if (isset($_REQUEST['aventura'])) {
-             array_push($array,'Aventura'); 
-         }
-         if (isset($_REQUEST['todo'])) {
-             array_push($array,'De todo'); 
-         }
-         if (isset($_REQUEST['esoterismo'])) {
-             array_push($array,'Esoterismo'); 
-         }
-         if (isset($_REQUEST['astrologia'])) {
-             array_push($array,'Astrologia'); 
-         }
-         if (isset($_REQUEST['superacion'])) {
-             array_push($array,'Superacion'); 
-         }
-         if (isset($_REQUEST['finanzas'])) {
-             array_push($array,'Finanzas'); 
-         }
-         if (isset($_REQUEST['entrenamiento'])) {
-             array_push($array,'Entrenamiento'); 
-         }
-         if (isset($_REQUEST['identidad'])) {
-             array_push($array,'Identidad'); 
-         }
-         if (isset($_REQUEST['opinion'])) {
-             array_push($array,'Opinion'); 
-         }
-         if (isset($_REQUEST['religion'])) {
-             array_push($array,'Religion'); 
-         }
-         var_dump($array);
-
-         $cate=$categoriasmodel->findAll();   
+        foreach($cate as $key=>$m){
+            if (isset($_REQUEST[$m['nombrecat']])) {
+                array_push($array,$m['nombrecat']); 
+             }
+        }
+                  
  
          for ($i=0; $i < count($array) ; $i++) { 
              for ($j=0; $j < count($cate) ; $j++) { 
@@ -845,21 +628,7 @@ class InfluencerController extends BaseController
         
     }
 
-    public function agregarRedSocial(){
-
-        $redinfluencer=new InfluencersRedesModel();
-        
-        $id= $this->request->getPost('influencerid1');
-        $redsocial= $this->request->getPost('redessocialesagregar');
-        $usuarioredsocial= $this->request->getPost('textousuariored');
-        if(!($usuarioredsocial==null || $usuarioredsocial=="")){
-            if($redinfluencer->insert(['idinfluencer'=>$id,'idredes'=>$redsocial,'user'=>$usuarioredsocial])!=null){
-                return redirect()->to("/influencer/edit/$id")->with('mensaje', 'Tus Redes se actualizaron con exito');
-    
-            }
-        }    
-        return redirect()->to("/influencer/edit/$id")->with('mensaje', 'ocurrió un error al actualizar tu red social');
-    }
+   
 
     public function agregarCantidadSeguidores($cant, $redsocial){
         $redinfluencer=new InfluencersRedesModel();
@@ -1259,6 +1028,304 @@ class InfluencerController extends BaseController
    }
 
 
+<<<<<<< HEAD
       
+=======
+   
+
+
+
+
+   /*************************************************************************/
+   /** BUSQUEDA EN REDES USANDO APIS */
+   /*************************************************************************/
+   public function agregarRedSocial(){
+
+        $redinfluencer=new InfluencersRedesModel();
+        
+        $id= $this->request->getPost('influencerid1');
+        $redsocial= $this->request->getPost('redessocialesagregar');
+        $usuarioredsocial= $this->request->getPost('textousuariored');
+        $array=['idinfluencer'=>$id,'idredes'=>$redsocial];
+        $buscar=$redinfluencer->where($array)->findAll();
+
+        if(!($usuarioredsocial==null || $usuarioredsocial=="")){
+            $r=$this->buscarSeguidoresAPI($redsocial,$usuarioredsocial);
+                if($r!=0){
+                    if($buscar==null){
+                        $influencerredesmodel->insert(['idinfluencer'=>$id,'idredes'=>$redsocial,'user'=>$usuarioredsocial,'cant_seguidores'=>$r]);
+                        return redirect()->to("/influencer/edit/$id")->with('mensaje', 'Tus Redes se crearon con exito');
+                    } else{
+                        $influencerredesmodel->update($buscar[0]['id'],['cant_seguidores'=>$r]);
+                        return redirect()->to("/influencer/edit/$id")->with('mensaje', 'Tus Redes se actualizaron con exito');
+                    }
+                }else{
+                    return redirect()->to("/influencer/edit/$id")->with('mensaje', 'Se generó un error al buscar la cantidad de usuarios de la red social, verifica tu nombre de Usuario');
+                    
+                }
+                
+        }    
+        return redirect()->to("/influencer/edit/$id")->with('mensaje', 'Debes escribir un usuario para poder actualizar tu red social');
+    }
+
+
+   private function _crearRedesSociales($id){
+    $redesmodel=new RedesModel();
+    $influencerredesmodel=new InfluencersRedesModel();
+    $redesSociales= $redesmodel->where('activa',1)->findAll();
+        
+    foreach ($redesSociales as $key => $m) {
+        
+        $nombre= $this->request->getPost($m['idredes']);
+        if(!($nombre=="" || $nombre==null)){
+            $miArray=['idinfluencer'=>$id,'idredes'=>$m['idredes']];
+            $obj=$influencerredesmodel->where($miArray)->findAll();
+            //var_dump($obj);
+            $r=$this->buscarSeguidoresAPI($m['idredes'],$nombre);
+            if($r!=0){
+                if($obj==null){
+                    $influencerredesmodel->insert(['idinfluencer'=>$id,'idredes'=>$m['idredes'],'user'=>$nombre,'cant_seguidores'=>$r]);
+                    return "Se creo correctamente la red social";
+                } else{
+                    $influencerredesmodel->update($obj[0]['id'],['cant_seguidores'=>$r]);
+                    return "Se actualizo correctamente la red social";
+                }
+            }else{
+                return "Se generó un error al buscar la cantidad de usuarios de ".$m['nombre'].", verifica tu nombre de Usuario";
+            }
+            
+        }else{
+            return "Se debe agregar un nombre de Usuario";
+        }
+
+
+    }
+    return "";
+    
+}
+
+
+
+
+   public function buscarSeguidoresAPI($idredes,$nombre){
+
+        $misRedes= new RedesModel();
+        $red=$misRedes->find($idredes);
+        $cantSeguidores=0;
+
+        if($red['nombre']=="Twitter"){
+            $cantSeguidores=$this->twitter($nombre);
+            return $cantSeguidores;
+        }
+        if($red['nombre']=="Instagram"){
+            $cantSeguidores=$this->instagram($nombre);
+            return $cantSeguidores;
+        }
+        if($red['nombre']=="Snapchat"){
+            $cantSeguidores=$this->snapchat($nombre);
+            return $cantSeguidores;
+        }
+        if($red['nombre']=="TikTok"){
+            $cantSeguidores=$this->tiktok($nombre);
+            return $cantSeguidores;
+        }
+        if($red['nombre']=="Twitch"){
+            $cantSeguidores=$this->twitch($nombre);
+            return $cantSeguidores;
+        }
+
+
+   }
+
+
+
+   public function twitter($twitter){
+        
+    $url = "https://api.twitter.com/2/users/by/username/".$twitter."?user.fields=public_metrics&expansions=pinned_tweet_id";
+        $authorization = 'Authorization: Bearer AAAAAAAAAAAAAAAAAAAAAOxtlgEAAAAA3fOKvy7k3FDtO9g73Bt85ctj%2Bow%3DYBG4inA8Sy7lgTDkXeyowhlI0aIOomaIMfBKi8XS3fOmsSR3EU';
+        $ch = curl_init();
+
+        curl_setopt($ch, CURLOPT_URL, $url);
+        curl_setopt($ch, CURLOPT_HTTPHEADER, array('Content-Type: application/json' , $authorization ));
+        curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+        curl_setopt($ch, CURLOPT_FOLLOWLOCATION, 1);
+        $result = curl_exec($ch);
+
+        $r= (array)json_decode($result,true);
+        curl_close($ch);
+        $retorno=0;
+        try{
+            $retorno=$r['data']['public_metrics']['followers_count'];
+        }catch(\Exception $e){
+            var_dump($e->getMessage());
+        }
+
+        return $retorno;
+
+        
+   }
+
+   public function instagram($instagram){
+   // var_dump($instagram);
+    $curl = curl_init();
+
+    curl_setopt_array($curl, [
+        CURLOPT_URL => "https://instagram130.p.rapidapi.com/account-info?username=".$instagram,
+        CURLOPT_RETURNTRANSFER => true,
+        CURLOPT_FOLLOWLOCATION => true,
+        CURLOPT_ENCODING => "",
+        CURLOPT_MAXREDIRS => 10,
+        CURLOPT_TIMEOUT => 30,
+        CURLOPT_HTTP_VERSION => CURL_HTTP_VERSION_1_1,
+        CURLOPT_CUSTOMREQUEST => "GET",
+        CURLOPT_HTTPHEADER => [
+            "X-RapidAPI-Host: instagram130.p.rapidapi.com",
+            "X-RapidAPI-Key: c7c42e5e34msh4d68a181971610dp1e8e34jsn435b150476f6"
+        ],
+    ]);
+
+    $result=curl_exec($curl);
+    
+    $r= (array)json_decode($result,true);
+    //var_dump($r['edge_followed_by']['count']);
+    $err = curl_error($curl);
+
+    curl_close($curl);
+
+    $retorno=0;
+    try{
+        $retorno=$r['edge_followed_by']['count'];
+    }catch(\Exception $e){
+        var_dump($e->getMessage());
+    }
+    
+    return $retorno;
+
+        
+   
+
+        
+   }
+
+   public function snapchat($snapchat){
+   
+    $curl = curl_init();
+
+    curl_setopt_array($curl, [
+        CURLOPT_URL => "https://snapchat-profile-scraper-api-at-lowest-price.p.rapidapi.com/get-snapchat-details/".$snapchat,
+        CURLOPT_RETURNTRANSFER => true,
+        CURLOPT_FOLLOWLOCATION => true,
+        CURLOPT_ENCODING => "",
+        CURLOPT_MAXREDIRS => 10,
+        CURLOPT_TIMEOUT => 30,
+        CURLOPT_HTTP_VERSION => CURL_HTTP_VERSION_1_1,
+        CURLOPT_CUSTOMREQUEST => "GET",
+        CURLOPT_HTTPHEADER => [
+            "X-RapidAPI-Host: snapchat-profile-scraper-api-at-lowest-price.p.rapidapi.com",
+            "X-RapidAPI-Key: c7c42e5e34msh4d68a181971610dp1e8e34jsn435b150476f6"
+        ],
+    ]);
+
+    $result = curl_exec($curl);
+    $r= (array)json_decode($result,true);
+    //var_dump($r['subscriberCount']);
+    $err = curl_error($curl);
+
+    curl_close($curl);
+
+    $retorno=0;
+    try{
+        $retorno=$r['subscriberCount'];
+    }catch(\Exception $e){
+        var_dump($e->getMessage());
+    }
+    
+    return $retorno;
+
+        
+   }
+
+   public function tiktok($tiktok){
+   
+    $curl = curl_init();
+
+    curl_setopt_array($curl, [
+        CURLOPT_URL => "https://tiktok-scraper2.p.rapidapi.com/user/info?user_id=107955&user_name=".$tiktok,
+        CURLOPT_RETURNTRANSFER => true,
+        CURLOPT_FOLLOWLOCATION => true,
+        CURLOPT_ENCODING => "",
+        CURLOPT_MAXREDIRS => 10,
+        CURLOPT_TIMEOUT => 30,
+        CURLOPT_HTTP_VERSION => CURL_HTTP_VERSION_1_1,
+        CURLOPT_CUSTOMREQUEST => "GET",
+        CURLOPT_HTTPHEADER => [
+            "X-RapidAPI-Host: tiktok-scraper2.p.rapidapi.com",
+            "X-RapidAPI-Key: c7c42e5e34msh4d68a181971610dp1e8e34jsn435b150476f6"
+        ],
+    ]);
+
+    $result = curl_exec($curl);
+    $r= (array)json_decode($result,true);
+    //var_dump($r['userInfo']['stats']['followerCount']);
+    $err = curl_error($curl);
+
+    curl_close($curl);
+
+    $retorno=0;
+    try{
+        $retorno=$r['userInfo']['stats']['followerCount'];
+    }catch(\Exception $e){
+        var_dump($e->getMessage());
+    }
+    
+    return $retorno;
+
+
+    
+
+        
+   }
+
+   public function twitch($twitch){
+   
+    $curl = curl_init();
+
+    curl_setopt_array($curl, [
+        CURLOPT_URL => "https://gwyo-twitch.p.rapidapi.com/followerscount/".$twitch,
+        CURLOPT_RETURNTRANSFER => true,
+        CURLOPT_FOLLOWLOCATION => true,
+        CURLOPT_ENCODING => "",
+        CURLOPT_MAXREDIRS => 10,
+        CURLOPT_TIMEOUT => 30,
+        CURLOPT_HTTP_VERSION => CURL_HTTP_VERSION_1_1,
+        CURLOPT_CUSTOMREQUEST => "GET",
+        CURLOPT_HTTPHEADER => [
+            "X-RapidAPI-Host: gwyo-twitch.p.rapidapi.com",
+            "X-RapidAPI-Key: c7c42e5e34msh4d68a181971610dp1e8e34jsn435b150476f6"
+        ],
+    ]);
+    
+    $result = curl_exec($curl);
+    $r= (array)json_decode($result,true);
+    $err = curl_error($curl);
+    
+    curl_close($curl);
+    
+    $retorno=0;
+    try{
+        $retorno=$r['followers_count'];
+    }catch(\Exception $e){
+        var_dump($e->getMessage());
+    }
+    
+    return $retorno;
+    
+
+        
+   }
+
+
+   
+>>>>>>> main
 
 }

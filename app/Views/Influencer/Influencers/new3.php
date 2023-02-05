@@ -49,102 +49,24 @@
                 </div>
 
                                   
-                <div class="row mb-4">
+                <div class="row mb-4"> 
 
-                    <div class="select-size align-topics">
-                        <input type="checkbox" name="gastronomia" id="topic1" />
-                        <input type="checkbox" name="tecnologia" id="topic2" />
-                        <input type="checkbox" name="ciencia" id="topic3" />
-                        <input type="checkbox" name="arte" id="topic4" />
-                        <input type="checkbox" name="moda" id="topic5" />
-                        <input type="checkbox" name="educacion" id="topic6" />
-
-                        <label class="label-topic" for="topic1">Gastronomía</label>
-                        <label class="label-topic" for="topic2">Tecnología</label>
-                        <label class="label-topic" for="topic3">Ciencia</label>
-                        <label class="label-topic" for="topic4">Arte y Diseño</label>
-                        <label class="label-topic" for="topic5">Moda</label>
-                        <label class="label-topic" for="topic6">Educacion</label>
-                    </div>
-
-                    <div class="select-size align-topics">
-                        <input type="checkbox" name="farandula" id="topic7" />
-                        <input type="checkbox" name="entretenimiento" id="topic8" />
-                        <input type="checkbox" name="cine" id="topic9" />
-                        <input type="checkbox" name="politica" id="topic10" />
-                        <input type="checkbox" name="juegos" id="topic11" />
-                        <input type="checkbox" name="deportes" id="topic12" />
-
-                        <label class="label-topic" for="topic7">Farándula</label>
-                        <label class="label-topic" for="topic8">Entretenimiento</label>
-                        <label class="label-topic" for="topic9">Cine</label>
-                        <label class="label-topic" for="topic10">Política y sociedad</label>
-                        <label class="label-topic" for="topic11">Juegos</label>
-                        <label class="label-topic" for="topic12">Deportes</label>
-                    </div>
+                    <?php $i=0;$j=1;
+                    foreach($categorias as $key=>$m){?>
+                    <?php if($i==0){ ?>
+                        <div class="select-size align-topics">
+                        <?php } ?>
+                        
+                            <input type="checkbox" name="<?=$m['nombrecat']?>" id="<?="topic".$j?>" />
+                            <label class="label-topic" for="<?="topic".$j?>"><?=$m['nombrecat']?></label>
+                    <?php $i++;$j++;
+                    if($i==3){$i=0;?>
+                        </div>
+                    <?php }
+                        } ?>
                     
-
-                    <div class="select-size align-topics">
-                        <input type="checkbox" name="estilo" id="topic13" />
-                        <input type="checkbox" name="belleza" id="topic14" />
-                        <input type="checkbox" name="talentos" id="topic15" />
-                        <input type="checkbox" name="nutricion" id="topic16" />
-                        <input type="checkbox" name="salud" id="topic17" />
-                        <input type="checkbox" name="amor" id="topic18" />
-
-                        <label class="label-topic" for="topic13">Estilo de vida</label>
-                        <label class="label-topic" for="topic14">Belleza</label>
-                        <label class="label-topic" for="topic15">Talentos especiales</label>
-                        <label class="label-topic" for="topic16">Nutrición</label>
-                        <label class="label-topic" for="topic17">Salud</label>
-                        <label class="label-topic" for="topic18">Amor</label>
-                    </div>
-
-                    <div class="select-size align-topics">
-                        <input type="checkbox" name="humanidades" id="topic19" />
-                        <input type="checkbox" name="transporte" id="topic20" />
-                        <input type="checkbox" name="sexo" id="topic21" />
-                        <input type="checkbox" name="musica" id="topic22" />
-                        <input type="checkbox" name="turismo" id="topic23" />
-                        <input type="checkbox" name="aventura" id="topic24" />
-
-                        <label class="label-topic" for="topic19">Humanidades</label>
-                        <label class="label-topic" for="topic20">Transporte</label>
-                        <label class="label-topic" for="topic21">Sexo</label>
-                        <label class="label-topic" for="topic22">Música</label>
-                        <label class="label-topic" for="topic23">Turismo y viajes</label>
-                        <label class="label-topic" for="topic24">Aventura</label>
-                    </div>
-
-                    <div class="select-size align-topics">
-                        <input type="checkbox" name="todo" id="topic25" />
-                        <input type="checkbox" name="esoterismo" id="topic26" />
-                        <input type="checkbox" name="astrologia" id="topic27" />
-                        <input type="checkbox" name="superacion" id="topic28" />
-                        <input type="checkbox" name="finanzas" id="topic29" />
-                        <input type="checkbox" name="entrenamiento" id="topic30" />
-
-                        <label class="label-topic" for="topic25">De todo</label>
-                        <label class="label-topic" for="topic26">Esoterismo</label>
-                        <label class="label-topic" for="topic27">Astrología</label>
-                        <label class="label-topic" for="topic28">Superación</label>
-                        <label class="label-topic" for="topic29">Finanzas</label>
-                        <label class="label-topic" for="topic30">Entrenamiento</label>
-                    </div>
-
-                    <div class="select-size align-topics">
-                        <input type="checkbox" name="identidad" id="topic31" />
-                        <input type="checkbox" name="opinion" id="topic32" />
-                        <input type="checkbox" name="religion" id="topic33" />
-
-                        <label class="label-topic" for="topic31">Identidad</label>
-                        <label class="label-topic" for="topic32">Opinión</label>
-                        <label class="label-topic" for="topic33">Religión</label>
-
-
-                    </div>
-
-
+                        
+                    <!--
                     <div class="row justify-content-center mt-3">
                         <div class="search-container user-decription-black">
                             <span>Otro: </span>
@@ -152,9 +74,11 @@
                             
                         </div>
                     </div>
-
+                -->
                 </div>
-
+                    <br>
+                    <br>
+                    <br>
 
                 
                 
