@@ -34,12 +34,8 @@ class InfluencerController extends BaseController
 
     }
 
-<<<<<<< HEAD
-    
-=======
 
 
->>>>>>> main
     //CARGA LA PAGINA DE POLITICA DE PRIVACIDAD
     public function privacidad()
     {
@@ -1028,9 +1024,6 @@ class InfluencerController extends BaseController
    }
 
 
-<<<<<<< HEAD
-      
-=======
    
 
 
@@ -1326,6 +1319,5 @@ class InfluencerController extends BaseController
 
 
    
->>>>>>> main
 
 }
