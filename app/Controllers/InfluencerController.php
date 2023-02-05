@@ -26,6 +26,7 @@ class InfluencerController extends BaseController
     //CARGA LA PAGINA DEL PERFIL DEL INFLUENCER
     public function index()
     {
+        $this->logout();
         $dataHeader =['titulo' => 'Busca Influencer',
                 'mensaje'=>"",];
 
@@ -44,8 +45,6 @@ class InfluencerController extends BaseController
         $this-> _loadDefaultView($dataHeader,[],'privacidad');
 
     }
-
-
 
 
     //METODO QUE ME PERMITE CARGAR PAGINAS
@@ -98,7 +97,7 @@ class InfluencerController extends BaseController
         $rules=[
             'nombre'=>'required|min_length[4]|max_length[20]',
             'alias'=>'required|min_length[2]|max_length[20]',
-            'password'=>'required|min_length[8]|max_length[20]',
+            'password'=>'required|min_length[8]|max_length[300]',
             'correo'=>'required|valid_email',
             'pais'=>'required|max_length[50]',
             'ciudades'=>'required|max_length[50]',
@@ -115,7 +114,7 @@ class InfluencerController extends BaseController
             if($password==$passwordotro){
 
                 // Opciones de contraseña:
-                $newpass= password_hash($password, PASSWORD_DEFAULT, [15]);
+                $newpass= password_hash($password, PASSWORD_DEFAULT);
 
                 $nombreinflu= $this->request->getPost('nombre');
                 $alias= $this->request->getPost('alias');
@@ -139,8 +138,9 @@ class InfluencerController extends BaseController
                 //SE CREA EL INFLUENCER
                 $id=$influencerModel->insert($datainsertar);
                 
+                session()->set('idinfluencer',$id);
 
-                return redirect()->to("/influencer/new2/$id")->with('mensaje', 'Tu cuenta se creo con exito');
+                return redirect()->to(base_url()."/influencer/new2/$id")->with('mensaje', 'Tu cuenta se creo con exito');
 
             }else{
                 $mensaje="Los password son diferentes";
@@ -1011,6 +1011,33 @@ class InfluencerController extends BaseController
         
         session();
         $validation =  \Config\Services::validation();
+        $data=['validation'=>$validation, 
+        'influencer'=>$miInfluencer,
+        'mensaje'=>"",'correos'=>$misCorreos];
+        $dataHeader=['titulo'=>'Mis Mensajes','mensaje'=>""];
+        
+        
+        //CARGAR LA VISTA
+        $this->_loadDefaultView($dataHeader,$data,'mensajes');
+
+   }
+
+      //CARGA LA VISTA DE REGISTRO DE REDES SOCIALES
+      public function eliminarMensajes($idinfluencer=null,$id=null){
+ 
+        
+        //echo $idinfluencer." ".$id;
+
+        $influencer=new InfluencerModel();
+        $correos=new MensajeCorreoModel();
+        $miInfluencer=$influencer->find($idinfluencer);
+        $correos->delete($id);
+        $misCorreos=$correos->where(['idinfluencer'=>$idinfluencer])->OrderBy('created_at','DESC')->findAll();
+        //var_dump($misCorreos);
+        
+        session();
+        $validation =  \Config\Services::validation();
+        
         $data=['validation'=>$validation, 
         'influencer'=>$miInfluencer,
         'mensaje'=>"",'correos'=>$misCorreos];

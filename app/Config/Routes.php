@@ -55,7 +55,8 @@ $routes->group('influencer', static function ($routes) {
 $routes->get('new', 'InfluencerController::new');
 $routes->post('create', 'InfluencerController::create');
 $routes->get('edit/(:any)', 'InfluencerController::edit/$1');
-$routes->get('privacidad', 'InfluencerController::privacidad');
+
+
 $routes->post('cambiarFoto', 'InfluencerController::cambiarFoto');
 $routes->post('agregarRedSocial', 'InfluencerController::agregarRedSocial');
 $routes->post('eliminarRedes', 'InfluencerController::elminarRedes');
@@ -79,17 +80,18 @@ $routes->post('guardarRedesSociales', 'InfluencerController::guardarRedesSociale
 $routes->get('new3/(:any)', 'InfluencerController::registrofinal/$1');
 $routes->post('continuarregistro', 'InfluencerController::continuarregistro');
 $routes->get('mensajes/(:any)', 'InfluencerController::mensajesInfluencer/$1');
+$routes->get('eliminarmensaje/(:any)/(:any)', 'InfluencerController::eliminarMensajes/$1/$2');
 
-$routes->get('facebook', 'InfluencerController::facebook');
 
 });
 
 
 
-
+$routes->get('/privacidad', 'InfluencerController::privacidad');
 $routes->get('/perfil/(:any)', 'PerfilController::index/$1');
 $routes->post('/perfil/create', 'PerfilController::enviarMensajeAInfluencer');
 $routes->post('/perfil/correo', 'PerfilController::enviarCorreoLocal');
+$routes->get('/logout', 'IndexController::logout');
 
 $routes->get('busqueda', 'UsuarioController::index');
 $routes->post('busqueda/resultado', 'UsuarioController::buscarInfluencers');
@@ -97,6 +99,7 @@ $routes->post('busqueda/nuevoresultado', 'UsuarioController::nuevaBusquedaInflue
 
 $routes->get('noticia/(:any)', 'IndexController::buscarNoticia/$1');
 $routes->get('noticia/(:any)', 'IndexController::buscarNoticia/$1');
+$routes->post('/login', 'IndexController::login');
 
 $routes->get('busqueda/resultado/(:any)', 'UsuarioController::busquedaPorCategoria/$1');
 

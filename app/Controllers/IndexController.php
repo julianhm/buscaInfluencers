@@ -13,7 +13,7 @@ class IndexController extends BaseController
 {
     public function index()
     {
-        
+        $this->logout();
         $influencer = new InfluencerModel();
         $misinfluencer= $influencer-> findAll();
 
@@ -109,7 +109,7 @@ class IndexController extends BaseController
         $dataHeader =['titulo' => 'Busca Influencer',
                 'mensaje'=>"",];
 
-        //var_dump($informacioncate);
+       // var_dump(password_hash("julian123",PASSWORD_DEFAULT));
         $this-> _loadDefaultView($dataHeader,$data,'index');
 
     }
@@ -155,6 +155,40 @@ class IndexController extends BaseController
         echo view("influencer/templates/footer");
     }
 
+
+     //Realiza el login de la pagina
+     public function login()
+     {
+         $correo= $this->request->getPost('emaillogin');
+         $password= $this->request->getPost('passwordlogin');
+ 
+         $miInfluencer= new InfluencerModel();
+ 
+         $inf=$miInfluencer->select('idinfluencer,correo,password')->where('correo',$correo)->first();
+ 
+         if($inf==null){
+             return redirect()->back()->with('mensaje','Correo y/o contraseña o-incorrecta');  
+         }
+         $pass=$inf['password'];
+         if(password_verify($password,$inf['password'])){
+             $id=$inf['idinfluencer'];
+             session()->set('idinfluencer',$id);
+             return redirect()->to(base_url()."/influencer/edit/$id")->with('mensaje', 'Tu login fue correcto');
+         }
+         
+         return redirect()->back()->with('mensaje','Correo y/o contraseña o-incorrecta'); 
+ 
+     }
+ 
+ 
+     //Realiza el login de la pagina
+     public function logout(){
+       
+         session()->destroy();
+         return redirect()->to(base_url());
+     }
+ 
+ 
     
 
     

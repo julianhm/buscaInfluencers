@@ -2,10 +2,11 @@
 
 namespace Config;
 
-use CodeIgniter\Config\BaseConfig;
 use CodeIgniter\Filters\CSRF;
-use CodeIgniter\Filters\DebugToolbar;
+use App\Filters\InfluencerFilter;
 use CodeIgniter\Filters\Honeypot;
+use CodeIgniter\Config\BaseConfig;
+use CodeIgniter\Filters\DebugToolbar;
 use CodeIgniter\Filters\InvalidChars;
 use CodeIgniter\Filters\SecureHeaders;
 
@@ -21,6 +22,7 @@ class Filters extends BaseConfig
         'honeypot'      => Honeypot::class,
         'invalidchars'  => InvalidChars::class,
         'secureheaders' => SecureHeaders::class,
+        'InfluencerFilter'=>InfluencerFilter::class,
     ];
 
     /**
@@ -60,5 +62,19 @@ class Filters extends BaseConfig
      * Example:
      * 'isLoggedIn' => ['before' => ['account/*', 'profiles/*']]
      */
-    public array $filters = [];
+    public array $filters = [
+
+        'InfluencerFilter'=>[
+            'before'=>[
+                'influencer/edit/*',
+                'influencer/edit',
+                'influencer/new2',
+                'influencer/new2/*',
+                'influencer/new3/*',
+                'influencer/new3',
+
+            ]
+        ]
+
+    ];
 }

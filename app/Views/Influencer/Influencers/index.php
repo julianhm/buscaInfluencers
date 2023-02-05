@@ -2,13 +2,13 @@
 <body>
 <script src="https://code.jquery.com/jquery-3.2.1.js"></script>
 <script type="text/javascript">
-$(document).ready(function() {
-    setTimeout(function() {
-        $(".alert").fadeOut(1500);
-    },3000);
- 
+    $(document).ready(function() {
+        setTimeout(function() {
+            $(".alert").fadeOut(1500);
+        },3000);
     
-});
+        
+    });
 </script>
 
 <svg xmlns="http://www.w3.org/2000/svg" style="display: none;">
@@ -29,17 +29,21 @@ $(document).ready(function() {
     An example alert with an icon
   </div> -->
 </div>
-<?php if($mensaje!=""){  ?>
+ <!--MENSAJES FLASH-->
+ <?php if(session('mensaje')!=""){  ?>
     <div class="alert alert-success d-flex align-items-center" role="alert">
 
-<svg class="bi flex-shrink-0 me-2" width="24" height="24" role="img" aria-label="Success:"><use xlink:href="#check-circle-fill"/></svg>
-<div>
-  <?php echo $mensaje; ?>
-  
-</div>
+        <svg class="bi flex-shrink-0 me-2" width="24" height="24" role="img" aria-label="Success:"><use xlink:href="#check-circle-fill"/></svg>
+        <div>
+        <?php echo session('mensaje'); ?>
+        
+        </div>
 
-</div>
-<?php } ?>
+        </div>
+    <?php } ?>
+
+   
+    <!-- Header End -->
 
 <!--
 <div class="alert alert-warning d-flex align-items-center" role="alert">
@@ -275,18 +279,18 @@ $(document).ready(function() {
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
                 <div class="modal-body ">
-                    <form class="user-decription-black" action="/edit">
+                    <form class="user-decription-black" action="login" method="POST">
                         <div class="mb-3">
-                            <label for="exampleInputEmail1" class="text-center user-decription-black" style="font-weight: bold; display: block;">USUARIO</label>
-                            <input type="email" class="input-redes" id="exampleInputEmail1" aria-describedby="emailHelp" placeholder="correo electrónico o alias">
+                            <label for="exampleInputEmail1" class="text-center user-decription-black" style="font-weight: bold; display: block;">CORREO</label>
+                            <input type="email" class="input-redes" id="emaillogin" name="emaillogin" aria-describedby="emailHelp" placeholder="correo electrónico">
                     
                         </div>
                         <div class="mb-3">
                             <label for="exampleInputPassword1" class="text-center user-decription-black" style="font-weight: bold; display: block;">CONTRASEÑA</label>
-                            <input type="password" class="input-redes" id="exampleInputPassword1" placeholder="Contraseña">
+                            <input type="password" class="input-redes" id="passwordlogin" name="passwordlogin" placeholder="Contraseña">
                         </div>
 
-                        <input type="submit" class="btn btn-ingresar user-decription btn-lg" style="border-radius: 50px; width: 100%;">INGRESAR</input>
+                        <input type="submit" class="btn btn-ingresar user-decription btn-lg" style="border-radius: 50px; width: 100%;"></input>
 
                     </form>
                 </div>
