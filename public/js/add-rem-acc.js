@@ -230,7 +230,16 @@ function viewMessage() {
 }
 
 function onload(event) {
-     
+    //Organiza el footer en caso que la pagina sea corta
+    //The scrollHeight property returns the height of an element including padding, but excluding borders, scrollbars, or margins. including what is not viewable
+    //The innerHeight property returns the height of a window's content area.
+    //if both are the same send footer to bottom
+    if (window.innerHeight == document.documentElement.scrollHeight) {
+        document.getElementById("footer").style.position = "absolute";
+        document.getElementById("footer").style.bottom = "0";
+        document.getElementById("footer").style.left = "8%";
+        document.getElementById("footer").style.right = "8%";
+    }
     //Disable all options in the "smSelect", which are already in use
     for (var i = 0; i < 20; i++) {
         if (document.getElementById("sm_"+i)) {
@@ -259,6 +268,7 @@ function onload(event) {
 window.addEventListener("load", onload, false); 
 
 // Tag Cloud Mi Perfil
+/*
 $('#tagcloud a').tagcloud();
 $('#tagcloud a').tagcloud({
     size: {
@@ -270,4 +280,4 @@ $('#tagcloud a').tagcloud({
       start: '#606060',
       end: '#000000'
     }
-  });
+  });*/

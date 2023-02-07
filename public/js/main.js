@@ -1,6 +1,6 @@
 
 (function ($) {
-    //hide the header when the user starts to scroll the page.
+    /* When the user scrolls down, hide the header. When the user scrolls up, show the header */
     var prevScrollpos = window.pageYOffset;
     window.onscroll = function() {
         var currentScrollPos = window.pageYOffset;
@@ -9,8 +9,11 @@
         } else {
             document.getElementById("header").style.top = "-120px";
         }
-        prevScrollpos = currentScrollPos;
+        
+        
     }
+    
+
     
    
     
@@ -27,8 +30,10 @@
         return false;
     });
 
+
     
 })(jQuery);
+
 
 
 

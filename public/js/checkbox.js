@@ -9,13 +9,35 @@ $("body").on("click", "label", function(e) {
 
 //funcion para habilitar o desabilitar los inputs de las redes sociales
 function smInputState(checkbox_id, input_id) {
-	console.log("sale "+checkbox_id+" y "+input_id);
-	if ($('#'+checkbox_id).is(':checked')) {
-		$('#'+input_id).removeClass('disable-sm-input');
-		$('#'+input_id).prop('disabled', false);
-	} else {
-		$('#'+input_id).prop('disabled', true);
-    	$('#'+input_id).val('');
-    	$('#'+input_id).addClass('disable-sm-input');
-  	}    
+	//console.log("checkbox_id "+checkbox_id+" input_id "+input_id);
+			
+	$(".chb").change(function()
+	{
+		//the checkbox is unchecked add the properties to the input
+		$(".chb").prop('checked',false);
+		$(".inp").val('');
+		$(".inp").prop('disabled', true);
+		$(".inp").addClass('disable-sm-input');
+
+		//check the box and enable the input
+		$(this).prop('checked',true);
+		$('#'+this.value).removeClass('disable-sm-input');
+		$('#'+this.value).prop('disabled', false);
+	});
+ 
 }
+
+
+/*
+$(function(){
+    $(".container .form-check-input").change(function(){
+		console.log("yyup");
+        $(this).siblings().attr("disabled", $(this).is(":checked"));  
+    });
+});
+
+
+var selected = [];
+$('#container input:checked').each(function() {
+    selected.push($(this).attr('name'));
+});*/

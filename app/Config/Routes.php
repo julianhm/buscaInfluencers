@@ -112,6 +112,8 @@ $routes->post('/crear', 'EnsayoController::crear');
 
 
 
+
+
 $routes->group('dashboard', static function ($routes) {
     $routes->get('/', 'dashboard\DashboardController::index');
     $routes->get('influencers', 'dashboard\DashboardController::influencers',['as'=>'influencerdash']);
