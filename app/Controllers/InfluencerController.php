@@ -22,15 +22,11 @@ use App\Models\InfluencerCategoriaModel;
 
 class InfluencerController extends BaseController
 {
-
+    
     //CARGA LA PAGINA DEL PERFIL DEL INFLUENCER
     public function index()
     {
-<<<<<<< HEAD
-
-=======
         $this->logout();
->>>>>>> 81688cfd9cd066e64da45276da214b929c63a93c
         $dataHeader =['titulo' => 'Busca Influencer',
                 'mensaje'=>"",];
 

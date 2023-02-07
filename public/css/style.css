@@ -600,6 +600,7 @@ a:hover {
     color: #222;
 }
 
+
 .form-check-input:checked {
     background-color: #000000;
 }
@@ -610,7 +611,7 @@ a:hover {
 
 
 .form-check-input:focus {
-    border-color: ##cbcbcb;
+    border-color: #cbcbcb;
     outline: 0;
     box-shadow: 0 0 0 0.25rem rgb(145 145 145 / 25%);
 }
