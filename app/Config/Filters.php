@@ -72,6 +72,8 @@ class Filters extends BaseConfig
                 'influencer/new2/*',
                 'influencer/new3/*',
                 'influencer/new3',
+                'influencer/mensajes/*',
+
 
             ]
         ]

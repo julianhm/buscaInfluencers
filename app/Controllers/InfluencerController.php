@@ -191,12 +191,13 @@ class InfluencerController extends BaseController
 
         //CREACION DE REDES SOCIALES EN LA BASE DE DATOS
         $mensaje=$this->_crearRedesSociales($id);
-        if($mensaje==""){
+
+        if($mensaje!=""){
             //CARGAR LA VISTA
-            return redirect()->to("/influencer/new3/$id")->with('mensaje', 'Tus redes se agregaron correctamente');
+            return redirect()->to("/influencer/new3/$id")->with('mensaje', $mensaje);
 
         }else{
-            return redirect()->back()->with('mensaje', $mensaje);
+            return redirect()->back()->with('mensaje', 'ocurrio un error al crear tu red');
         }
    
         
@@ -1096,6 +1097,8 @@ class InfluencerController extends BaseController
     foreach ($redesSociales as $key => $m) {
         
         $nombre= $this->request->getPost($m['idredes']);
+                    //var_dump($nombre);
+
         if(!($nombre=="" || $nombre==null)){
             $miArray=['idinfluencer'=>$id,'idredes'=>$m['idredes']];
             $obj=$influencerredesmodel->where($miArray)->findAll();
@@ -1110,11 +1113,11 @@ class InfluencerController extends BaseController
                     return "Se actualizo correctamente la red social";
                 }
             }else{
-                return "Se generó un error al buscar la cantidad de usuarios de ".$m['nombre'].", verifica tu nombre de Usuario";
+                return "";
             }
             
         }else{
-            return "Se debe agregar un nombre de Usuario";
+            return "";
         }
 
 

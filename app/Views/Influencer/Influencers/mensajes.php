@@ -1,3 +1,6 @@
+<?php if(session()->get('idinfluencer')!=$influencer['idinfluencer']){
+            return redirect()->to("/")->with('mensaje', 'Error de Validación');
+        } ?>
 
 
      <!-- Content Mi Perfil Start -->
