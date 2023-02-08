@@ -206,48 +206,11 @@
                 </div>
 
 
-                <div class="d-flex justify-content-center user-decription-black">
-                    <div class="btn-register">
-                        <div class="row align-privacy">
-                            <div class="col-lg-1" >
-                            <input class="form-check-input" type="checkbox" value="" id="terminoscheck" name="terminoscheck">
-                        </div>
-                        <div class="col-lg-8 align-privacy-text">
-                            AUTORIZO de manera previa, expresa,<br> 
-                        informada y explícita, a WD Studios Corp, para <br>el uso y tratamiento de mis datos.
-                        </div>
-                        </div>
-                    </div>
-                </div>
-
-                <script>
-                    var miCheckbox = document.getElementById('terminoscheck');
-                    var boton = document.getElementById('submit');
-                    miCheckbox.addEventListener('change', function(){
-                        if(miCheckbox.checked){
-                            document.getElementById('submit').disabled=false;
-                        }else{
-                            document.getElementById('submit').disabled=true;
-                        }
-                        
-                       
-                    });
-                </script>
-
-               <div class="d-flex justify-content-center user-decription-black my-4">
-                    <div>
-                        <img src=<?php echo base_url('img/doc.png')?>>
-                    </div>
-                    <div style="padding: 10px;">
-                        <a style="color: #000; text-decoration: underline;" href="/privacidad" target="_blank">Ver documento</a>
-                    </div>
-   
-                </div>
                                   
 
                 <div class="d-flex justify-content-center mb-4">
                     <div class="btn-register">
-                        <input type="submit" name="submit" id="submit"class="btn btn-login btn-lg btn-register-width user-decription-black" style="font-size: 20px;" value= "¡REGISTRARME!" disabled="true"/>
+                        <input type="submit" name="submit" id="submit"class="btn btn-login btn-lg btn-register-width user-decription-black" style="font-size: 20px;" value= "¡REGISTRARME!"/>
                        <!-- data-bs-dismiss="modal" data-bs-toggle="modal" data-bs-target="#confirmation-modal"-->
                     </div>
                 </div>

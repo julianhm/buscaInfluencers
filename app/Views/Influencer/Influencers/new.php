@@ -188,7 +188,7 @@
                                 <img src=<?php echo base_url('img/doc.png')?>>
                             </div>
                             <div style="padding: 10px;">
-                                <a style="color: #000; text-decoration: underline;" href="privacidad" target="_blank">Ver documento</a>
+                                <a style="color: #000; text-decoration: underline;" href="/privacidad" target="_blank">Ver documento</a>
                             </div>
            
                         </div>
