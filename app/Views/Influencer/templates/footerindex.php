@@ -9,27 +9,27 @@
                 </a>
             </div>
             <div class="col">
-                <a href="nosotros-2.html">
+                <a href="<?=base_url('statement')?>">
                     Statement
                 </a>
             </div>
             <div class="col">
-                <a href="terminos.html">
-                    Políticas de uso
+                <a href="<?=base_url('aviso-de-privacidad')?>">
+                    Aviso de privacidad
                 </a>
             </div>
             <div class="col">
-                <a href="privacidad.html">
+                <a href="<?=base_url('politica-de-tratamiento-de-datos')?>">
                     Política de tratamiento de datos
                 </a>
             </div>
             <div class="col">
-                <a href="cookies.html">
-                    Política de Cookies
+                <a href="<?=base_url('terminos-y-condiciones')?>">
+                    Términos y condiciones
                 </a>
             </div>
             <div class="col">
-                <a href="mailto:contactobinf@buscoinfluencers.com">
+                <a href="mailto:soporte@buscoinfluencers.com">
                     Contacto
                 </a>
             </div>

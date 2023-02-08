@@ -123,6 +123,42 @@ class IndexController extends BaseController
 
     }
 
+    // FOOTER STATEMENT LINK
+    public function statement(){
+        $dataHeader =['titulo' => 'Nuestro “statement”',
+                'mensaje'=>"",];
+        echo view("influencer/templates/header",$dataHeader);
+        echo view("influencer/usuarios/nosotros-2");
+        echo view("influencer/templates/footerindex");
+    }
+
+    // FOOTER AVISO DE PRIVACIDAD LINK
+    public function privacidad(){
+        $dataHeader =['titulo' => 'Aviso privacidad',
+                'mensaje'=>"",];
+        echo view("influencer/templates/header",$dataHeader);
+        echo view("influencer/usuarios/aviso-de-privacidad");
+        echo view("influencer/templates/footerindex");
+    }
+
+    // FOOTER POLITICA DE TRATAMIENTO DE DATOS LINK
+    public function politica(){
+        $dataHeader =['titulo' => 'Política de tratamiento de datos',
+                'mensaje'=>"",];
+        echo view("influencer/templates/header",$dataHeader);
+        echo view("influencer/usuarios/politica-de-tratamiento-de-datos");
+        echo view("influencer/templates/footerindex");
+    }
+
+    // FOOTER POLITICA DE TRATAMIENTO DE DATOS LINK
+    public function terminos(){
+        $dataHeader =['titulo' => 'Términos y condiciones',
+                'mensaje'=>"",];
+        echo view("influencer/templates/header",$dataHeader);
+        echo view("influencer/usuarios/terminos-y-condiciones");
+        echo view("influencer/templates/footerindex");
+    }
+
 
     public function buscarNoticia($id=null)
     {
