@@ -44,9 +44,8 @@
             </div>
             <div class="col">
                 <div style="margin-right: 13%; text-align: right;">
-                    <img class="footer-img-logos-sm" src="img/f_tiktok.png" >
-                    <img class="footer-img-logos-sm" src="img/f_ig.png" >
-                    <img class="footer-img-logos-sm" src="img/f_ello.png" >
+                    <a href="https://www.tiktok.com/@binfluencers"><img class="footer-img-logos-sm" src="img/f_tiktok.png" ></a>
+
                 </div>
             </div>
         </div>
