@@ -50,6 +50,11 @@ $routes->set404Override();
 $routes->get('/', 'IndexController::index');
 
 
+$routes->get('/statement', 'IndexController::statement');
+$routes->get('/aviso-de-privacidad', 'IndexController::privacidad');
+$routes->get('/politica-de-tratamiento-de-datos', 'IndexController::politica');
+$routes->get('/terminos-y-condiciones', 'IndexController::terminos');
+
 $routes->group('influencer', static function ($routes) {
 
 $routes->get('new', 'InfluencerController::new');

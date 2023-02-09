@@ -5,7 +5,7 @@
     <div class="container">
         <div class="row">
             <div class="text-center user-decription-black" >
-                <div class="col-lg-12 my-3">
+                <div class="col-lg-12 my-3" style="text-align: justify; text-justify: inter-word;">
                                         
                     <div class="row">
                         <div class="col-2">

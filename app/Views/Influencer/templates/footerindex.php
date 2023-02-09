@@ -9,27 +9,27 @@
                 </a>
             </div>
             <div class="col">
-                <a href="nosotros-2.html">
+                <a href="<?=base_url('statement')?>">
                     Statement
                 </a>
             </div>
             <div class="col">
-                <a href="terminos.html">
-                    Políticas de uso
+                <a href="<?=base_url('aviso-de-privacidad')?>">
+                    Aviso de privacidad
                 </a>
             </div>
             <div class="col">
-                <a href="privacidad.html">
+                <a href="<?=base_url('politica-de-tratamiento-de-datos')?>">
                     Política de tratamiento de datos
                 </a>
             </div>
             <div class="col">
-                <a href="cookies.html">
-                    Política de Cookies
+                <a href="<?=base_url('terminos-y-condiciones')?>">
+                    Términos y condiciones
                 </a>
             </div>
             <div class="col">
-                <a href="mailto:contactobinf@buscoinfluencers.com">
+                <a href="mailto:soporte@buscoinfluencers.com">
                     Contacto
                 </a>
             </div>
@@ -44,9 +44,8 @@
             </div>
             <div class="col">
                 <div style="margin-right: 13%; text-align: right;">
-                    <img class="footer-img-logos-sm" src="img/f_tiktok.png" >
-                    <img class="footer-img-logos-sm" src="img/f_ig.png" >
-                    <img class="footer-img-logos-sm" src="img/f_ello.png" >
+                    <a href="https://www.tiktok.com/@binfluencers"><img class="footer-img-logos-sm" src="img/f_tiktok.png" ></a>
+
                 </div>
             </div>
         </div>
