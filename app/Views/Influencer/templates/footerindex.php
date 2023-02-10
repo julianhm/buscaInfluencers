@@ -1,6 +1,6 @@
 
     <!-- Footer Start -->
-    <div class="container donar-decription-black pb-3" >
+    <div id="footer" class="container donar-decription-black pb-3" >
         <hr class="footer-black-line">
         <div class="row pt-2 pb-3 text-center">
             <div class="col">
