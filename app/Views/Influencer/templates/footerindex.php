@@ -37,15 +37,20 @@
         <div class="row">
             <div class="col">
                 <div style="margin-left: 13%">
-                    <img class="footer-img-logos-sm" src="img/f_wd.png" >
-                    <img class="footer-img-logos-sm" src="img/f_palma.png" >
+                    <a href="https://wd-studios.com" target="_blank">
+                        <img class="footer-img-logos-sm" src=<?php echo base_url('img/f_wd.png')?> >
+                    </a>
+                    <a href="https://palmadecera.net" target="_blank">
+                        <img class="footer-img-logos-sm" src=<?php echo base_url('img/f_palma.png')?> >
+                    </a>
                 </div>
                 
             </div>
             <div class="col">
                 <div style="margin-right: 13%; text-align: right;">
-                    <a href="https://www.tiktok.com/@binfluencers"><img class="footer-img-logos-sm" src="img/f_tiktok.png" ></a>
-
+                    <a href="https://www.tiktok.com/@binfluencers">
+                        <img class="footer-img-logos-sm" src=<?php echo base_url('img/f_tiktok.png')?> >
+                    </a>
                 </div>
             </div>
         </div>
