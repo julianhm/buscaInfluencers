@@ -1416,6 +1416,7 @@ class InfluencerController extends BaseController
    }
 
    public function twitch($twitch){
+
    
     $curl = curl_init();
 
@@ -1436,6 +1437,7 @@ class InfluencerController extends BaseController
     
     $result = curl_exec($curl);
     $r= (array)json_decode($result,true);
+    var_dump($r);
     $err = curl_error($curl);
     
     curl_close($curl);
