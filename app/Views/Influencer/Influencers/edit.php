@@ -482,12 +482,13 @@
                     </div>
                     <form action="/influencer/agregarRedSocial" method="POST" class="register-form pt-2" id="agregarRedSocial" name="agregarRedSocial" enctype="multipart/form-data">
                         <input type="hidden" id="influencerid1" name="influencerid1" value="<?=$influencer['idinfluencer']?>">
-                        <div class="col mt-4">
+                        <div class="col mt-4"> 
                             <select id="redessocialesagregar" name="redessocialesagregar" class="form-select select-sm-profile" aria-label="Default select example">
                                 <option selected disabled>Selecciona la red social</option>
-                                <?php foreach ($redesNoUsadas as $key => $m) {?>
+                                <?php if(count($redesNoUsadas)>0){
+                                foreach ($redesNoUsadas as $key => $m) {?>
                                     <option value="<?=$m['idredes']?>"><?=$m['nombre']?></option>
-                                <?php }?>
+                                <?php }}?>
                                 
                             
                             </select>
