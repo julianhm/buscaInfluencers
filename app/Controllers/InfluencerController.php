@@ -26,7 +26,7 @@ class InfluencerController extends BaseController
     //CARGA LA PAGINA DEL PERFIL DEL INFLUENCER
     public function index()
     {
-        $this->logout();
+        //$this->logout();
         $dataHeader =['titulo' => 'Busca Influencer',
                 'mensaje'=>"",];
 
@@ -1080,9 +1080,10 @@ class InfluencerController extends BaseController
         if($influ!=null){
             $tokens=bin2hex(openssl_random_pseudo_bytes(16));
             $data=['tokens'=>$tokens];
-            var_dump($tokens);
+            //var_dump($tokens);
             $id=$influ['idinfluencer'];
             $paso=$influencer->update($id,$data);
+            $this->_enviarCorreo($influ['correo'],$tokens,$influ['idinfluencer']);
             
             return redirect()->to("/")->with('mensaje', 'Revisa la bandeja de entrada de tu correo.');
   
@@ -1095,6 +1096,67 @@ class InfluencerController extends BaseController
 
    }
 
+
+   private function _enviarCorreo($correo,$tokens,$id){
+     
+    $email = \Config\Services::email();
+
+    $email->setFrom("noreply@buscoinfluencer.com", 'WD STUDIO CORP');
+    $email->setTo($correo);
+    
+
+    $email->setSubject("Restablecimiento de Contraseña");
+    $cuerpo = base_url()."/respassword/".$tokens."/".$id;
+    $email->setMessage($cuerpo);
+
+    $email->send();
+   
+    
+}
+
+    public function restablecerClave($token=null,$id=null){
+      
+        $influencer = new InfluencerModel();
+        $inf=$influencer->find($id);
+
+      if($inf['tokens']==$token){
+        $dataHeader=['titulo'=>'Restaurar tu Contraseña','mensaje'=>""];
+        $data=['influencer'=>$inf];
+
+          //CARGAR LA VISTA
+          $this->_loadDefaultView($dataHeader,$data,'restaurarpass');
+
+      }else{
+        return redirect()->to("/")->with('mensaje', 'Tokens Invalido');
+  
+      }
+
+    }
+
+
+    public function actualizarClave(){
+      
+        $influencer = new InfluencerModel();
+
+        $pass=$this->request->getPost('passwordrestaurado');
+        $newpass=$this->request->getPost('passwordrestauradover');
+        $id=$this->request->getPost('idinflu');
+        var_dump($pass);
+        if($pass==$newpass){
+            
+            $inf=$influencer->find($id);
+            $mipass= password_hash($pass, PASSWORD_DEFAULT);
+            $datos=['tokens'=>"",
+            'password'=>$mipass];
+            $influencer->update($id,$datos);
+            return redirect()->to("/")->with('mensaje', 'La clave se restauró correctamente');
+
+        }else{
+            return redirect()->back()->with('mensaje', 'Las claves no son iguales');
+        }
+
+
+    }
 
    
 

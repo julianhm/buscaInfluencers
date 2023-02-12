@@ -96,6 +96,8 @@ $routes->get('privacidad', 'InfluencerController::privacidad');
 $routes->get('olvido', 'InfluencerController::olvidoClave');
 $routes->post('enviartokens', 'InfluencerController::enviarTokens');
 $routes->get('/perfil/(:any)', 'PerfilController::index/$1');
+$routes->get('/respassword/(:any)/(:any)', 'InfluencerController::restablecerClave/$1/$2');
+$routes->post('/restaurarpassword', 'InfluencerController::actualizarClave');
 $routes->post('/perfil/create', 'PerfilController::enviarMensajeAInfluencer');
 $routes->post('/perfil/correo', 'PerfilController::enviarCorreoLocal');
 $routes->get('/logout', 'IndexController::logout');
