@@ -15,7 +15,7 @@ class InfluencerModel extends Model
     //protected $returnType     = 'array';
     //protected $useSoftDeletes = true;
 
-    protected $allowedFields = ['nombreinflu', 'alias','password', 'correo', 'foto_perfil','resenia','usuario','video','reputacion','oferta','idciudad','created_at'];
+    protected $allowedFields = ['nombreinflu', 'alias','password', 'correo', 'foto_perfil','resenia','usuario','video','reputacion','oferta','idciudad','created_at','tokens'];
 
     protected $useTimestamps = true;
     protected $createdField  = 'created_at';

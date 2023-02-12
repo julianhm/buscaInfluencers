@@ -133,6 +133,7 @@ class InfluencerController extends BaseController
                     'usuario' => $correo,
                     'foto_perfil'=>$archivofoto,
                     'idciudad'=>$ciudad,
+                    'tokens'=>"",
                 ];
 
                 //SE CREA EL INFLUENCER
@@ -150,6 +151,10 @@ class InfluencerController extends BaseController
             }
             
         }
+        $validation =  \Config\Services::validation();
+        $mensaje=$validation->listErrors();
+                session();
+                $_SESSION['mensaje'] = $mensaje;
       return redirect()->back()->withinput();
    }
 
@@ -1047,6 +1052,46 @@ class InfluencerController extends BaseController
         
         //CARGAR LA VISTA
         $this->_loadDefaultView($dataHeader,$data,'mensajes');
+
+   }
+
+     //CARGA LA VISTA DE OLVIDO CLAVE
+     public function olvidoClave(){
+        
+        $data=[];
+        $dataHeader=['titulo'=>'Olvido Clave','mensaje'=>""];
+        
+        
+        //CARGAR LA VISTA
+        $this->_loadDefaultView($dataHeader,$data,'olvidoClave');
+
+   }
+
+    //GUARDA EN BASE DE DATOS UN TOKENS Y ENVIA UN EMAIL
+    public function enviarTokens(){
+        
+        $mail=$this->request->getPost('correorestaurar');
+        //var_dump($mail);
+        $influencer=new InfluencerModel();
+        $mensaje="";
+
+        $influ= $influencer->where('correo',$mail)->first();
+
+        if($influ!=null){
+            $tokens=bin2hex(openssl_random_pseudo_bytes(16));
+            $data=['tokens'=>$tokens];
+            var_dump($tokens);
+            $id=$influ['idinfluencer'];
+            $paso=$influencer->update($id,$data);
+            
+            return redirect()->to("/")->with('mensaje', 'Revisa la bandeja de entrada de tu correo.');
+  
+        }else{
+            
+            return redirect()->back()->with('mensaje', 'El correo no se encontró en la base de datos.');
+  
+        }
+
 
    }
 

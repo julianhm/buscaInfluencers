@@ -56,6 +56,10 @@ class Influencers extends Migration
                 'constraint'     => 5,
                 'unsigned'       => true,
                 'null' => true,
+            ],'tokens'=>[
+                'type' => 'VARCHAR',
+                'constraint' => '300',
+                
             ], 'created_at'=>[
                 'type' => 'VARCHAR',
                 'constraint' => '300',

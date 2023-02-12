@@ -209,6 +209,7 @@ class IndexController extends BaseController
          if(password_verify($password,$inf['password'])){
              $id=$inf['idinfluencer'];
              session()->set('idinfluencer',$id);
+             session()->set('time',time());
              return redirect()->to(base_url()."/influencer/edit/$id")->with('mensaje', 'Tu login fue correcto');
          }
          

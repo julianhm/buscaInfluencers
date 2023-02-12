@@ -26,6 +26,10 @@ class RedesSociales extends Migration
                 'type'       => 'INT',
                 'constraint'     => 5,
                 'unsigned'       => true,
+            ],'url' => [
+                'type'       => 'VARCHAR',
+                'constraint' => '2000',
+                'null' => false,
             ],
         ]);
         $this->forge->addKey('idredes', true);

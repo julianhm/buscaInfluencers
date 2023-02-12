@@ -1,6 +1,11 @@
 <?php if(session()->get('idinfluencer')!=$influencer['idinfluencer']){
             return redirect()->to(base_url())->with('mensaje', 'Error de Validación');
-        } ?>
+        }else if ((time() - session()->get('time')) > 3600){
+            session_destroy();
+        }?>
+
+
+
 
      <!-- Content Mi Perfil Start -->
   

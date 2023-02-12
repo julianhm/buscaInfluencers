@@ -296,7 +296,7 @@
                 </div>
                 <div class="modal-footer user-decription-black" style="font-weight: bold; ">
                     
-                    <a style="color: #000;" href="">¿Olvidaste tu contraseña?</a>
+                    <a style="color: #000;" href="olvido">¿Olvidaste tu contraseña?</a>
                 </div>
             </div>
         </div>

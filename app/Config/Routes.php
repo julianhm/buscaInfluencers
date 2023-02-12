@@ -93,6 +93,8 @@ $routes->get('eliminarmensaje/(:any)/(:any)', 'InfluencerController::eliminarMen
 
 
 $routes->get('privacidad', 'InfluencerController::privacidad');
+$routes->get('olvido', 'InfluencerController::olvidoClave');
+$routes->post('enviartokens', 'InfluencerController::enviarTokens');
 $routes->get('/perfil/(:any)', 'PerfilController::index/$1');
 $routes->post('/perfil/create', 'PerfilController::enviarMensajeAInfluencer');
 $routes->post('/perfil/correo', 'PerfilController::enviarCorreoLocal');

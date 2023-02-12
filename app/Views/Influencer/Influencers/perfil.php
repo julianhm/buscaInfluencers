@@ -9,12 +9,15 @@
         </div>
 
         <div class="row text-center" style="padding: 0 10%;">
-        <?php  for ($i=0; $i < count($redes) ; $i++) { ?>
+       
+        <?php  for ($i=0; $i < count($redes) ; $i++) { 
+            if($arregloredes[$i]['activa']!=0){
+            ?>
 
         
             <div class="col">
                 <div class="row">
-                    <a class="profile-sm-logo" style="cursor:pointer" href="#" ><img src=<?php echo base_url('img/iconos')."/".$arregloredes[$i]['icono'] ?>></a>
+                    <a class="profile-sm-logo" style="cursor:pointer" href="<?php if($arregloredes[$i]['url']!=null){echo $arregloredes[$i]['url'].$redes[$i]['user'];}else{echo "#";}?>" target="_blank" ><img src=<?php echo base_url('img/iconos')."/".$arregloredes[$i]['icono'] ?>></a>
                 </div>
                 <div class="row mt-2">
                     <h3 class="profile-followers"><?php echo $redes[$i]['cant_seguidores'] ?></h3>
@@ -24,7 +27,8 @@
                 </div>
             </div>
 
-            <?php } ?>
+            <?php } 
+        }?>
 
            
         </div>

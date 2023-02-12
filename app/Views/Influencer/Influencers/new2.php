@@ -1,8 +1,9 @@
 
-    <?php if(session()->get('idinfluencer')!=$influencer['idinfluencer']){
-        return redirect()->to(base_url())->with('mensaje', 'Error de Validación');
-    }
-        //var_dump($influencer['idinfluencer']."OTRO"); ?>
+        <?php if(session()->get('idinfluencer')!=$influencer['idinfluencer']){
+            return redirect()->to(base_url())->with('mensaje', 'Error de Validación');
+        }else if ((time() - session()->get('time')) > 3600){
+            session_destroy();
+        }?>
 
 
    
