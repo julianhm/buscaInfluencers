@@ -88,6 +88,7 @@
          <!-- Upload images - video -->
          <script src=<?php echo base_url("js/upload.img.js")?>></script>
     <script src=<?php echo base_url("js/add-rem-acc.js")?>></script>
+    <script src=<?php echo base_url("js/lightbox.min.js")?>></script>
     
     <!-- rating.js file -->
     <script src=<?php echo base_url("js/star-rating.js")?>></script>

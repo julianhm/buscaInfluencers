@@ -80,8 +80,9 @@
 
 
         <div class="d-flex justify-content-center flex-wrap">
+            
             <?php foreach ($misfotos as $key => $m) {?>
-                <a class="gallery-profile-show-margin" href="img/gal1.jpg" data-lightbox="photos">
+                <a class="gallery-profile-show-margin" href="<?php echo base_url('uploads')."/".$m['url']?>" data-lightbox="photos">
                 <div class="gallery-profile-show">
                     <img class="upload-gal-img" src="<?php echo base_url('uploads')."/".$m['url']?>">
                 </div>
