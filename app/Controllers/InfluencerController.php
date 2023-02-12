@@ -1197,10 +1197,17 @@ class InfluencerController extends BaseController
         
     }
 
-
+    function write_to_console($data) {
+        $console = $data;
+        if (is_array($console))
+        $console = implode(',', $console);
+       
+        echo "<script>console.log('Console: " . $console . "' );</script>";
+    }
 
 
    private function _crearRedesSociales($id){
+    $this->write_to_console("llegue");
     $redesmodel=new RedesModel();
     $influencerredesmodel=new InfluencersRedesModel();
     $redesSociales= $redesmodel->where('activa',1)->findAll();
@@ -1208,14 +1215,14 @@ class InfluencerController extends BaseController
     foreach ($redesSociales as $key => $m) {
         
         $nombre= $this->request->getPost($m['idredes']);
-                    //var_dump($nombre);
+        
 
         if(!($nombre=="" || $nombre==null)){
             $miArray=['idinfluencer'=>$id,'idredes'=>$m['idredes']];
             $obj=$influencerredesmodel->where($miArray)->findAll();
-            //var_dump($obj);
+            
             $r=$this->buscarSeguidoresAPI($m['idredes'],$nombre);
-            var_dump($r);
+            
             if($r!=0){
                 if($obj==null){
                     $influencerredesmodel->insert(['idinfluencer'=>$id,'idredes'=>$m['idredes'],'user'=>$nombre,'cant_seguidores'=>$r]);
@@ -1235,7 +1242,7 @@ class InfluencerController extends BaseController
 
 
     }
-    return "";
+    return false;
     
 }
 
