@@ -52,7 +52,7 @@
                                                     <div class="form-check">
                                                         
                                                         <input class="form-check-input chb" type="checkbox" value="<?=$m['idredes']?>" id="<?=$m['nombre']?>" onclick="smInputState('<?=$m['nombre']?>', '<?=$m['idredes']?>')">
-                                                    </div>
+                                                      </div>
                                                 </div>
                                                 <div class="col-md-auto logo-sm-align">
                                                     <img src='<?=base_url('img/iconos')."/".$m['icono']?>' >
@@ -83,6 +83,7 @@
             </div>
         </div>
     </div>
+
 
     <!-- Modal Confirmación Registro Start -->
     <div class="modal fade" id="confirmation-modal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
