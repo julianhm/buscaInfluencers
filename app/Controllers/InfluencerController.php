@@ -183,31 +183,7 @@ class InfluencerController extends BaseController
 
 
 
-    //SE GUARDAN LAS REDES SOCIALES
-    public function guardarRedesSociales(){
-        
-        $id=$this->request->getPost('influencerid3');
-
-        $influencerModel=new InfluencerModel();
-
-        //SE BUSCA EL INFLUENCER en BD
-        $ide=$influencerModel->find($id);
-        
-
-        //CREACION DE REDES SOCIALES EN LA BASE DE DATOS
-        $mensaje=$this->_crearRedesSociales($id);
-
-        if($mensaje!=""){
-            //CARGAR LA VISTA
-            return redirect()->to("/influencer/new3/$id")->with('mensaje', $mensaje);
-
-        }else{
-            return redirect()->back()->with('mensaje', 'ocurrio un error al crear tu red');
-        }
    
-        
-    }
-
 //SE CARGA LA VISTA FINAL DEL REGISTRO
     public function registrofinal($id=null){
 
@@ -1196,6 +1172,34 @@ class InfluencerController extends BaseController
     }
 
 
+     //SE GUARDAN LAS REDES SOCIALES
+     public function guardarRedesSociales(){
+        
+        $id=$this->request->getPost('influencerid3');
+
+        $influencerModel=new InfluencerModel();
+
+        //SE BUSCA EL INFLUENCER en BD
+        $ide=$influencerModel->find($id);
+        
+
+        //CREACION DE REDES SOCIALES EN LA BASE DE DATOS
+        $creo=$this->_crearRedesSociales($id);
+
+        if($creo){
+            //CARGAR LA VISTA
+            return redirect()->to("/influencer/new3/$id")->with('mensaje', "Su red Social se Agregó correctamente");
+
+        }else{
+            return redirect()->back()->with('mensaje', 'ocurrio un error al crear tu red');
+        }
+   
+        
+    }
+
+
+
+
    private function _crearRedesSociales($id){
     $redesmodel=new RedesModel();
     $influencerredesmodel=new InfluencersRedesModel();
@@ -1211,20 +1215,22 @@ class InfluencerController extends BaseController
             $obj=$influencerredesmodel->where($miArray)->findAll();
             //var_dump($obj);
             $r=$this->buscarSeguidoresAPI($m['idredes'],$nombre);
+            var_dump($r);
             if($r!=0){
                 if($obj==null){
                     $influencerredesmodel->insert(['idinfluencer'=>$id,'idredes'=>$m['idredes'],'user'=>$nombre,'cant_seguidores'=>$r]);
-                    return "Se creo correctamente la red social";
+                    return true;
                 } else{
                     $influencerredesmodel->update($obj[0]['id'],['cant_seguidores'=>$r]);
-                    return "Se actualizo correctamente la red social";
+                    return true;
                 }
             }else{
-                return "";
+                
+                return false;
             }
             
         }else{
-            return "";
+            return false;
         }
 
 
@@ -1238,6 +1244,7 @@ class InfluencerController extends BaseController
 
    public function buscarSeguidoresAPI($idredes,$nombre){
 
+        
         $misRedes= new RedesModel();
         $red=$misRedes->find($idredes);
         $cantSeguidores=0;
