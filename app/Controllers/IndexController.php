@@ -132,6 +132,15 @@ class IndexController extends BaseController
         echo view("influencer/templates/footerindex");
     }
 
+    // FOOTER STATEMENT LINK
+    public function nosotros(){
+        $dataHeader =['titulo' => 'Nuestro “statement”',
+                'mensaje'=>"",];
+        echo view("influencer/templates/header",$dataHeader);
+        echo view("influencer/usuarios/nosotros-1");
+        echo view("influencer/templates/footerindex");
+    }
+
     // FOOTER AVISO DE PRIVACIDAD LINK
     public function privacidad(){
         $dataHeader =['titulo' => 'Aviso privacidad',
@@ -156,6 +165,15 @@ class IndexController extends BaseController
                 'mensaje'=>"",];
         echo view("influencer/templates/header",$dataHeader);
         echo view("influencer/usuarios/terminos-y-condiciones");
+        echo view("influencer/templates/footerindex");
+    }
+
+    // FOOTER CONTACTO
+    public function contacto(){
+        $dataHeader =['titulo' => 'Contacto',
+                'mensaje'=>"",];
+        echo view("influencer/templates/header",$dataHeader);
+        echo view("influencer/usuarios/contacto");
         echo view("influencer/templates/footerindex");
     }
 

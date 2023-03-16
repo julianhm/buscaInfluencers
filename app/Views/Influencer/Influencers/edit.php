@@ -527,7 +527,7 @@
                 <div class="modal-body " style="padding-right: 65px; padding-left: 65px; padding-top: 0px;">
 
                     <div class="user-decription-black text-center" style="font-size: 25px;" >
-                        <p>Agrega un Idioma</p>
+                        <p>Agrega un Tema</p>
                     </div>
 
                     <form action="/influencer/adicionarCategoria" method="POST" class="register-form pt-2" id="adicionarCategoria" name="adicionarCategoria" enctype="multipart/form-data">
