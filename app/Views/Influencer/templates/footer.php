@@ -29,7 +29,7 @@
                 </a>
             </div>
             <div class="col">
-                <a href="mailto:soporte@buscoinfluencers.com">
+                <a href="<?=base_url('contacto')?>">
                     Contacto
                 </a>
             </div>
