@@ -71,6 +71,28 @@
                             
                         </div>
 
+                        <script>
+                        //funcion para habilitar o desabilitar los inputs de las redes sociales
+                            function smInputState(checkbox_id, input_id) {
+                                //console.log("checkbox_id "+checkbox_id+" input_id "+input_id);
+                                        
+                                $(".chb").change(function()
+                                {
+                                    //the checkbox is unchecked add the properties to the input
+                                    $(".chb").prop('checked',false);
+                                    $(".inp").val('');
+                                    $(".inp").prop('disabled', true);
+                                    $(".inp").addClass('disable-sm-input');
+
+                                    //check the box and enable the input
+                                    $(this).prop('checked',true);
+                                    $('#'+this.value).removeClass('disable-sm-input');
+                                    $('#'+this.value).prop('disabled', false);
+                                });
+                            
+                            }
+                        </script>
+
                 
                         <div class="d-flex justify-content-center mb-4 mt-4">
                             <div class="btn-register">

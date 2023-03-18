@@ -28,6 +28,8 @@ function smInputState(checkbox_id, input_id) {
 }
 
 
+
+
 /*
 $(function(){
     $(".container .form-check-input").change(function(){
