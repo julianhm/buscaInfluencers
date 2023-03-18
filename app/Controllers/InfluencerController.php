@@ -26,7 +26,7 @@ class InfluencerController extends BaseController
     //CARGA LA PAGINA DEL PERFIL DEL INFLUENCER
     public function index()
     {
-        //$this->logout();
+        $this->logout();
         $dataHeader =['titulo' => 'Busca Influencer',
                 'mensaje'=>"",];
 
