@@ -33,7 +33,7 @@
 
 
 
-        <div class="content">
+        <div class="content mb-5">
 
             <div class="col-md-12">
                         <div class="card">

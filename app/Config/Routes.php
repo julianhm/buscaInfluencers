@@ -50,6 +50,8 @@ $routes->set404Override();
 $routes->get('/', 'IndexController::index');
 
 
+$routes->get('contacto', 'IndexController::contacto');
+$routes->get('nosotros', 'IndexController::nosotros');
 $routes->get('/statement', 'IndexController::statement');
 $routes->get('/aviso-de-privacidad', 'IndexController::privacidad');
 $routes->get('/politica-de-tratamiento-de-datos', 'IndexController::politica');

@@ -11,214 +11,182 @@
         <div class="row">
             <div class="text-center" >
 
-            <?php  echo $validation->listErrors(); ?>
-            <div class="content">
+                <?php  echo $validation->listErrors(); ?>
+                <!--<div class="content">-->
 
-            <div class="user-decription-black my-3" style="font-size: 25px;" >
-                EDITAR PERFIL
-            </div> 
-                
-                <div class="d-flex justify-content-center mb-4">
-                    <div class="section-title">
-                        Idioma en que creas tu contenido
+                    <div class="user-decription-black my-3" style="font-size: 25px;" >
+                        EDITAR PERFIL
+                    </div> 
+                    
+                    <div class="d-flex justify-content-center mb-4">
+                        <div class="section-title">
+                            Idioma en que creas tu contenido
+                        </div>
                     </div>
-                </div>
 
-            <form action="../continuarregistro" method="POST" class="register-form pt-2" enctype="multipart/form-data">
-            <?= csrf_field() ?>    
-           
-
-            <input type="hidden" id="influencerid30" name="influencerid30" value="<?=$influencer['idinfluencer']?>">
-                
-
-
-                <div class="col my-4" style="padding-left: 25%; padding-right: 25%;">
-                    <select id="langSelect" name="langSelect" onchange="addLanguage()" class="form-select select-sm-profile" aria-label="Default select example">
-                        <option selected disabled="">Selecciona un idioma</option>
-                        <?php foreach ($idiomas as $key => $m) {?>
-                            <option value="<?=$m['ididioma'] ?>"><?=$m['nombre'] ?></option>
-                       <?php } ?>
-                        
-                        
-                    </select>
-                        
-                </div>
-
+                    <form action="../continuarregistro" method="POST" class="register-form pt-2" enctype="multipart/form-data">
+                        <?= csrf_field() ?>    
             
 
-                <div class="d-flex justify-content-center mb-4">
-                    <div class="section-title">
-                        ¿De qué temas hablas?
-                    </div>
-                </div>
-
-                                  
-                <div class="row mb-4"> 
-
-                    <?php $i=0;$j=1;
-                    foreach($categorias as $key=>$m){?>
-                    <?php if($i==0){ ?>
-                        <div class="select-size align-topics">
-                        <?php } ?>
-                        
-                            <input type="checkbox" name="<?=$m['nombrecat']?>" id="<?="topic".$j?>" />
-                            <label class="label-topic" for="<?="topic".$j?>"><?=$m['nombrecat']?></label>
-                    <?php $i++;$j++;
-                    if($i==3){$i=0;?>
-                        </div>
-                    <?php }
-                        } ?>
+                        <input type="hidden" id="influencerid30" name="influencerid30" value="<?=$influencer['idinfluencer']?>">
                     
+
+                        <div class="col my-4" style="padding-left: 25%; padding-right: 25%;">
+                            <select id="langSelect" name="langSelect" onchange="addLanguage()" class="form-select select-sm-profile" aria-label="Default select example">
+                                <option selected disabled="">Selecciona un idioma</option>
+                                <?php foreach ($idiomas as $key => $m) {?>
+                                    <option value="<?=$m['ididioma'] ?>"><?=$m['nombre'] ?></option>
+                            <?php } ?>
+                                
+                                
+                            </select>
+                                
+                        </div>
+
+
+                        <div class="d-flex justify-content-center mb-4">
+                            <div class="section-title">
+                                ¿De qué temas hablas?
+                            </div>
+                        </div>
+
+                                    
+                        <div class="row mb-4"> 
+
+                            <?php $i=0;$j=1;
+                            foreach($categorias as $key=>$m){?>
+                            <?php if($i==0){ ?>
+                                <div class="select-size align-topics">
+                                <?php } ?>
+                                
+                                    <input type="checkbox" name="<?=$m['nombrecat']?>" id="<?="topic".$j?>" />
+                                    <label class="label-topic" for="<?="topic".$j?>"><?=$m['nombrecat']?></label>
+                            <?php $i++;$j++;
+                            if($i==3){$i=0;?>
+                                </div>
+                            <?php }
+                                } ?>
                         
-                    <!--
-                    <div class="row justify-content-center mt-3">
-                        <div class="search-container user-decription-black">
-                            <span>Otro: </span>
-                            <input type="text" class="input-redes-other" style="border-radius: 12px; background-color: #ece7e7;" placeholder="escriba otros temas" name="agregar" id="agregar">
                             
                         </div>
-                    </div>
-                -->
-                </div>
-                    <br>
-                    <br>
-                    <br>
 
-                
-                
-                <div class="d-flex justify-content-center mb-4">
-                    <div class="section-title">
-                        Envíanos un video tuyo hablando de ti*
-                    </div>
-                </div>
+                            <br>
+                            <br>
+                            <br>
 
-
-                <div class="row mb-2 user-decription-black">
-                
-               <!-- <div id="video-prev" style="display: none;" class="col-lg-12 video-width">
-                    <div>
-                        <video width="100%" height="400" class="video-preview"  style="background-color: #000" controls="controls"><source src=<?php echo base_url('img/bg-binf.mp4')?> type="video/mp4"></video>
-                    </div>
-                    <a style="cursor:pointer" onclick="hideVideoPrev()" ><img src=<?php echo base_url('img/remove-acc.png')?> alt="Remove"></a> 
-                </div>-->
-                <h5>Adjuntar video</h5> 
-                <div class="col-lg-12 d-flex align-items-center my-2 btn-media">
-                    
-                    <input type="file" name="videoperfil" id="videoperfil" class="open-send btn btn-gray-normal btn-lg" style="border-radius: 0.7rem;" value='<?= old('videoperfil') ?>' accept="video/mp4, video/*" />
-                    <!-- data-bs-toggle="modal" data-bs-target="#modal-upload-image" onclick="cleanUpload(); showInfoProfile();" data-id="btn-profile"-->
-                   
-               <!-- <button type="button" class="btn btn-gray-normal btn-lg" style="border-radius: 0.7rem;" data-bs-dismiss="modal" data-bs-toggle="modal" onclick="cleanVid();" data-bs-target="#modal-upload-video">Adjuntar Video</button> -->
-                </div> 
-
-
-
-                <div class="form-group mb-3 user-decription-black">
-                    <p>* Te recomendamos no más de 1 minuto de duración.</p>
-                </div>
-
-
-                <div class="d-flex justify-content-center">
-                    <div class="section-title">
-                        Si gustas, puedes adjuntar una galería de imágenes.
-                    </div>
-                </div>
-                    
-                                        
-         
-                <div id="gallery" class="d-flex justify-content-center flex-wrap" style="padding-top: 10px; padding-bottom: 35px;">
-
-                </div>
- 
-
-                <div class="col-lg-12 d-flex align-items-center mt-4 btn-media">
-                    <input type="file" name="galeriaperfil[]" id="galeriaperfil[]" class="open-send btn btn-gray-normal btn-lg" style="border-radius: 0.7rem;" value='<?= old('videoperfil') ?>' multiple="" />
-
-                   <!-- <button id="btn-img1" data-id="btn-gallery" type="button" class="btn btn-gray-normal btn-lg open-send" style="border-radius: 0.7rem;" onclick="cleanUpload(); hideInfoProfile();" data-bs-dismiss="modal" data-bs-toggle="modal" data-bs-target="#modal-upload-image">Subir foto</button>-->
-                </div> 
-                
-
-                <div class="form-group mb-3 user-decription-black">
-                    <p>* Peso máximo por imagen (500k). <br> * Cantidad maxima de fotos 5</p>
-                </div>
-
-
-                <div class="d-flex justify-content-center mb-4">
-                    <div class="section-title">
-                        ¿En qué empresa o marca has trabajado? 
-                    </div>
-                </div>
-
-                <div id="experience" class="row justify-content-center mt-4">
-                    Escribe una nueva Empresa
-                </div>
-
-                <div class="col-lg-12 d-flex align-items-center mt-3 mb-4 btn-media">
-                <input id="input-exp" name="marcatxt" id="marcatxt" class="input-redes" type="text"  onkeyup="success()" placeholder="Marca / Empresa">
-                </div> 
-
-                <div class="col-lg-12 d-flex align-items-center mt-3 mb-4 btn-media">
-                    <select id="tipoMarca" name="tipoMarca"  class="form-select select-sm-profile" aria-label="Default select example">
-                        <option selected value="privada">PRIVADA</option>  
-                        <option value="publica">PUBLICA</option>      
-                    </select>
-                </div>
-                <br/>
-                <br/>
-
-
-
-                <div class="d-flex justify-content-center mb-4">
-                    <div class="section-title">
-                        Estás dispuesto(a) a trabajar por
-                    </div>
-                </div>
-
-
-
-                <div class="row justify-content-center user-decription-black" style="padding-left: 112px; padding-right: 112px;">
-                    <p>Marca los que consideres</p>
-
-                    <div class="col-md-auto">
-                        CANJE X PRODUCTO <br>
-                        <input class="form-check-input" type="checkbox" value="" name="canje" id="flexCheckDefault">
-                    </div>
-
-                    <div class="col-md-auto">
-                        DINERO <br>
-                        <input class="form-check-input" type="checkbox" value="" name="dinero" id="flexCheckDefault">
-                    </div>
-                    <div class="col-md-auto">
-                        SERVICIOS <br>
-                        <input class="form-check-input" type="checkbox" value="" name="servicios" id="flexCheckDefault">
-                    </div>
-                    <div class="col-md-auto">
-                        PATROCINIO <br>
-                        <input class="form-check-input" type="checkbox" value="" name="patrocinio" id="flexCheckDefault">
-                    </div>
-                   <!-- <div class="col-md-auto">
-                        TODOS LOS ANTERIORES <br>
-                        <input class="form-check-input" type="checkbox" value="" name="canje" id="flexCheckDefault">
-                    </div>-->
-                
-                </div>
-
-                <div style="padding-left: 10%; padding-right: 10%;">
-                    <hr class="break_line">
-                </div>
-
-
-                                  
-
-                <div class="d-flex justify-content-center mb-4">
-                    <div class="btn-register">
-                        <input type="submit" name="submit" id="submit"class="btn btn-login btn-lg btn-register-width user-decription-black" style="font-size: 20px;" value= "¡REGISTRARME!"/>
-                       <!-- data-bs-dismiss="modal" data-bs-toggle="modal" data-bs-target="#confirmation-modal"-->
-                    </div>
-                </div>
-            </form>
+                            <div class="d-flex justify-content-center mb-4">
+    <div class="section-title">
+        Envíanos un video tuyo hablando de ti*
+    </div>
 </div>
 
+
+<div class="row mb-2 user-decription-black">
+
+
+    <h5>Adjuntar video</h5> 
+    <div class="col-lg-12 d-flex align-items-center my-2 btn-media">
+        
+        <input type="file" name="videoperfil" id="videoperfil" class="open-send btn btn-gray-normal btn-lg" style="border-radius: 0.7rem;" value='<?= old('videoperfil') ?>' accept="video/mp4, video/*" />
+    </div> 
+
+    <div class="mb-3 user-decription-black">
+        <p>* Te recomendamos no más de 1 minuto de duración.</p>
+    </div>
+
+
+    <div class="d-flex justify-content-center">
+        <div class="section-title">
+            Si gustas, puedes adjuntar una galería de imágenes.
+        </div>
+    </div>
+                        
+                                            
+            
+    <div id="gallery" class="d-flex justify-content-center flex-wrap" style="padding-top: 10px; padding-bottom: 35px;">
+
+    </div>
+
+
+    <div class="col-lg-12 d-flex align-items-center mt-4 btn-media">
+        <input type="file" name="galeriaperfil[]" id="galeriaperfil[]" class="open-send btn btn-gray-normal btn-lg" style="border-radius: 0.7rem;" value='<?= old('videoperfil') ?>' multiple="" />
+
+    </div> 
+    
+
+    <div class="mb-3 user-decription-black">
+        <p>* Peso máximo por imagen (500k). <br> * Cantidad maxima de fotos 5</p>
+    </div>
+
+
+    <div class="d-flex justify-content-center mb-4">
+        <div class="section-title">
+            ¿En qué empresa o marca has trabajado? 
+        </div>
+    </div>
+
+    <div id="experience" class="row justify-content-center mt-4">
+        Escribe una nueva Empresa
+    </div>
+
+    <div class="col-lg-12 d-flex align-items-center mt-3 mb-4 btn-media">
+        <input id="input-exp" name="marcatxt" id="marcatxt" class="input-redes" type="text"  onkeyup="success()" placeholder="Marca / Empresa">
+    </div> 
+
+    <div class="col-lg-12 d-flex align-items-center mt-3 mb-4 btn-media">
+        <select id="tipoMarca" name="tipoMarca"  class="form-select select-sm-profile" aria-label="Default select example">
+            <option selected value="privada">PRIVADA</option>  
+            <option value="publica">PUBLICA</option>      
+        </select>
+    </div>
+
+    <br/>
+    <br/>
+
+    <div class="d-flex justify-content-center mb-4">
+        <div class="section-title">
+            Estás dispuesto(a) a trabajar por
+        </div>
+    </div>
+
+    <div class="row justify-content-center user-decription-black" style="padding-left: 112px; padding-right: 112px;">
+        <p>Marca los que consideres</p>
+
+        <div class="col-md-auto">
+            CANJE X PRODUCTO <br>
+            <input class="form-check-input" type="checkbox" value="" name="canje" id="flexCheckDefault">
+        </div>
+
+        <div class="col-md-auto">
+            DINERO <br>
+            <input class="form-check-input" type="checkbox" value="" name="dinero" id="flexCheckDefault">
+        </div>
+        <div class="col-md-auto">
+            SERVICIOS <br>
+            <input class="form-check-input" type="checkbox" value="" name="servicios" id="flexCheckDefault">
+        </div>
+        <div class="col-md-auto">
+            PATROCINIO <br>
+            <input class="form-check-input" type="checkbox" value="" name="patrocinio" id="flexCheckDefault">
+        </div>
+    
+    </div>
+
+    <div style="padding-left: 10%; padding-right: 10%;">
+        <hr class="break_line">
+    </div>
+
+
+    <div class="d-flex justify-content-center mb-4">
+        <div class="btn-register">
+            <input type="submit" name="submit" id="submit"class="btn btn-login btn-lg btn-register-width user-decription-black" style="font-size: 20px;" value= "¡REGISTRARME!"/>
+        </div>
+    </div>
 </div>
+                    
+                        
+                    </form>
+                <!--</div>-->
             </div>
         </div>
     </div>
