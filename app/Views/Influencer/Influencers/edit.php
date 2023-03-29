@@ -17,17 +17,17 @@
         
             
         <div class="user-decription-black filter_searched" style="border-bottom: 1px solid #000;">
-                <a href="<?php echo base_url('influencer')."/edit/".$influencer['idinfluencer']?>">EDITAR PERFIL</a>
+                <a href="<?php echo base_url('influencer')."/edit/".$influencer['idinfluencer']?>"><b>Editar perfil</b></a>
         </div>
         <div class="user-decription-black filter_searched" style="border-bottom: 1px solid #000;">
-            <a href="<?php echo base_url("/perfil")."/".$influencer['idinfluencer']?>" >VER PERFIL</a>
+            <a href="<?php echo base_url("/perfil")."/".$influencer['idinfluencer']?>" ><b>Ver perfil</b></a>
         </div>
 
         <div class="user-decription-black filter_searched" style="border-bottom: 1px solid #000;">
-            <a href="<?php echo base_url("influencer")."/mensajes/".$influencer['idinfluencer']?>">MENSAJES</a>
+            <a href="<?php echo base_url("influencer")."/mensajes/".$influencer['idinfluencer']?>"><b>Mensajes</b></a>
         </div>
             
-        <div class="user-decription-black filter_searched" style="border-bottom: 1px solid #000;"><a href="<?php echo base_url("logout")?>">CERRAR SESION</a>
+        <div class="user-decription-black filter_searched" style="border-bottom: 1px solid #000;"><a href="<?php echo base_url("logout")?>"><b>Cerrar sesión</b></a>
         </div>
     </div>
     
@@ -39,7 +39,7 @@
 
             <div class="user-decription-black my-3" style="font-size: 25px;" >
             Hola de nuevo! <?=$influencer['nombreinflu'];?><br>
-                EDITAR PERFIL
+                Editar perfil
             </div> 
            
             
@@ -70,19 +70,19 @@
             <div class="row g-2 mb-3">
                 <div class="col-lg-12">
                     <div>
-                        <img class="icon-input" src="<?php echo base_url("img/icon-user.png")?>" ><span class="user-decription-black" style="margin-left: 12px; font-size: 18px;">NOMBRE</span>
+                        <img class="icon-input" src="<?php echo base_url("img/icon-user.png")?>" ><span class="user-decription-black" style="margin-left: 12px; font-size: 18px;">Nombre</span>
                         <input class="input-modify my-profile-input-line" type="text" name="nombredit" id="nombredit" placeholder="<?=$influencer['nombreinflu']?>" value="<?=$influencer['nombreinflu']?>">
                     </div>
                 </div> 
                 <div class="col-lg-12">
                     <div>
-                        <img class="icon-input" src="<?php echo base_url("img/icon-alias.png")?>" ><span class="user-decription-black" style="margin-left: 12px; font-size: 18px;">ALIAS (opcional)</span>
+                        <img class="icon-input" src="<?php echo base_url("img/icon-alias.png")?>" ><span class="user-decription-black" style="margin-left: 12px; font-size: 18px;">Alias (opcional)</span>
                         <input class="input-modify my-profile-input-line" type="text" name="aliasedit" id="aliasedit" placeholder="<?=$influencer['alias']?>" value="<?=$influencer['alias']?>">
                     </div>
                 </div> 
                 <div class="col-lg-12">
                     <div>
-                        <img class="icon-input" src="<?php echo base_url("img/icon-user.png")?>" ><span class="user-decription-black" style="margin-left: 12px; font-size: 18px;">USUARIO</span>
+                        <img class="icon-input" src="<?php echo base_url("img/icon-user.png")?>" ><span class="user-decription-black" style="margin-left: 12px; font-size: 18px;">Usuario</span>
                         <input class="input-modify my-profile-input-line" type="text" name="usuarioedit" id="usuarioedit" placeholder="<?=$influencer['usuario']?>" value="<?=$influencer['usuario']?>">
                     </div>
                 </div>
@@ -108,7 +108,7 @@
             <button type="submit" class="btn btn-login btn-lg btn-register-width user-decription-black" style="font-size: 20px; width: fit-content; padding: 12px 45px;">ACTUALIZAR PERFIL</button>
             </form>
             <div class="mb-3 mt-4" style="border-top: 1px solid #000;">
-                <h2 class="mypro-section-title">MIS CUENTAS</h2>
+                <h2 class="mypro-section-title">Mis cuentas</h2>
             </div>
 
 <!-- ============================================================== -->
@@ -158,7 +158,7 @@
 <!-- ============================================================== --> 
             
 <div class="mb-3 mt-5" style="border-top: 1px solid #000;">
-                <h2 class="mypro-section-title">TUS TEMAS Y CONTENIDOS</h2>
+                <h2 class="mypro-section-title">Tus temas y contenidos</h2>
             </div>
 <form action="/influencer/elminarCategoria" method="POST" class="register-form pt-2" id="elminarCategoria" name="elminarCategoria" enctype="multipart/form-data">
                   
@@ -198,7 +198,7 @@
             </div>
 
             <div class="mb-3 mt-5" style="border-top: 1px solid #000;">
-                <h2 class="mypro-section-title">TUS IDIOMAS</h2>
+                <h2 class="mypro-section-title">Tus idiomas</h2>
             </div>
 <!-- ============================================================== -->
 <!-- ------------------ ELIMINAR IDIOMAS ----------------------------->
@@ -244,7 +244,7 @@
 
 
             <div class="mb-3 mt-5" style="border-top: 1px solid #000;">
-                <h2 class="mypro-section-title">MI VIDEO</h2>
+                <h2 class="mypro-section-title">Mi video</h2>
             </div>
 
 <!-- ============================================================== -->
@@ -274,11 +274,11 @@
 <!-- ============================================================== -->
 
                 <div class="col-lg-12 d-flex align-items-center mt-4" style="justify-content: left;">
-                    <button type="button" class="btn btn-white-normal btn-lg"  data-bs-dismiss="modal" data-bs-toggle="modal" onclick="cleanVid();" data-bs-target="#modal-upload-video">+ &nbsp; Cambiar Video</button>
+                    <button type="button" class="btn btn-white-normal btn-lg"  data-bs-dismiss="modal" data-bs-toggle="modal" onclick="cleanVid();" data-bs-target="#modal-upload-video">+ &nbsp; Cambiar video</button>
                 </div>
             
                 <div class="mb-3 mt-5" style="border-top: 1px solid #000;">
-                <h2 class="mypro-section-title">MI GALERIA</h2>
+                <h2 class="mypro-section-title">Mi galería</h2>
             </div>
 
 <!-- ============================================================== -->
@@ -313,14 +313,14 @@
             <form action="/influencer/agregarFotoGaleria" method="POST" class="register-form pt-2" id="agregarFotoGaleria" name="agregarFotoGaleria" enctype="multipart/form-data">
             
                 <div class="col-lg-12 d-flex align-items-center" style="justify-content: left;">
-                    <button id="btn-img1" data-id="btn-gallery" type="button" class="open-send btn btn-white-normal btn-lg" onclick="cleanUpload(); hideInfoProfile();" data-bs-dismiss="modal" data-bs-toggle="modal" data-bs-target="#modal-upload-image-galeria">subir fotos</button>
+                    <button id="btn-img1" data-id="btn-gallery" type="button" class="open-send btn btn-white-normal btn-lg" onclick="cleanUpload(); hideInfoProfile();" data-bs-dismiss="modal" data-bs-toggle="modal" data-bs-target="#modal-upload-image-galeria">Subir fotos</button>
                 </div> 
             </form>
 
 
 
             <div class="mb-3 mt-5" style="border-top: 1px solid #000;">
-                <h2 class="mypro-section-title">MI RESEÑA</h2>
+                <h2 class="mypro-section-title">Mi reseña</h2>
             </div>
 
 <!-- ============================================================== -->
@@ -343,7 +343,7 @@
 
 
             <div class="mb-3 mt-5" style="border-top: 1px solid #000;">
-                <h2 class="mypro-section-title">MARCAS / EMPRESAS / EXPERIENCIA</h2>
+                <h2 class="mypro-section-title">Marcas / Empresas / Experiencia</h2>
             </div>
 
 <!-- ============================================================== -->
@@ -390,7 +390,7 @@
 
 
             <div class="mb-3 mt-5" style="border-top: 1px solid #000;">
-                <h2 class="mypro-section-title">MI MÉTODOS DE PAGO</h2>
+                <h2 class="mypro-section-title">Mis métodos de pago</h2>
             </div>
 
 <!-- ============================================================== -->
@@ -432,7 +432,7 @@
             
 
             <div class="mb-3 mt-5" style="border-top: 1px solid #000;">
-                <h2 class="mypro-section-title">MIS PROMOS Y OFERTAS</h2>
+                <h2 class="mypro-section-title">Mis promos y ofertas</h2>
             </div>
         <form action="/influencer/editarOferta" method="POST" class="register-form pt-2" id="eliminarPagos" name="eliminarPagos" enctype="multipart/form-data">
             <input type="hidden" id="influencerid19" name="influencerid19" value="<?=$influencer['idinfluencer']?>">
@@ -441,7 +441,7 @@
                 <div>
                     
                     <input class="input-modify my-profile-input-line" type="text" name="promocion" id="promocion" placeholder="Escriba su promoción" value="<?php if(!($influencer['oferta']==null||$influencer['oferta']=="")){ echo $influencer['oferta'];  }?>">
-                    <button type="submit" class="btn btn-white-normal btn-lg" >actualizar Promoción</button>
+                    <button type="submit" class="btn btn-white-normal btn-lg" >Actualizar promoción</button>
                 </div>
             </div> 
 

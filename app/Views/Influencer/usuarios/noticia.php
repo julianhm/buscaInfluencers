@@ -6,10 +6,10 @@
             <div class="text-center user-decription-black" >
                 <div class="col-lg-12 my-3">
                     <div class="mb-3 mt-5" >
-                        <a href="<?=base_url()?>"><h2 class="mypro-section-title">Home</h2></a>
+                        <a href="<?=base_url()?>"><h2 class="mypro-section-title" ><i class="fa fa-arrow-left"></i>  Volver</h2></a>
                     </div>
 
-                    <h2><?=$noticias['titulo'] ?></h2>
+                    <h2 class="main-section-title" style="font-size: 30px; font-weight: 100;"><?=$noticias['titulo'] ?></h2>
                     <br>
                     <br>
                     <div class="row text-center" style="display: block; margin-left: auto; margin-right: auto;">

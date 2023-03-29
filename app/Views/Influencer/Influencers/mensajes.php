@@ -15,17 +15,17 @@
         
             
         <div class="user-decription-black filter_searched" style="border-bottom: 1px solid #000;">
-                <a href="<?php echo base_url('influencer')."/edit/".$influencer['idinfluencer']?>">EDITAR PERFIL</a>
+                <a href="<?php echo base_url('influencer')."/edit/".$influencer['idinfluencer']?>"><b>Editar perfil</b></a>
         </div>
         <div class="user-decription-black filter_searched" style="border-bottom: 1px solid #000;">
-            <a href="<?php echo base_url("/perfil")."/".$influencer['idinfluencer']?>" >VER PERFIL</a>
+            <a href="<?php echo base_url("/perfil")."/".$influencer['idinfluencer']?>" ><b>Ver perfil</b></a>
         </div>
 
         <div class="user-decription-black filter_searched" style="border-bottom: 1px solid #000;">
-            <a href="<?php echo base_url("influencer")."/mensajes/".$influencer['idinfluencer']?>">MENSAJES</a>
+            <a href="<?php echo base_url("influencer")."/mensajes/".$influencer['idinfluencer']?>"><b>Mensajes</b></a>
         </div>
             
-        <div class="user-decription-black filter_searched" style="border-bottom: 1px solid #000;"><a href="<?php echo base_url("logout")?>">CERRAR SESION</a>
+        <div class="user-decription-black filter_searched" style="border-bottom: 1px solid #000;"><a href="<?php echo base_url("logout")?>"><b>Cerrar sesión</b></a>
         </div>
     </div>
     
@@ -41,7 +41,7 @@
                             <!-- ============================================================== -->
                             <!-- Tab de lista de mensajes -->
                             <!-- ============================================================== -->
-                            <div class="tab-content" id="myTabListMessage">
+                            <div class="tab-content" id="myTabListMessage" style="height: 500px">
                                 <div class="tab-pane fade active show" id="inbox" aria-labelledby="inbox-tab" role="tabpanel">
                                     <div>
                                         <div class="row p-4 no-gutters align-items-center">
@@ -161,7 +161,7 @@
                             <!-- ============================================================== -->
                             <!-- Tab detalle del mensaje seleccionado -->
                             <!-- ============================================================== -->
-                            <div class="tab-content" id="myTabMessage" style="display: none;">
+                            <div class="tab-content" id="myTabMessage" style="display: none; ">
                                 <div class="modal-header" style="justify-content: end;">
                                     <button type="button" class="btn btn-ver-perfil btn-sm btn-on-white" style="padding: 4px 30px !important;" onclick="backMessageList()">Volver a los mensajes</button>
                                 </div>
@@ -193,7 +193,7 @@
                                             </div>
 
                                             <div>
-                                                <textarea class="input-redes" rows="6" id="cuerpocorreo"></textarea>
+                                                <textarea class="input-redes" rows="4" id="cuerpocorreo"></textarea>
                                             </div>                    
                                         </div>
                                     </div>

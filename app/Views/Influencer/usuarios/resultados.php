@@ -9,7 +9,7 @@
 
                     <div class="row">
                         <div class="px-2 py-3 user-decription searched-black-box">
-                            <p style="font-weight: bold;">TU BÚSQUEDA FUE:</p>
+                            <p style="font-weight: bold;">Tu búsqueda fue:</p>
 
                             <div id="filter_1" class="select_custom_small user-decription-black filter_searched">
                                 <span><?=$criteriosBusqueda['categoria'];?></span>
@@ -52,7 +52,7 @@
                     
                     <div class="row sidebar-filter">
                         <div class="px-2 py-3 sidebar-filter-text ">
-                            <p style="font-weight: bold;">FILTRAR POR:</p>
+                            <p style="font-weight: bold;">Filtar por:</p>
                         
                             <div class="accordion" id="accordionExample">
                                 <div class="accordion-item">
@@ -277,7 +277,7 @@
                                     <div id="collapseFive" class="accordion-collapse collapse" aria-labelledby="headingFive" data-bs-parent="#accordionExample">
                                         <div class="accordion-body">
                                             <div class="select_custom_small user-decription-black" style="margin-bottom: 8px;">
-                                                <select class="form-select select_custom" aria-label="Default select example" name="pais3" id="pais3" onchange='cambia_ciudades3();'>
+                                                <select class="form-select select-sm-profile" aria-label="Default select example" name="pais3" id="pais3" onchange='cambia_ciudades3();'>
                                                     <option value="0" selected>Selecciona país</option>
                                                     <?php foreach ($paises as $key => $m) {?>
                                                         <option value="<?=$m['idpais']?>"><?=$m['nombre']?></option>
@@ -322,7 +322,7 @@
                                     </script>
 
                                             <div class="select_custom_small user-decription-black">
-                                                <select class="form-select select_custom" aria-label="Default select example" name="ciudades3" id="ciudades3" disabled>
+                                                <select class="form-select select-sm-profile" aria-label="Default select example" name="ciudades3" id="ciudades3" disabled>
                                                     <option value="0" selected>Elije tu región</option>
                                                 </select>
                                     </br>

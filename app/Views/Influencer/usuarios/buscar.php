@@ -12,8 +12,8 @@
                         <?= csrf_field() ?>    
                         <div class="mb-3 user-decription-black" style="padding-left: 20%; padding-right: 20%;">
                             <p style="font-weight: bold;">Selecciona el influencer que buscas de acuerdo al tema que se especialice</p>
-                        
-                            <select class="form-select select_custom" aria-label="Default select example" id="categoriaselect" name="categoriaselect">
+                            <div style="padding-left: 15%; padding-right: 15%">
+                            <select class="form-select select-sm-profile" aria-label="Default select example" id="categoriaselect" name="categoriaselect">
                                 <option value="0" selected>Selecciona un tema</option>
                                <?php foreach ($categorias as $key => $m) {?>
                                 <option value="<?=$m['idcategoria']?>"><?=$m['nombrecat']?></option>
@@ -21,13 +21,13 @@
                                 
                                 
                             </select>
-                            
+                            </div>
                         </div>
 
                         <div class="mb-3 user-decription-black" style="padding-left: 20%; padding-right: 20%;">
                             <p style="font-weight: bold;">Selecciona la red social de tu interés</p>
-                        
-                            <select class="form-select select_custom" aria-label="Default select example" id="redsocialselect" name="redsocialselect">
+                            <div style="padding-left: 15%; padding-right: 15%">
+                            <select class="form-select select-sm-profile" aria-label="Default select example" id="redsocialselect" name="redsocialselect">
                                 <option value="0" selected>Selecciona la red social</option>
                                 
                                <?php foreach ($redes as $key => $m) {?>
@@ -36,7 +36,7 @@
 
                                
                             </select>
-                            
+                            </div>
                         </div>
 
                         <div class="mb-3 user-decription-black" style="padding-left: 20%; padding-right: 20%;">
@@ -111,9 +111,9 @@
                                 <?php foreach ($pagos as $key => $m) {?>
                                         
                                         <div class="col">
-                                            <div class="form-check">
+                                            <div class="form-check d-flex justify-content-center">
                                                 <input class="form-check-input" type="checkbox" value="<?=$m['idpago']?>" id="<?=$m['idpago']?>" name="<?=$m['idpago']?>">
-                                                <label class="form-check-label alignlabel" for="flexCheckDefault">
+                                                <label class="form-check-label alignlabel" style="margin-left: 8px;" for="flexCheckDefault">
                                                     <?=$m['nombre']?>
                                                 </label>
                                         </div>
@@ -127,10 +127,10 @@
                          <div class="mb-3 user-decription-black" style="padding-left: 20%; padding-right: 20%;">
                             <p style="font-weight: bold;">Ubicación del influencer</p>
 
-                            <div class="row mb-3 user-decription-black">
+                            <div class="row mb-3 user-decription-black d-flex justify-content-center">
                                 <div class="row" style="padding-left: 15%; padding-right: 15%;">
                                     <div class="col">
-                                        <select class="form-select select_custom" aria-label="Default select example" name="pais2" id="pais2" onchange='cambia_ciudades2();'>
+                                        <select class="form-select select-sm-profile" aria-label="Default select example" name="pais2" id="pais2" onchange='cambia_ciudades2();'>
                                             <option value="0" selected>Selecciona país</option>
                                             <?php foreach ($paises as $key => $m) {?>
                                                 <option value="<?=$m['idpais']?>"><?=$m['nombre']?></option>
@@ -174,7 +174,7 @@
                                         }// FIN DE FUNCIONcambia_departamento
                                     </script>
                                     <div class="col">
-                                        <select class="form-select select_custom" aria-label="Default select example" name="ciudades2" id="ciudades2" disabled>
+                                        <select class="form-select select-sm-profile" aria-label="Default select example" name="ciudades2" id="ciudades2" disabled>
                                                 <option value="0" selected>Elije tu región</option>
                                         </select>
                                     </div>

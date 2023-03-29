@@ -167,7 +167,7 @@
                 <?php  foreach ($noticias as $key => $m) {?>
                     <a class="container-img" href="<?=base_url('noticia')."/".$m['idnoticia']?>">
                     <div position-relative d-flex flex-column user-decription">
-                        <div class="mundo-description"><?=$m['titulo']?></div>
+                        <div class="mundo-description"><b><?=$m['titulo']?></b></div>
                         <img class="img-fluid-mundo-influencer mb-4 img-effect" style="height: 350px; object-fit: cover;" src="<?=base_url('fotosnoticias')."/".$m['url_foto']?>">
                     </div></a>
                 <?php }?>
@@ -212,8 +212,13 @@
     <!-- Categoria End -->
 
 
+</div>
+
+
     <!-- El/la + seguido Start -->
     <div class="container-fluid pt-3" style="background-color: #00ffff;">
+
+        <div class="container-new">
         <div class="container-fluid">
             <div class="mx-auto text-center mb-5 main-section-title" style="max-width: 600px;">
                 El/la más seguidos(as) en
@@ -254,6 +259,9 @@
             </div>
             
         </div>
+        </div>
+
+        
     </div>
     <!-- El/la + seguido End -->
 
@@ -279,10 +287,6 @@
         </div>
     </div>
     <!-- Donar End -->
-
-
-
-</div>
 
 
     <!-- ============================================================== -->
