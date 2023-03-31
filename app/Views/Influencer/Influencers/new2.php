@@ -7,37 +7,33 @@
 
 
    
-    <!-- Content Register Start -->
+    <!-- Content Social Media Start -->
     <div class="container">
         <div class="row">
             <div class="text-center" >
                 
                 <?php  echo $validation->listErrors(); ?>
 
-                <!-- <div class="content"> -->
 
-                    <div class="user-decription-black my-3" style="font-size: 25px;" >
-                        EDITAR PERFIL
-                    </div> 
-
-
-                    <form action="../guardarRedesSociales" method="POST" class="register-form pt-2" enctype="multipart/form-data">
-                        <?= csrf_field() ?>    
-                        
-                        <input type="hidden" id="influencerid3" name="influencerid3" value="<?=$influencer['idinfluencer']?>">
-                        
-                        <div class="d-flex justify-content-center mb-4">
-                            <div class="section-title" >
-                                ¿Dónde te siguen?
-                            </div>
+                <form action="../guardarRedesSociales" method="POST" class="register-form pt-2" enctype="multipart/form-data">
+                    <?= csrf_field() ?>    
+                    
+                    <input type="hidden" id="influencerid3" name="influencerid3" value="<?=$influencer['idinfluencer']?>">
+                    
+                    <div class="d-flex justify-content-center mb-4 mt-4">
+                        <div class="section-title" >
+                            ¿Dónde te siguen?
                         </div>
+                    </div>
 
-                        <div style="padding-left: 20%; padding-right: 20%;">
-                            <p class="user-decription-black">Marca la(s) red(es) sociales donde tienes cuenta y escribe tu nombre de usuario</p>
-                        </div>
-                        
-                        <div>
+                    <div style="padding-left: 20%; padding-right: 20%;">
+                        <p class="user-decription-black">Marca la(s) red(es) sociales donde tienes cuenta y escribe tu nombre de usuario</p>
+                    </div>
+                    
+                    <div style="padding-left: 25%; padding-right: 25%;">
+                        <div class="row mb-2">
 
+<<<<<<< HEAD
                             
                             
                             <?php $cont=4;
@@ -60,29 +56,64 @@
                                                 <div class="col input-sm-align">
                                                     <input class="input-redes disable-sm-input inp" type="text" name="<?=$m['idredes']?>" id="<?=$m['idredes']?>" placeholder="<?=$m['nombre']?>" disabled>
                                                 </div>
+=======
+                            <?php foreach($misredes as $key => $m){ ?>
+                                <div class="col-md-6 mt-3">
+                                    <div class="row">
+                                        <div class="col-md-auto check-align">
+                                            <div class="form-check">
+                                                <input class="form-check-input chb" type="checkbox" value="<?=$m['idredes']?>" id="<?=$m['nombre']?>" onclick="smInputState('<?=$m['nombre']?>', '<?=$m['idredes']?>')">
+>>>>>>> main
                                             </div>
                                         </div>
-                                        <?php if($cont==3){?>
+                                        <div class="col-md-auto logo-sm-align">
+                                            <img src='<?=base_url('img/iconos')."/".$m['icono']?>' >
+                                        </div>
+                                        <div class="col input-sm-align">
+                                            <input class="input-redes disable-sm-input inp" type="text" name="<?=$m['idredes']?>" id="<?=$m['idredes']?>" placeholder="<?=$m['nombre']?>" disabled>
+                                        </div>
                                     </div>
-                                <?php }
-                                $cont++;
-                            } ?>
+                                </div>
+                            <?php } ?>
 
-                            
                         </div>
+                    </div>
 
-                
-                        <div class="d-flex justify-content-center mb-4 mt-4">
-                            <div class="btn-register">
-                                <input type="submit" name="submit" id="submit"class="btn btn-login btn-lg btn-register-width user-decription-black" style="font-size: 20px;" value= "AGREGAR REDES SOCIALES" />
-                            <!-- data-bs-dismiss="modal" data-bs-toggle="modal" data-bs-target="#confirmation-modal"-->
-                            </div>
+                    <script>
+                    //funcion para habilitar o desabilitar los inputs de las redes sociales
+                        function smInputState(checkbox_id, input_id) {
+                            //console.log("checkbox_id "+checkbox_id+" input_id "+input_id);
+                                    
+                            $(".chb").change(function()
+                            {
+                                //the checkbox is unchecked add the properties to the input
+                                $(".chb").prop('checked',false);
+                                $(".inp").val('');
+                                $(".inp").prop('disabled', true);
+                                $(".inp").addClass('disable-sm-input');
+
+                                //check the box and enable the input
+                                $(this).prop('checked',true);
+                                $('#'+this.value).removeClass('disable-sm-input');
+                                $('#'+this.value).prop('disabled', false);
+                            });
+                        
+                        }
+                    </script>
+
+            
+                    <div class="d-flex justify-content-center mb-4 mt-4">
+                        <div class="btn-register">
+                            <input type="submit" name="submit" id="submit"class="btn btn-login btn-lg btn-register-width user-decription-black" style="font-size: 20px;" value= "AGREGAR REDES SOCIALES" />
                         </div>
-                    </form>
-               <!-- </div> -->
+                    </div>
+                </form>
+
             </div>
         </div>
     </div>
+    <!-- Content Social Media Ends -->
+
 
 
     <!-- Modal Confirmación Registro Start -->
@@ -115,7 +146,7 @@
 
    
 
-<!-- Modal Nosotros -->
+    <!-- Modal Nosotros -->
     <div class="modal fade" id="modal-nosotros" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
         <div class="modal-dialog modal-dialog-centered">
             <div class="modal-content" style="border-radius: 0rem; border: 2px solid #000; background-color: #00ffff">

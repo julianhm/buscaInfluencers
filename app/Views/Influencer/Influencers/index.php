@@ -116,8 +116,13 @@
     <!-- Header End -->
 
 
+<div class="container-new">
+
+    
+
+
     <!-- Talentos Recientes Start -->
-    <div class="container-fluid py-5">
+    <div class="container-fluid  py-5">
         <div class="container-fluid">
             <div class="mx-auto text-center mb-5 main-section-title" style="max-width: 500px;">
                 Talentos recientes
@@ -160,10 +165,10 @@
             </div>
             <div class="owl-two owl-carousel owl-theme">
                 <?php  foreach ($noticias as $key => $m) {?>
-                    <a href="<?=base_url('noticia')."/".$m['idnoticia']?>">
-                    <div class="position-relative d-flex flex-column user-decription">
-                        <div class="mundo-description"><?=$m['titulo']?></div>
-                        <img class="img-fluid-mundo-influencer mb-4" style="height: 350px; object-fit: cover;" src="<?=base_url('fotosnoticias')."/".$m['url_foto']?>">
+                    <a class="container-img" href="<?=base_url('noticia')."/".$m['idnoticia']?>">
+                    <div position-relative d-flex flex-column user-decription">
+                        <div class="mundo-description"><b><?=$m['titulo']?></b></div>
+                        <img class="img-fluid-mundo-influencer mb-4 img-effect" style="height: 350px; object-fit: cover;" src="<?=base_url('fotosnoticias')."/".$m['url_foto']?>">
                     </div></a>
                 <?php }?>
                 
@@ -186,10 +191,14 @@
                 <?php foreach ($categorias as $key => $m) {?>
                                    <div>
                        <div class="product-item position-relative d-flex flex-column text-center" >
-                           <a href="busqueda/resultado/<?=$m['idcategoria']?>" ><img class="img-fluid-categoria" src="<?=base_url('img').'/categorias/'.$m['imagen']?>" alt="Tecnologia"></a>
+                           <a class="container-img" href="busqueda/resultado/<?=$m['idcategoria']?>" >
+                           
+                           <img class="img-fluid-categoria img-effect" src="<?=base_url('img').'/categorias/'.$m['imagen']?>" alt="Tecnologia">
                            <div class="py-2 categoria-description " style="background-color: #B3AFAE; border: 0px; font-size: 15px;">
                                <?php echo $m['nombrecat'] ?>
-                           </div>                                
+                           </div>
+                           
+                           </a>                                
                        </div>
                    </div>
    
@@ -203,8 +212,13 @@
     <!-- Categoria End -->
 
 
+</div>
+
+
     <!-- El/la + seguido Start -->
     <div class="container-fluid pt-3" style="background-color: #00ffff;">
+
+        <div class="container-new">
         <div class="container-fluid">
             <div class="mx-auto text-center mb-5 main-section-title" style="max-width: 600px;">
                 El/la más seguidos(as) en
@@ -212,38 +226,46 @@
             
             <div class="owl-four owl-carousel px-5">
                  
-            <?php foreach ($informacion as $key => $m) {?>
+                <?php foreach ($informacion as $key => $m) {?>
                            
-                           <div>
-                               <div class="product-item position-relative d-flex flex-column text-center">
-                                   <div class="tag-categoria">
-                                       <?=$m['nombrecat']?>
-                                   </div>
-                                   <img class="img-fluid-el-mas mb-2" style="" src="<?=base_url('uploads')."/".$m['foto_perfil']?>" >
-                                   <h6 class="user-decription-black"><?=$m['nombreinflu']?> <br> <?=$m['alias']?></h6>
-                                   <div class="container-fluid">
-                                       <div class="row mb-3">
-                                           <div class="col" style="padding-right: 0px;">
-                                                <div style="width: 40px" >
-                                                    <img class="img-sm-main" style="object-fit: cover;" src="<?=base_url('img')."/iconos/".$m['icono']?>" >
-                                                </div>
-                                                 
-                                           </div>
-                                           <div class="col" >
-                                               <p class="followers-sm-main"><?=$m['cant_seguidores']?></p>
-                                           </div>
-                                       </div>
-                                       <a href="<?php echo base_url('perfil')."/".$m['idinfluencer']?>"><button type="button" class="btn btn-ver-perfil btn-sm btn-on-white">Ver perfil</button></a>
-                                   </div>
-                               </div>
-                           </div>
-                           <?php } ?>
+                <div>
+                    <div class="product-item position-relative d-flex flex-column text-center">
+                        <div class="tag-categoria">
+                            <?=$m['nombrecat']?>
+                        </div>
+                        <img class="img-fluid-el-mas mb-2" style="" src="<?=base_url('uploads')."/".$m['foto_perfil']?>" >
+                        <h6 class="user-decription-black"><?=$m['nombreinflu']?> <br> <?=$m['alias']?></h6>
+                        <div class="container-fluid">
+                            <div class="row ">
+                                <div class="col-lg-3">
+                                    <div style="width: 40px" >
+                                        <img class="img-sm-main" style="object-fit: cover;" src="<?=base_url('img')."/iconos/".$m['icono']?>" >
+                                    </div>
+                                        
+                                </div>
+                                <div class="col-lg-9" style="">
+                                    <p class="followers-sm-main"><?=$m['cant_seguidores']?></p>
+                                </div>
+                            </div>
+                            <div class="row text-center mb-3">
+                                <h6 class="user-decription-black">Seguidores</h6>
+                            </div>
+                            <a href="<?php echo base_url('perfil')."/".$m['idinfluencer']?>"><button type="button" class="btn btn-ver-perfil btn-sm btn-on-white">Ver perfil</button></a>
+                        </div>
+                    </div>
+                </div>
+                <?php } ?>
                            
             </div>
             
         </div>
+        </div>
+
+        
     </div>
     <!-- El/la + seguido End -->
+
+   
 
 
     <!-- Donar Start -->

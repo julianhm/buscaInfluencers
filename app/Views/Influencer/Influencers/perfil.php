@@ -182,13 +182,9 @@
 
 
          <div class="row justify-content-center mt-3 mb-5">
-            <button type="button" class="btn btn-contactar-influencer btn-lg" data-bs-dismiss="modal" data-bs-toggle="modal" data-bs-target="#contactar-modal">CONTACTAR ESTE INFLUENCER</button>
+            <button type="button" class="btn btn-contactar-influencer btn-lg shrink-on-hover" data-bs-dismiss="modal" data-bs-toggle="modal" data-bs-target="#contactar-modal">CONTACTAR ESTE INFLUENCER</button>
         </div>
-        <style type="text/css">
-            .btn-contactar-influencer:hover {
-                color: #000;
-            }
-        </style>
+        
 
         <div class="row mb-4 profile-container-comentario" >
 

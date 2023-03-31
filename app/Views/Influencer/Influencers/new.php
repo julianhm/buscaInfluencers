@@ -47,7 +47,7 @@
                         <div class="form-group">
                             <img class="icon-input" src=<?php echo base_url('img/icon-email.png')?> for="correo">
                             
-                            <input class="input-modify" type="email" name="correo" id="correo" placeholder="Tu correo electronico" value='<?= old('correo') ?>'>
+                            <input class="input-modify" type="email" name="correo" id="correo" placeholder="Tu correo electrónico" value='<?= old('correo') ?>'>
                         </div>
                         <div class="form-group">
                             <img class="icon-input" src=<?php echo base_url('img/icon-location.png')?> for="pais">
@@ -139,12 +139,17 @@
                             </div>
                         </div>
 
-                        <div class="mb-4 ">
-                            <textarea class="input-redes" name="resenia" style="resize: none; width: 100%;" rows="6" placeholder="Cuentanos un poco de ti" value='<?= old('nombre') ?>'></textarea>
+                        <div class="form-group mb-4 ">
+                            <textarea class="input-redes" name="resenia" style="resize: none; width: 100%;" rows="6" placeholder="Cuéntanos un poco de ti" value='<?= old('nombre') ?>'></textarea>
                         </div>
 
 
-                        <h3>Subir foto de perfil</h3>
+                        
+                        <div class="d-flex justify-content-center mb-4">
+                            <div class="section-title">
+                                Subir foto de perfil
+                            </div>
+                        </div>
                         <div class="col-lg-12 d-flex align-items-center my-4 btn-media">
                             <input type="file" name="fotoperfil"  class="open-send btn btn-gray-normal btn-lg" style="border-radius: 0.7rem;" value='<?= old('fotoperfil') ?>'  accept="image/*" />
                             <!-- data-bs-toggle="modal" data-bs-target="#modal-upload-image" onclick="cleanUpload(); showInfoProfile();" data-id="btn-profile"-->

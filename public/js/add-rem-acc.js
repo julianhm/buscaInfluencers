@@ -237,8 +237,8 @@ function onload(event) {
     if (window.innerHeight == document.documentElement.scrollHeight) {
         document.getElementById("footer").style.position = "absolute";
         document.getElementById("footer").style.bottom = "0";
-        document.getElementById("footer").style.left = "8%";
-        document.getElementById("footer").style.right = "8%";
+        /*document.getElementById("footer").style.left = "8%";
+        document.getElementById("footer").style.right = "8%";*/
     }
     //Disable all options in the "smSelect", which are already in use
     for (var i = 0; i < 20; i++) {

@@ -1,10 +1,10 @@
 
     <!-- Footer Start -->
-    <div id="footer" class="container donar-decription-black pb-3" >
+    <div id="footer" class="container-fluid donar-decription-black pb-3" >
         <hr class="footer-black-line">
         <div class="row pt-2 pb-3 text-center">
             <div class="col">
-                <a href="#" data-bs-toggle="modal" data-bs-target="#modal-nosotros">
+                <a href="<?=base_url('nosotros')?>">
                     Nosotros
                 </a>
             </div>
@@ -29,7 +29,7 @@
                 </a>
             </div>
             <div class="col">
-                <a href="mailto:soporte@buscoinfluencers.com">
+                <a href="<?=base_url('contacto')?>">
                     Contacto
                 </a>
             </div>
@@ -37,10 +37,10 @@
         <div class="row">
             <div class="col">
                 <div style="margin-left: 13%">
-                    <a href="https://wd-studios.com" target="_blank">
+                    <a class="shrink-on-hover-footer" href="https://wd-studios.com" target="_blank">
                         <img class="footer-img-logos-sm" src=<?php echo base_url('img/f_wd.png')?> >
                     </a>
-                    <a href="https://palmadecera.net" target="_blank">
+                    <a class="shrink-on-hover-footer" href="https://palmadecera.net" target="_blank">
                         <img class="footer-img-logos-sm" src=<?php echo base_url('img/f_palma.png')?> >
                     </a>
                 </div>
@@ -48,8 +48,11 @@
             </div>
             <div class="col">
                 <div style="margin-right: 13%; text-align: right;">
-                    <a href="https://www.tiktok.com/@binfluencers">
+                    <a class="shrink-on-hover-footer" href="https://www.tiktok.com/@binfluencers" target="_blank">
                         <img class="footer-img-logos-sm" src=<?php echo base_url('img/f_tiktok.png')?> >
+                    </a>
+                    <a class="shrink-on-hover-footer" href="https://www.instagram.com/buscoinfluencers/" target="_blank">
+                        <img class="footer-img-logos-sm" src=<?php echo base_url('img/f_ig.png')?> >
                     </a>
                 </div>
             </div>
@@ -78,7 +81,7 @@
     <script src=<?php echo base_url('js/select.js');?>></script>
     <script type="text/javascript" src=<?php echo base_url('js/jquery-3.4.1.js')?>></script>
     <script type="text/javascript" src=<?php echo base_url('js/cargarciudades.js')?>></script>
-    <script type="text/javascript" src=<?php echo base_url('js/checkbox.js')?>></script>
+    <script type="text/javascript" src="<?php echo base_url('js/checkbox.js')?>"></script>
     
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/paginationjs/2.1.4/pagination.min.js"></script>

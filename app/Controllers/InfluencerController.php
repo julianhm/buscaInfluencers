@@ -26,7 +26,7 @@ class InfluencerController extends BaseController
     //CARGA LA PAGINA DEL PERFIL DEL INFLUENCER
     public function index()
     {
-        //$this->logout();
+        $this->logout();
         $dataHeader =['titulo' => 'Busca Influencer',
                 'mensaje'=>"",];
 
@@ -183,31 +183,7 @@ class InfluencerController extends BaseController
 
 
 
-    //SE GUARDAN LAS REDES SOCIALES
-    public function guardarRedesSociales(){
-        
-        $id=$this->request->getPost('influencerid3');
-
-        $influencerModel=new InfluencerModel();
-
-        //SE BUSCA EL INFLUENCER en BD
-        $ide=$influencerModel->find($id);
-        
-
-        //CREACION DE REDES SOCIALES EN LA BASE DE DATOS
-        $mensaje=$this->_crearRedesSociales($id);
-
-        if($mensaje!=""){
-            //CARGAR LA VISTA
-            return redirect()->to("/influencer/new3/$id")->with('mensaje', $mensaje);
-
-        }else{
-            return redirect()->back()->with('mensaje', 'ocurrio un error al crear tu red');
-        }
    
-        
-    }
-
 //SE CARGA LA VISTA FINAL DEL REGISTRO
     public function registrofinal($id=null){
 
@@ -352,13 +328,27 @@ class InfluencerController extends BaseController
             }
 
             $misRedes=[];
-            $misRedesNoUsadas=$redes->where('activa',1)->findAll();
+            $misRedesNoUsadas=$redes->findAll();
             $misUsuariosRedes=[];
+            $cont=0;
             foreach ($idredes as $key => $m) {
+                
                 array_push($misRedes,$redes->find($m['idredes']));
                 array_push($misUsuariosRedes,$m['user']);
+                //var_dump($misRedesNoUsadas);
                 unset($misRedesNoUsadas[$m['idredes']-1]);
+                
             }
+            $redesNOUSADAS=[];
+            foreach ($misRedesNoUsadas as $key => $m) {
+                if($m['activa']==1){
+                    array_push($redesNOUSADAS,$m);  
+                }
+                
+                
+            }
+
+            
 
             $misIdiomas=[];
             $misIdiomasNoUsados= $idioma->findAll();
@@ -384,7 +374,7 @@ class InfluencerController extends BaseController
             'pagosNoUsados'=>$misPagosNoUsados,
             'influencerPagos'=>$idpago,
             'redes'=>$misRedes,
-            'redesNoUsadas'=>$misRedesNoUsadas,
+            'redesNoUsadas'=>$redesNOUSADAS,
             'redesUsuarios'=>$misUsuariosRedes,
             'redesInfluencer'=>$idredes,
             'idiomas'=>$misIdiomas,
@@ -1055,6 +1045,11 @@ class InfluencerController extends BaseController
 
    }
 
+
+   /*************************************************************************/
+   /** ACTUALIZACION DE PASSWORD */
+   /*************************************************************************/
+
      //CARGA LA VISTA DE OLVIDO CLAVE
      public function olvidoClave(){
         
@@ -1098,7 +1093,83 @@ class InfluencerController extends BaseController
 
 
    private function _enviarCorreo($correo,$tokens,$id){
-     
+    
+    $cuerpo = "<!DOCTYPE html>
+<html>
+<body marginheight='0' topmargin='0' marginwidth='0' style='margin: 0px; background-color: #f2f3f8;' leftmargin='0'>
+    <!--100% body table-->
+    <table cellspacing='0' border='0' cellpadding='0' width='100%' bgcolor='#f2f3f8'
+        style='@import url(https://fonts.googleapis.com/css?family=Rubik:300,400,500,700|Open+Sans:300,400,600,700); font-family: 'Open Sans', sans-serif;'>
+        <tr>
+            <td>
+                <table style='background-color: #f2f3f8; max-width:670px;  margin:0 auto;' width='100%' border='0'
+                    align='center' cellpadding='0' cellspacing='0'>
+                    <tr>
+                        <td style='height:80px;'>&nbsp;</td>
+                    </tr>
+                    <tr>
+                        <td style='text-align:center;'>
+                          <a href='www.buscoinfluencers.com' title='logo' target='_blank'>
+                            <img width='60' src='https://www.buscoinfluencers.com/wp-content/uploads/2022/06/Logo-BINF.png' title='logo' alt='logo'>
+                          </a>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td style='height:20px;'>&nbsp;</td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <table width='95%' border='0' align='center' cellpadding='0' cellspacing='0'
+                                style='max-width:670px;background:#fff; border-radius:3px; text-align:center;-webkit-box-shadow:0 6px 18px 0 rgba(0,0,0,.06);-moz-box-shadow:0 6px 18px 0 rgba(0,0,0,.06);box-shadow:0 6px 18px 0 rgba(0,0,0,.06);'>
+                                <tr>
+                                    <td style='height:40px;'>&nbsp;</td>
+                                </tr>
+                                <tr>
+                                    <td style='padding:0 35px;'>
+                                        <h1 style='color:#1e1e2d; font-weight:500; margin:0;font-size:32px;font-family:'Rubik',sans-serif;'>
+                                        Solicitud de recuperación de contraseña</h1>
+                                        <span
+                                            style='display:inline-block; vertical-align:middle; margin:29px 0 26px; border-bottom:1px solid #cecece; width:100px;'></span>
+                                        <p style='color:#455056; font-size:15px;line-height:24px; margin:0;'>
+                                        Recibimos una solicitud para restablecer tu contraseña, para continuar de click en el siguiente enlace.
+                                        </p>
+                                        <a href='".base_url()."/respassword/".$tokens."/".$id."'
+                                            style='background:#00ffff;text-decoration:none !important; font-weight:500; margin-top:35px; color:#000;text-transform:uppercase; font-size:14px;padding:10px 24px;display:inline-block;border-radius:50px;font-weight: 700;'>
+                                            Recuperar contraseña</a>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td style='height:40px;'>&nbsp;</td>
+                                </tr>
+                            </table>
+                        </td>
+                    <tr>
+                        <td style='height:20px;'>&nbsp;</td>
+                    </tr>
+                    <tr>
+                        <td style='text-align:center;'>
+                            <p style='font-size:14px; color:rgba(69, 80, 86, 0.7411764705882353); line-height:18px; margin:0 0 0;'>&copy; <strong>www.buscoinfluencers.com</strong></p>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td style='height:80px;'>&nbsp;</td>
+                    </tr>
+                </table>
+            </td>
+        </tr>
+    </table>
+    <!--/100% body table-->
+</body>
+
+</html>";
+
+
+
+
+
+
+
+
     $email = \Config\Services::email();
 
     $email->setFrom("noreply@buscoinfluencer.com", 'WD STUDIO CORP');
@@ -1106,7 +1177,7 @@ class InfluencerController extends BaseController
     
 
     $email->setSubject("Restablecimiento de Contraseña");
-    $cuerpo = base_url()."/respassword/".$tokens."/".$id;
+    
     $email->setMessage($cuerpo);
 
     $email->send();
@@ -1173,6 +1244,7 @@ class InfluencerController extends BaseController
         $id= $this->request->getPost('influencerid1');
         $redsocial= $this->request->getPost('redessocialesagregar');
         $usuarioredsocial= $this->request->getPost('textousuariored');
+
         $array=['idinfluencer'=>$id,'idredes'=>$redsocial];
         $buscar=$redinfluencer->where($array)->findAll();
 
@@ -1180,14 +1252,14 @@ class InfluencerController extends BaseController
             $r=$this->buscarSeguidoresAPI($redsocial,$usuarioredsocial);
                 if($r!=0){
                     if($buscar==null){
-                        $influencerredesmodel->insert(['idinfluencer'=>$id,'idredes'=>$redsocial,'user'=>$usuarioredsocial,'cant_seguidores'=>$r]);
-                        return redirect()->to("/influencer/edit/$id")->with('mensaje', 'Tus Redes se crearon con exito');
+                        $redinfluencer->insert(['idinfluencer'=>$id,'idredes'=>$redsocial,'user'=>$usuarioredsocial,'cant_seguidores'=>$r]);
+                        return redirect()->to("/influencer/edit/$id")->with('mensaje', 'Tus Red social se creo con exito');
                     } else{
-                        $influencerredesmodel->update($buscar[0]['id'],['cant_seguidores'=>$r]);
-                        return redirect()->to("/influencer/edit/$id")->with('mensaje', 'Tus Redes se actualizaron con exito');
+                        $redinfluencer->update($buscar[0]['id'],['cant_seguidores'=>$r]);
+                        return redirect()->to("/influencer/edit/$id")->with('mensaje', 'Tus Red se actualizó con exito');
                     }
                 }else{
-                    return redirect()->to("/influencer/edit/$id")->with('mensaje', 'Se generó un error al buscar la cantidad de usuarios de la red social, verifica tu nombre de Usuario');
+                    return redirect()->to("/influencer/edit/$id")->with('mensaje', 'No se encontro el usuario de la red social');
                     
                 }
                 
@@ -1196,40 +1268,74 @@ class InfluencerController extends BaseController
     }
 
 
+     //SE GUARDAN LAS REDES SOCIALES
+     public function guardarRedesSociales(){
+        
+        $id=$this->request->getPost('influencerid3');
+
+        $influencerModel=new InfluencerModel();
+
+        //SE BUSCA EL INFLUENCER en BD
+        $ide=$influencerModel->find($id);
+        
+
+        //CREACION DE REDES SOCIALES EN LA BASE DE DATOS
+        $mensaje=$this->_crearRedesSociales($id);
+        //echo $mensaje;
+
+        if($mensaje=="Su red social se actualizó correctamente" || $mensaje=="Su red social se actualizó correctamente"){
+            //CARGAR LA VISTA
+            return redirect()->to("/influencer/new3/$id")->with('mensaje', $mensaje);
+
+        }else{
+            return redirect()->back()->with('mensaje', $mensaje);
+        }
+   
+        
+    }
+
+   
+
+
    private function _crearRedesSociales($id){
+    
     $redesmodel=new RedesModel();
     $influencerredesmodel=new InfluencersRedesModel();
     $redesSociales= $redesmodel->where('activa',1)->findAll();
-        
+    $cont=0;    
     foreach ($redesSociales as $key => $m) {
         
         $nombre= $this->request->getPost($m['idredes']);
-                    //var_dump($nombre);
+        
 
         if(!($nombre=="" || $nombre==null)){
+            $cont++;
             $miArray=['idinfluencer'=>$id,'idredes'=>$m['idredes']];
             $obj=$influencerredesmodel->where($miArray)->findAll();
-            //var_dump($obj);
+            
             $r=$this->buscarSeguidoresAPI($m['idredes'],$nombre);
+            
             if($r!=0){
                 if($obj==null){
                     $influencerredesmodel->insert(['idinfluencer'=>$id,'idredes'=>$m['idredes'],'user'=>$nombre,'cant_seguidores'=>$r]);
-                    return "Se creo correctamente la red social";
+                    return "Su red social se agrego correctamente";
                 } else{
                     $influencerredesmodel->update($obj[0]['id'],['cant_seguidores'=>$r]);
-                    return "Se actualizo correctamente la red social";
+                    return "Su red social se actualizó correctamente";
                 }
             }else{
-                return "";
+                
+                return "No se encontro el usuario de la red social";
             }
             
-        }else{
-            return "";
         }
 
 
     }
-    return "";
+    if($cont==0){
+        return "No se agregó ningun usuario";
+    }
+    
     
 }
 
@@ -1238,6 +1344,7 @@ class InfluencerController extends BaseController
 
    public function buscarSeguidoresAPI($idredes,$nombre){
 
+        
         $misRedes= new RedesModel();
         $red=$misRedes->find($idredes);
         $cantSeguidores=0;
@@ -1437,7 +1544,7 @@ class InfluencerController extends BaseController
     
     $result = curl_exec($curl);
     $r= (array)json_decode($result,true);
-    var_dump($r);
+   // var_dump($r);
     $err = curl_error($curl);
     
     curl_close($curl);

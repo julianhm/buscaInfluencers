@@ -37,7 +37,7 @@ a:hover {
     font-family: 'HYPE';
     font-style: normal;
     font-weight: normal;
-    src: local('HYPE Regular'), url(../fonts/hype/'HYPE.woff') format('woff');
+    src: local('HYPE Regular'), url('../fonts/hype/HYPE.woff') format('woff');
     }
 /*
 @font-face {font-family: "HYPE";
@@ -302,11 +302,83 @@ a:hover {
 }
 
 .followers-sm-main {
-    padding: 9px;
+    padding: 6px 5px 0px 5px;
+    /*padding: 9px;*/
     font-family: 'Myriad Pro';
     font-size: 17px;
     color: black;
     font-weight: bold;
+}
+
+.img-effect {
+    opacity: 1;
+    transition: .5s ease;
+    /*backface-visibility: hidden;*/
+}
+
+.container-img:hover .img-effect {
+    
+    opacity:0.7;
+    border: 2px solid #b3afae;
+  }
+
+ .product-item a:hover {
+    text-decoration: none;
+    
+ }
+
+ .product-item a {
+    color: #ffffff;
+ }
+
+ .grow img{
+    transition: 1s ease;
+    }
+    
+    .grow img:hover{
+    -webkit-transform: scale(1.2);
+    -ms-transform: scale(1.2);
+    transform: scale(1.2);
+    transition: 1s ease;
+    }
+
+
+    .btn-contactar-influencer:hover{
+        text-decoration: none;
+        color: #fff;
+    }
+    
+    /*===================*/
+    /* SHRINK EFFECT
+    /*===================*/
+    
+    .shrink-on-hover {
+      display: inline-block;
+      vertical-align: middle;
+      -webkit-transform: perspective(1px) translateZ(0);
+      transform: perspective(1px) translateZ(0);
+      box-shadow: 0 0 1px rgba(0, 0, 0, 0);
+      -webkit-transition-duration: 0.6s;
+      transition-duration: 0.6s;
+      -webkit-transition-property: transform;
+      transition-property: transform;
+    }
+    .shrink-on-hover:hover,  .shrink-on-hover:active {
+      -webkit-transform: scale(0.9);
+      transform: scale(0.9);
+    }
+
+    .shrink-on-hover-footer img:hover{
+        -webkit-transform: scale(0.9);
+        -ms-transform: scale(0.9);
+        transform: scale(0.9);
+        transition: 1s ease;
+        }
+
+
+.owl-two a:hover {
+    opacity: 0.7;
+    border: #B3AFAE;
 }
 
 .donar-decription-black{
@@ -626,7 +698,7 @@ a:hover {
     box-sizing: border-box;
     margin-bottom: 10px;
     font-family:"Myriad Pro Regular";
-    font-weight: bold;
+    /*font-weight: bold;*/
     /*color: #bfbfbb;*/
 }
 
@@ -712,7 +784,7 @@ textarea:focus {
     box-sizing: border-box;
     margin-bottom: 10px;
     font-family:"Myriad Pro Regular";
-    font-weight: bold;
+    /*font-weight: bold;*/
     /*color: #bfbfbb;*/
     padding-left: 12px;
 }
@@ -1276,15 +1348,22 @@ textarea:focus {
 }
 
 .gallery-profile-show {
+    border: 2px solid #0f0f0f;
+    /*border-radius: 4px;
+    padding: 5px;
     background-color: #606060;
     width: 152px;
     height: 152px;
-    border: 1px solid #000;
-    /*margin: 15px;*/
+    border: 1px solid #000;*/
+    margin: 15px;
     display: flex;
     justify-content: center;
     align-items: center;
 }
+
+.gallery-profile-show:hover {
+    box-shadow: 0 0 2px 1px rgba(0, 0, 0, 0.5);
+  }
 
 .gallery-profile-show-margin {
     margin: 15px;
@@ -1374,6 +1453,15 @@ div.content {
   padding: 1px 5px;
   /*height: 1000px;*/
 }
+
+
+.container-new {
+    /*padding-right: 10px;
+    padding-left: 10px;*/
+    margin-right: auto;
+    margin-left: auto;
+}
+
 
 
 /******** RESPONSIVE ************/
@@ -1495,4 +1583,12 @@ div.content {
     .profile-container-comentario {padding: 0px 340px;}
 
     .my-profile-justify-margin {margin-left: 20px;}
+    .container-new {width: 1345px;}
+
+}
+
+@media only screen and (min-width: 2400px) {
+
+    .logo-header-normal { width: 4%; }
+
 }
