@@ -103,26 +103,28 @@
                             
                         </div>
 
+
+                        
+
                         <div class="mb-3 user-decription-black" style="padding-left: 20%; padding-right: 20%;">
+                            
                             <p style="font-weight: bold;">Modalidad de pago </p>
                             <p>Selecciona la o las alternativas de negociación</p>
 
-                            <div class="row mb-3 user-decription-black">
+                            <div class="row justify-content-center user-decription-black" style="padding-left: 15%; padding-right: 15%">
+                                
                                 <?php foreach ($pagos as $key => $m) {?>
-                                        
-                                        <div class="col">
-                                            <div class="form-check d-flex justify-content-center">
-                                                <input class="form-check-input" type="checkbox" value="<?=$m['idpago']?>" id="<?=$m['idpago']?>" name="<?=$m['idpago']?>">
-                                                <label class="form-check-label alignlabel" style="margin-left: 8px;" for="flexCheckDefault">
-                                                    <?=$m['nombre']?>
-                                                </label>
-                                        </div>
+                                <div class="col-md-auto">
+                                    <input class="form-check-input" type="checkbox" value="<?=$m['idpago']?>" id="<?=$m['idpago']?>" name="<?=$m['idpago']?>"><br>
+                                    <?=$m['nombre']?>
                                 </div>
                                 <?php } ?>
-                                
+
                             </div>
+
                         </div>
 
+                        
 
                          <div class="mb-3 user-decription-black" style="padding-left: 20%; padding-right: 20%;">
                             <p style="font-weight: bold;">Ubicación del influencer</p>

@@ -142,33 +142,33 @@
                                 <p>Marca los que consideres</p>
 
                                 <div class="col-md-auto">
-                                    Canje por producto <br>
-                                    <input class="form-check-input" type="checkbox" value="" name="canje" id="flexCheckDefault">
+                                    <input class="form-check-input" type="checkbox" value="" name="canje" id="flexCheckDefault"><br>
+                                     Canje por producto
                                 </div>
 
                                 <div class="col-md-auto">
-                                    Dinero <br>
-                                    <input class="form-check-input" type="checkbox" value="" name="dinero" id="flexCheckDefault">
+                                    <input class="form-check-input" type="checkbox" value="" name="dinero" id="flexCheckDefault"> <br>
+                                    Dinero
                                 </div>
                                 <div class="col-md-auto">
-                                    Servicios <br>
-                                    <input class="form-check-input" type="checkbox" value="" name="servicios" id="flexCheckDefault">
+                                    <input class="form-check-input" type="checkbox" value="" name="servicios" id="flexCheckDefault"> <br>
+                                    Servicios
                                 </div>
                                 <div class="col-md-auto">
-                                    Patrocinio <br>
-                                    <input class="form-check-input" type="checkbox" value="" name="patrocinio" id="flexCheckDefault">
+                                    <input class="form-check-input" type="checkbox" value="" name="patrocinio" id="flexCheckDefault"> <br>
+                                    Patrocinio
                                 </div>
                             
                             </div>
 
-                            <div style="padding-left: 10%; padding-right: 10%;">
+                            <div class="my-4" style="padding-left: 10%; padding-right: 10%;">
                                 <hr class="break_line">
                             </div>
 
 
                             <div class="d-flex justify-content-center mb-4">
                                 <div class="btn-register">
-                                    <input type="submit" name="submit" id="submit"class="btn btn-login btn-lg btn-register-width user-decription-black" style="font-size: 20px;" value= "¡REGISTRARME!"/>
+                                    <input type="submit" name="submit" id="submit" class="btn btn-login btn-lg btn-register-width user-decription-black" style="font-size: 20px; width: fit-content; padding: 12px 45px;" value= "¡REGISTRARME!"/>
                                 </div>
                             </div>
                         </div>

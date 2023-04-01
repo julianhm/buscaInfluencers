@@ -40,6 +40,7 @@
 
     <link rel='stylesheet' href=<?php echo base_url('css/star-rating.css');?>>
     <link rel='stylesheet' href=<?php echo base_url('css/star-index.css');?>>
+    <link rel='stylesheet' href=<?php echo base_url('css/cropper.css');?>>
   
 </head>
 

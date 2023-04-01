@@ -33,37 +33,12 @@
                     <div style="padding-left: 25%; padding-right: 25%;">
                         <div class="row mb-2">
 
-<<<<<<< HEAD
-                            
-                            
-                            <?php $cont=4;
-                                foreach($misredes as $key => $m){ ?>
-                                <?php if($cont==4){
-                                    $cont=1;?>
-                                    <div class="row mb-2">
-                                        <?php }?> 
-                                        <div class="col">
-                                            <div class="row">
-                                                <div class="col-md-auto check-align">
-                                                    <div class="form-check">
-                                                        
-                                                        <input class="form-check-input chb" type="checkbox" value="<?=$m['idredes']?>" id="<?=$m['nombre']?>" onclick="smInputState('<?=$m['nombre']?>', '<?=$m['idredes']?>')">
-                                                      </div>
-                                                </div>
-                                                <div class="col-md-auto logo-sm-align">
-                                                    <img src='<?=base_url('img/iconos')."/".$m['icono']?>' >
-                                                </div>
-                                                <div class="col input-sm-align">
-                                                    <input class="input-redes disable-sm-input inp" type="text" name="<?=$m['idredes']?>" id="<?=$m['idredes']?>" placeholder="<?=$m['nombre']?>" disabled>
-                                                </div>
-=======
                             <?php foreach($misredes as $key => $m){ ?>
                                 <div class="col-md-6 mt-3">
                                     <div class="row">
                                         <div class="col-md-auto check-align">
                                             <div class="form-check">
                                                 <input class="form-check-input chb" type="checkbox" value="<?=$m['idredes']?>" id="<?=$m['nombre']?>" onclick="smInputState('<?=$m['nombre']?>', '<?=$m['idredes']?>')">
->>>>>>> main
                                             </div>
                                         </div>
                                         <div class="col-md-auto logo-sm-align">
@@ -104,7 +79,7 @@
             
                     <div class="d-flex justify-content-center mb-4 mt-4">
                         <div class="btn-register">
-                            <input type="submit" name="submit" id="submit"class="btn btn-login btn-lg btn-register-width user-decription-black" style="font-size: 20px;" value= "AGREGAR REDES SOCIALES" />
+                            <input type="submit" name="submit" id="submit" class="btn btn-login btn-lg btn-register-width user-decription-black" style="font-size: 20px; width: fit-content; padding: 12px 45px;" value= "AGREGAR REDES SOCIALES" />
                         </div>
                     </div>
                 </form>

@@ -188,8 +188,8 @@
 
         <div class="row mb-4 profile-container-comentario" >
 
-            <div class="text-center user-decription-black my-3" style="font-size: 25px;" >
-                Déjale una reseña a este influencer
+            <div class="text-center user-decription-black my-3"  >
+                <h2 class="section-title profile-section-title" style="background-color: #ffffff00; color: #000">Déjale una reseña a este influencer</h2>
             </div>
 
            

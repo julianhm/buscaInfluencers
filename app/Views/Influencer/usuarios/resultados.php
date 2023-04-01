@@ -203,7 +203,7 @@
                                     <div id="collapseThree" class="accordion-collapse collapse" aria-labelledby="headingThree" data-bs-parent="#accordionExample">
                                         <div class="accordion-body">
                                             
-                                            <div id="languages" class="row mt-4 justify-content-left" ></div>
+                                            
 
                                             <div style="padding-left: 15%; padding-right: 15%">
                                                 <select id="idiomaSelect2" name="idiomaSelect2"  class="form-select select-sm-profile" aria-label="Default select example">
@@ -276,7 +276,7 @@
                                     </h2>
                                     <div id="collapseFive" class="accordion-collapse collapse" aria-labelledby="headingFive" data-bs-parent="#accordionExample">
                                         <div class="accordion-body">
-                                            <div class="select_custom_small user-decription-black" style="margin-bottom: 8px;">
+                                            <div class="select_custom_small user-decription-black" style="margin-bottom: 8px; padding-left: 15%; padding-right: 15%">
                                                 <select class="form-select select-sm-profile" aria-label="Default select example" name="pais3" id="pais3" onchange='cambia_ciudades3();'>
                                                     <option value="0" selected>Selecciona país</option>
                                                     <?php foreach ($paises as $key => $m) {?>
@@ -321,7 +321,7 @@
                                         }// FIN DE FUNCIONcambia_departamento
                                     </script>
 
-                                            <div class="select_custom_small user-decription-black">
+                                            <div class="select_custom_small user-decription-black" style="padding-left: 15%; padding-right: 15%">
                                                 <select class="form-select select-sm-profile" aria-label="Default select example" name="ciudades3" id="ciudades3" disabled>
                                                     <option value="0" selected>Elije tu región</option>
                                                 </select>
@@ -514,7 +514,7 @@
 
                             <div class="my-5 d-flex justify-content-center text-center">
                                 <div class="btn-register">
-                                    <button type="submit" class="btn btn-login btn-lg btn-register-width user-decription-black" style="font-size: 20px; width: fit-content;" data-bs-dismiss="modal" data-bs-toggle="modal" data-bs-target="#confirmation-modal">VOLVER A BUSCAR</button>
+                                    <button type="submit" class="btn btn-login btn-lg btn-register-width user-decription-black" style="font-size: 20px; width: fit-content; padding: 12px 45px;" data-bs-dismiss="modal" data-bs-toggle="modal" data-bs-target="#confirmation-modal">VOLVER A BUSCAR</button>
                                 </div>
                             </div>
                 

@@ -36,11 +36,10 @@
 
 
         <div class="content">
-
-            <div class="user-decription-black my-3" style="font-size: 25px;" >
-            Hola de nuevo! <?=$influencer['nombreinflu'];?><br>
-                Editar perfil
-            </div> 
+         
+            <div class="mb-3 mt-4" style="border-top: 1px solid #000;">
+                <h2 class="mypro-section-title">Hola de nuevo <?=$influencer['nombreinflu'];?>!</h2>
+            </div>
            
             
 <!-- ============================================================== -->

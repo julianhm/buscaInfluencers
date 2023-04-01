@@ -97,7 +97,7 @@
     <script src=<?php echo base_url("js/star-rating.js")?>></script>
     <script src=<?php echo base_url("js/star-index.js")?>></script>
     
-    
+    <script src=<?php echo base_url("js/cropper.js")?>></script>
 
 </body>
 </html>
