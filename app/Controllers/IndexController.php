@@ -218,13 +218,13 @@ class IndexController extends BaseController
  
          $miInfluencer= new InfluencerModel();
  
-         $inf=$miInfluencer->select('idinfluencer,correo,password')->where('correo',$correo)->first();
+         $inf=$miInfluencer->select('idinfluencer,correo,password,validado')->where('correo',$correo)->first();
          if($inf==null){
             return redirect()->back()->with('mensaje','Correo y/o contraseña o-incorrecta');  
         } else{
 
             if($inf['validado']==0){
-                return redirect()->back()->with('mensaje','Correo y/o contraseña o-incorrecta');  
+                return redirect()->back()->with('mensaje','Debes validar tu correo electronico');  
             }else{
 
             

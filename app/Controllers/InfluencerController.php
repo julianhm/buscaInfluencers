@@ -183,13 +183,13 @@ class InfluencerController extends BaseController
                                                         <p style='color:#455056; font-size:15px;line-height:24px; margin:0;'>
                                                         Toque el botón de abajo para confirmar su dirección de correo electrónico. Si no creó una cuenta con Buscoinfluencers.com, puede eliminar este correo electrónico de manera segura.
                                                         </p>
-                                                        <a href='".base_url()."/validaremail/".$tokens."/".$id."'
+                                                        <a href='".base_url()."/validarCorreo/".$tokens."/".$id."'
                                                             style='background:#00ffff;text-decoration:none !important; font-weight:500; margin-top:35px; color:#000;text-transform:uppercase; font-size:14px;padding:10px 24px;display:inline-block;border-radius:50px;font-weight: 700;'>
                                                             Confirmar Correo</a>
                                                         <p style='color:#455056; font-size:15px;line-height:24px; margin:0; margin-top:35px;'>
                                                         Si el boton anterior no te funciona, copie y pegue el siguiente enlace en su navegador:
                                                         </p>
-                                                        <a href='#'>".base_url()."/validaremail/".$tokens."/".$id."</a>
+                                                        <a href='#'>".base_url()."/validarCorreo/".$tokens."/".$id."</a>
                                                     </td>
                                                 </tr>
                                                 <tr>
@@ -216,8 +216,8 @@ class InfluencerController extends BaseController
                 </body>
                 
                 </html>";
-    
-                $this->_enviarCorreo($correo,$cuerpo);
+                $asunto="Valida Tu correo y Activa tu cuenta";
+                $this->_enviarCorreo($correo,$cuerpo,$asunto);
                 
                 session()->set('idinfluencer',$id);
 
@@ -1247,7 +1247,7 @@ class InfluencerController extends BaseController
             </body>
             
             </html>";
-
+            $asunto="Restablecimiento de Contraseña";
             $this->_enviarCorreo($influ['correo'],$cuerpo);
             
             return redirect()->to("/")->with('mensaje', 'Revisa la bandeja de entrada de tu correo.');
@@ -1262,7 +1262,7 @@ class InfluencerController extends BaseController
    }
 
 
-   private function _enviarCorreo($correo,$cuerp){
+   private function _enviarCorreo($correo,$cuerp,$asunto){
     
    $cuerpo=$cuerp;
 
@@ -1272,7 +1272,7 @@ class InfluencerController extends BaseController
     $email->setTo($correo);
     
 
-    $email->setSubject("Restablecimiento de Contraseña");
+    $email->setSubject($asunto);
     
     $email->setMessage($cuerpo);
 
