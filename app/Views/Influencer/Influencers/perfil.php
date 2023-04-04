@@ -190,6 +190,7 @@
 
             <div class="text-center user-decription-black my-3"  >
                 <h2 class="section-title profile-section-title" style="background-color: #ffffff00; color: #000">Déjale una reseña a este influencer</h2>
+                <span>Los campos en * son requeridos</span>
             </div>
 
            
@@ -201,21 +202,21 @@
                 
             <div class="col-lg-12 user-decription-black" style="color: #696969">
                 <div class="mb-3 row">
-                    <label for="nombre" class="col-sm-3 col-form-label" style="color: #606060;">Tu nombre</label>
+                    <label for="nombre" class="col-sm-3 col-form-label" style="color: #606060;">Tu nombre *</label>
                     <div class="col-sm-9">
-                      <input type="text" class="form-control" id="nombre" name="nombre">
+                      <input type="text" class="form-control" id="nombre" name="nombre" required>
                     </div>
                 </div>
 
                 <div class="mb-3 row">
-                    <label for="empresa" class="col-sm-3 col-form-label" style="color: #606060;">Empresa (opc)</label>
+                    <label for="empresa" class="col-sm-3 col-form-label" style="color: #606060;">Empresa</label>
                     <div class="col-sm-9">
                       <input type="text" class="form-control" id="empresa" name="empresa">
                     </div>
                 </div>
 
                 <div class="mb-3 row">
-                    <label for="inputBusiness" class="col-sm-3 col-form-label" style="color: #606060;">Valoración</label>
+                    <label for="inputBusiness" class="col-sm-3 col-form-label" style="color: #606060;">Valoración *</label>
                     <div class="col-sm-9" onClick="cambio()">
                         <div id="rater" name="rater" ></div>
                     </div>
@@ -234,9 +235,9 @@
                 </script>
 
                 <div class="mb-3 row">
-                    <label for="cuerpo" class="user-decription-black col-sm-3 col-form-label" style="color: #606060;">Comentario</label>
+                    <label for="cuerpo" class="user-decription-black col-sm-3 col-form-label" style="color: #606060;">Comentario *</label>
                     <div class="col-sm-9">
-                      <textarea id="cuerpo" name="cuerpo" class="form-control" rows="4" style="resize: none;"></textarea>
+                      <textarea id="cuerpo" name="cuerpo" class="form-control" rows="4" style="resize: none;" required></textarea>
                     </div>
                 </div>
 
