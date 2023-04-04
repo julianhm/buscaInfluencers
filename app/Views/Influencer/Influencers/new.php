@@ -200,7 +200,7 @@
 
                         <div class="d-flex justify-content-center mb-4">
                             <div class="btn-register">
-                                <input type="submit" name="submit" id="submit"class="btn btn-login btn-lg btn-register-width user-decription-black" style="font-size: 20px;" value= "¡REGISTRARME!" disabled/>
+                                <input type="submit" name="submit" id="submit" class="btn btn-login btn-lg btn-register-width user-decription-black" style="font-size: 20px; width: fit-content; padding: 12px 45px;" value= "¡REGISTRARME!" disabled/>
                                <!-- data-bs-dismiss="modal" data-bs-toggle="modal" data-bs-target="#confirmation-modal"-->
                             </div>
                         </div>
