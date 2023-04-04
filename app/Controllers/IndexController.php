@@ -219,18 +219,24 @@ class IndexController extends BaseController
          $miInfluencer= new InfluencerModel();
  
          $inf=$miInfluencer->select('idinfluencer,correo,password')->where('correo',$correo)->first();
- 
          if($inf==null){
-             return redirect()->back()->with('mensaje','Correo y/o contraseña o-incorrecta');  
-         }
-         $pass=$inf['password'];
-         if(password_verify($password,$inf['password'])){
-             $id=$inf['idinfluencer'];
-             session()->set('idinfluencer',$id);
-             session()->set('time',time());
-             return redirect()->to(base_url()."/influencer/edit/$id")->with('mensaje', 'Tu login fue correcto');
-         }
-         
+            return redirect()->back()->with('mensaje','Correo y/o contraseña o-incorrecta');  
+        } else{
+
+            if($inf['validado']==0){
+                return redirect()->back()->with('mensaje','Correo y/o contraseña o-incorrecta');  
+            }else{
+
+            
+                $pass=$inf['password'];
+                if(password_verify($password,$inf['password'])){
+                    $id=$inf['idinfluencer'];
+                    session()->set('idinfluencer',$id);
+                    session()->set('time',time());
+                    return redirect()->to(base_url()."/influencer/edit/$id")->with('mensaje', 'Tu login fue correcto');
+                }
+            }
+        }
          return redirect()->back()->with('mensaje','Correo y/o contraseña o-incorrecta'); 
  
      }

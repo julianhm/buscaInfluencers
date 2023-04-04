@@ -60,6 +60,10 @@ class Influencers extends Migration
                 'type' => 'VARCHAR',
                 'constraint' => '300',
                 
+            ],'validado'=>[
+                'type' => 'INT',
+                'null' => true,
+                
             ], 'created_at'=>[
                 'type' => 'VARCHAR',
                 'constraint' => '300',
