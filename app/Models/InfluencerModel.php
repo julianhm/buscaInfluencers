@@ -22,11 +22,11 @@ class InfluencerModel extends Model
     protected $updatedField  = 'updated_at';
     protected $deletedField  = 'deleted_at';
 
-    protected $validationRules    = [
+   /* protected $validationRules    = [
         'nombre'=>'required|min_length[4]|max_length[20]',
     'alias'=>'required|min_length[2]|max_length[20]',
     'password'=>'required|min_length[8]',
-    'correo'=>'required|valid_email',
+    'correo'=>'required|valid_email|is_unique[influencers.correo]',
     'pais'=>'required',
     'ciudades'=>'required',
     'resenia'=>'required|min_length[10]|max_length[5000]',
@@ -49,6 +49,7 @@ class InfluencerModel extends Model
         'correo' => [
             'required' => 'El email es requerido',
             'valid_email' => 'El email no tiene el formato de un correo',
+            'is_unique'=>'El email ya esta registrado en la base de datos',
         ],
         'pais' => [
             'required' => 'El pais es requerido',
@@ -62,7 +63,7 @@ class InfluencerModel extends Model
             'required' => 'La reseña es requerida',
             'min_length' => 'La reseña debe tener como mínimo 10 caracteres',
         ],
-    ];
+    ];*/
     //protected $skipValidation     = false;
 
     

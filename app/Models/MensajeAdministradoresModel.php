@@ -15,7 +15,7 @@ class MensajeAdministradoresModel extends Model
     //protected $returnType     = 'array';
     //protected $useSoftDeletes = true;
 
-    protected $allowedFields = ['asunto','correo','cuerpo','leido'];
+    protected $allowedFields = ['nombre','correo','cuerpo','leido'];
 
     //protected $useTimestamps = false;
     //protected $createdField  = 'created_at';

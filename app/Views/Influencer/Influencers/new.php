@@ -27,17 +27,19 @@
                             <img class="icon-input" src=<?php echo base_url('img/icon-user.png')?> for="nombre">
 
                             <input class="input-modify" type="text" name="nombre" id="nombre" maxlength = "20" placeholder="Tu nombre (si lo crees necesario)" value='<?= old('nombre') ?>'>
-                            
+                            <p style="color:red"><?=session("errors.nombre")?></p>
                         </div>
                         <div class="form-group">
                             <img class="icon-input" src=<?php echo base_url('img/icon-alias.png')?> for="alias" >
 
                             <input class="input-modify" type="text" name="alias" id="alias" maxlength = "20" placeholder="Alias (solo si usas)" value='<?= old('alias') ?>'>
+                            <p style="color:red"><?=session("errors.alias")?></p>
                         </div>
                         <div class="form-group">
                             <img class="icon-input" src=<?php echo base_url('img/icon-pass.png')?> for="password">
 
                             <input class="input-modify" type="password" name="password" id="password" placeholder="Escribe una clave" >
+                            <p style="color:red"><?=session("errors.password")?></p>
                         </div>
                         <div class="form-group">
                             <img class="icon-input" src=<?php echo base_url('img/icon-pass.png')?> for="passwordver">
@@ -48,6 +50,7 @@
                             <img class="icon-input" src=<?php echo base_url('img/icon-email.png')?> for="correo">
                             
                             <input class="input-modify" type="email" name="correo" id="correo" placeholder="Tu correo electrónico" value='<?= old('correo') ?>'>
+                            <p style="color:red"><?=session("errors.correo")?></p>
                         </div>
                         <div class="form-group">
                             <img class="icon-input" src=<?php echo base_url('img/icon-location.png')?> for="pais">
@@ -58,7 +61,7 @@
                                    <option value="<?=$m['idpais']?>"><?=$m['nombre']?></option>
                                <?php } ?>
                             </select>
-                            
+                            <p style="color:red"><?=session("errors.pais")?></p>
                         </div>
                         <?php 
                         $ciudadesarray=[];
@@ -121,6 +124,7 @@
                                     <option value="0" selected>Elije tu región</option>
                                    
                             </select>
+                            <p style="color:red"><?=session("errors.ciudades")?></p>
                             <!--<input class="input-modify" type="text" name="ciu" id="ciu" placeholder="Tu ciudad de residencia" value=''>-->
                         </div>
 
@@ -142,7 +146,7 @@
                         <div class="form-group mb-4 ">
                             <textarea class="input-redes" name="resenia" style="resize: none; width: 100%;" rows="6" placeholder="Cuéntanos un poco de ti" ><?= old('resenia') ?></textarea>
                         </div>
-
+                        <p style="color:red"><?=session("errors.resenia")?></p>
 
                         
                         <div class="d-flex justify-content-center mb-4">

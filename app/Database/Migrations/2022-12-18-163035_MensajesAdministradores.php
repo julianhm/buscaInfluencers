@@ -14,7 +14,7 @@ class MensajesAdministradores extends Migration
                 'constraint'     => 5,
                 'unsigned'       => true,
                 'auto_increment' => true,
-            ],'asunto' => [
+            ],'nombre' => [
                 'type'       => 'VARCHAR',
                 'constraint' => '100',
                 'null' => false,

@@ -82,9 +82,9 @@ $routes->group('influencer', static function ($routes) {
     $routes->post('adicionarEmpresa', 'InfluencerController::adicionarEmpresa');
     $routes->post('adicionarPago', 'InfluencerController::adicionarPago');
     $routes->post('editarOferta', 'InfluencerController::editarOferta');
-    $routes->get('new2/(:any)', 'InfluencerController::registro/$1');
+    //$routes->get('new2/(:any)', 'InfluencerController::registro/$1');
     $routes->post('guardarRedesSociales', 'InfluencerController::guardarRedesSociales');
-    $routes->get('new3/(:any)', 'InfluencerController::registrofinal/$1');
+    //$routes->get('new3/(:any)', 'InfluencerController::registrofinal/$1');
     $routes->post('continuarregistro', 'InfluencerController::continuarregistro');
     $routes->get('mensajes/(:any)', 'InfluencerController::mensajesInfluencer/$1');
     $routes->get('eliminarmensaje/(:any)/(:any)', 'InfluencerController::eliminarMensajes/$1/$2');

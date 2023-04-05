@@ -96,24 +96,15 @@ class InfluencerController extends BaseController
         $validation =  \Config\Services::validation();
        
         //SE CREAN LAS REGLAS DE VALIDACION PARA LOS CAMPOS
-       /* $rules=[
-            'nombre'=>'required|min_length[4]|max_length[20]',
-            'alias'=>'required|min_length[2]|max_length[20]',
-            'password'=>'required|min_length[8]',
-            'correo'=>'required|valid_email',
-            'pais'=>'required',
-            'ciudades'=>'required',
-            'resenia'=>'required|min_length[10]|max_length[5000]',
-            
-        ];
+     
 
         $validation->setRules(
             [
                 'nombre'=>'required|min_length[4]|max_length[20]',
                 'alias'=>'required|min_length[2]|max_length[20]',
-                'password'=>'required|min_length[8]',
-                'correo'=>'required|valid_email',
-                'pais'=>'required',
+                'password'=>'required|min_length[8]|matches[passwordver]',
+                'correo'=>'required|valid_email|is_unique[influencers.correo]',
+                'pais'=>'is_not_unique[paises.idpais]',
                 'ciudades'=>'required',
                 'resenia'=>'required|min_length[10]|max_length[5000]',
             ],
@@ -130,13 +121,16 @@ class InfluencerController extends BaseController
                 ],'password' => [
                     'required' => 'El password es requerido',
                     'min_length' => 'El password debe tener como mínimo 8 caracteres',
+                    'matches'=>'Los password No coinciden'
                 ], 
                 'correo' => [
                     'required' => 'El email es requerido',
                     'valid_email' => 'El email no tiene el formato de un correo',
+                    'is_unique'=>'El email ya esta registrado en la base de datos',
+
                 ],
                 'pais' => [
-                    'required' => 'El pais es requerido',
+                    'is_not_unique' => 'Debes seleccionar un pais',
                     
                 ],
                 'ciudades' => [
@@ -149,15 +143,18 @@ class InfluencerController extends BaseController
                 ],
             ]
         );
-*/
-        $imagefile = $this->request->getFiles();
 
-        $password= $this->request->getPost('password');
-        $passwordotro= $this->request->getPost('passwordver');
-
+       
         //SI SE VALIDAN LAS REGLAS
-        //if($this->validate($rules)){
-            if($password==$passwordotro){
+        if(!$validation->withRequest($this->request)->run()){
+            session();
+            return redirect()->back()->withinput()->with('errors',$validation->getErrors());
+
+        }else{
+            $imagefile = $this->request->getFiles();
+
+            $password= $this->request->getPost('password');
+            $passwordotro= $this->request->getPost('passwordver');
 
                 // Opciones de contraseña:
                 $newpass= password_hash($password, PASSWORD_DEFAULT);
@@ -185,10 +182,8 @@ class InfluencerController extends BaseController
                 ];
 
                 //SE CREA EL INFLUENCER
-                if($influencerModel->insert($datainsertar)===false){
-
-                }else{
-
+                $id=$influencerModel->insert($datainsertar);
+                if($id>0){
                 
 
                         $cuerpo = "<!DOCTYPE html>
@@ -270,27 +265,20 @@ class InfluencerController extends BaseController
                         
                         session()->set('idinfluencer',$id);
 
-                        return redirect()->to(base_url()."/influencer/new2/$id")->with('mensaje', 'Tu cuenta se creo con exito, antes de ingresar debes validarla desde tu correo electrónico');
+                        return redirect()->to('/')->with('mensaje', 'Tu cuenta se creo con exito, antes de ingresar debes validarla desde tu correo electrónico');
+                }else{
+                    return redirect()->back()->withinput()->with('mensaje','Ocurrio un error al crear su cuenta');
+
                 }
-            }else{
-                $mensaje="Los password son diferentes";
-                session();
-                $_SESSION['mensaje'] = $mensaje;
-                return redirect()->back()->withinput();
-            }
+           
             
+        }
         
-        
-                $mensaje=$influencerModel->errors();
-                session();
-                $_SESSION['error'] = $mensaje;
-
-
-
-      return redirect()->back()->withinput();//->with('errors',$this->validation->getErrors());
-   }
-
-   public function validarCorreo($token=null,$id=null){
+   
+    }
+   
+   
+    public function validarCorreo($token=null,$id=null){
       
     $influencer = new InfluencerModel();
     $inf=$influencer->find($id);
@@ -318,16 +306,43 @@ public function enviarMensajeContactanos(){
 
     $correoAdministradorModel= new MensajeAdministradoresModel();
     
-    $rules=[
-        'nombrecontacto'=>'required|min_length[4]|max_length[20]',
-        'correocontacto'=>'required|valid_email',
-        'cuerpocontacto'=>'required|min_length[5]|max_length[5000]',
-        
-    ];
-
+  
     $validation =  \Config\Services::validation();
+       
+    //SE CREAN LAS REGLAS DE VALIDACION PARA LOS CAMPOS
+ 
 
-    if($this->validate($rules)){
+    $validation->setRules(
+        [
+            'nombrecontacto'=>'required|min_length[4]|max_length[20]',
+            'correocontacto'=>'required|valid_email',
+            'cuerpocontacto'=>'required|min_length[10]|max_length[5000]',
+        ],
+        [   // Errors
+            'nombrecontacto' => [
+                'required' => 'El nombre es requerido',
+                'min_length' => 'El nombre debe tener como mínimo 4 caracteres',
+                'max_length' => 'El nombre NO puede tener mas de 20 caracteres',
+            ],
+            'correocontacto' => [
+                'required' => 'El email es requerido',
+                'valid_email' => 'El email no tiene el formato de un correo',
+            ],
+            'cuerpocontacto' => [
+                'required' => 'El cuerpo del correo es requerido',
+                'min_length' => 'El cuerpo del correo debe tener como mínimo 10 caracteres',
+                'max_length' => 'El cuerpo del correo NO puede tener mas de 5000 caracteres',
+            ],
+        ]
+    );
+
+   
+    //SI SE VALIDAN LAS REGLAS
+    if(!$validation->withRequest($this->request)->run()){
+        session();
+        return redirect()->back()->withinput()->with('errors',$validation->getErrors());
+
+    }else{
 
         $nombre=$this->request->getPost('nombrecontacto');
         $correo=$this->request->getPost('correocontacto');
@@ -335,13 +350,12 @@ public function enviarMensajeContactanos(){
 
         $data=['nombre'=>$nombre,'correo'=>$correo,'cuerpo'=>$cuerpo,'leido'=>0];
 
-        $correoAdministradorModel->insert($data);
+        if($correoAdministradorModel->insert($data)){
+            return redirect()->to("/")->with('mensaje', 'Su mensaje se envió correctamente');
+        }
 
-    }else{
-       
-       // $mensaje=$validation->listErrors();
-      session();
-      return redirect()->back()->withinput()->with('errors',$validation->listErrors()); 
+        return redirect()->back()->withinput()->with('mensaje',"Ocurrio un error inesperado,No se pudo enviar su mensaje.");
+
     }
  
 

@@ -17,18 +17,18 @@
                             <div class="row g-2">
 
                                 <div class="col-12">
-                                    <input class="input-redes" type="text" style="text-align: center;" name="nombrecontacto" id="nombrecontacto" placeholder="Nombre">
-                                    <p class="help is-danger"><?=session('errors.nombrecontacto')?></p>
+                                    <input class="input-redes" type="text" style="text-align: center;" name="nombrecontacto" id="nombrecontacto" placeholder="Nombre" value='<?= old('nombrecontacto') ?>'>
+                                    <p style="color:red"><?=session("errors.nombrecontacto")?></p>
                                 </div>
 
                                 <div class="col-12">
-                                    <input class="input-redes" type="text" style="text-align: center;" name="correocontacto" id="correocontacto" placeholder="Correo">
-                                    <p class="help is-danger"><?=session('errors.correocontacto')?></p>
+                                    <input class="input-redes" type="text" style="text-align: center;" name="correocontacto" id="correocontacto" placeholder="Correo" value='<?= old('correocontacto') ?>'>
+                                    <p style="color:red"><?=session("errors.correocontacto")?></p>
                                 </div>
 
                                 <div class="col-12">
-                                    <textarea class="input-redes" style="text-align: center;" rows="6" name="cuerpocontacto" id="cuerpocontacto" placeholder="Escribe aquí tu comentario"></textarea>
-                                    <p class="help is-danger"><?=session('errors.cuerpocontacto')?></p>
+                                    <textarea class="input-redes" style="text-align: center;" rows="6" name="cuerpocontacto" id="cuerpocontacto" placeholder="Escribe aquí tu comentario"><?= old('cuerpocontacto') ?>'</textarea>
+                                    <p style="color:red"><?=session("errors.cuerpocontacto")?></p>
                                 </div>
 
                                 <div class="d-flex justify-content-center mt-5">  
@@ -51,7 +51,7 @@
 
                         <div class="row">
                             <div class="col-sm-3">
-                                <img class="img-hecho contact-email-icon" src="img/contact-email.png" >
+                                <img class="img-hecho contact-email-icon" src="<?=base_url()?>/img/contact-email.png" >
                             </div>
                             <div class="col-sm-9">
                                 <div class="col pt-2" style="margin-bottom: 0px;">
@@ -66,12 +66,12 @@
                         <div class="col-sm-3">
                             <div style="display: flex;">
                                 <div style="flex: 33.33%;">
-                                    <img class="img-hecho contact-ws-phone-icon" src="img/contact-ws.png" >
+                                    <img class="img-hecho contact-ws-phone-icon" src="<?=base_url()?>/img/contact-ws.png" >
                                     
                                 </div>
                                 <div style="flex: 33.33%;">
                                     
-                                    <img class="img-hecho contact-ws-phone-icon" src="img/contact-number.png" >
+                                    <img class="img-hecho contact-ws-phone-icon" src="<?=base_url()?>/img/contact-number.png" >
                                 </div>
                             </div>  
                         </div>
