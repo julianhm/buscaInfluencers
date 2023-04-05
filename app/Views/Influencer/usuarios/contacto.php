@@ -13,26 +13,29 @@
                             <p>Sugerencias, inquietudes, preguntas, lo que sea:</p>
                         </div>
 
-                        <form>
+                        <form action="influencer/contactanos" method="POST" class="buscar-form pt-2" id="contactar" name="contactar">
                             <div class="row g-2">
 
                                 <div class="col-12">
-                                    <input class="input-redes" type="text" style="text-align: center;" name="ciudad" id="ciudad" placeholder="Nombre">
+                                    <input class="input-redes" type="text" style="text-align: center;" name="nombrecontacto" id="nombrecontacto" placeholder="Nombre">
+                                    <p class="help is-danger"><?=session('errors.nombrecontacto')?></p>
                                 </div>
 
                                 <div class="col-12">
-                                    <input class="input-redes" type="text" style="text-align: center;" name="ciudad" id="ciudad" placeholder="Correo">
+                                    <input class="input-redes" type="text" style="text-align: center;" name="correocontacto" id="correocontacto" placeholder="Correo">
+                                    <p class="help is-danger"><?=session('errors.correocontacto')?></p>
                                 </div>
 
                                 <div class="col-12">
-                                    <textarea class="input-redes" style="text-align: center;" rows="6" placeholder="Escribe aquí tu comentario"></textarea>
+                                    <textarea class="input-redes" style="text-align: center;" rows="6" name="cuerpocontacto" id="cuerpocontacto" placeholder="Escribe aquí tu comentario"></textarea>
+                                    <p class="help is-danger"><?=session('errors.cuerpocontacto')?></p>
                                 </div>
 
                                 <div class="d-flex justify-content-center mt-5">  
-                                    <button type="button" class="btn btn-login btn-lg btn-contact-width user-decription-black" data-bs-dismiss="modal" data-bs-toggle="modal" data-bs-target="#confirmationContactUs-modal">ENVIAR</button>  
+                                    <button type="submit" class="btn btn-login btn-lg btn-contact-width user-decription-black">ENVIAR</button>  
                                 </div>
 
-                                
+                                <!-- data-bs-dismiss="modal" data-bs-toggle="modal" data-bs-target="#confirmationContactUs-modal"-->
                             
                             </div>
                         </form>

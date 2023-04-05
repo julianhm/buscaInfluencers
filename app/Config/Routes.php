@@ -59,36 +59,36 @@ $routes->get('/terminos-y-condiciones', 'IndexController::terminos');
 
 $routes->group('influencer', static function ($routes) {
 
-$routes->get('new', 'InfluencerController::new');
-$routes->post('create', 'InfluencerController::create');
-$routes->get('edit/(:any)', 'InfluencerController::edit/$1');
+    $routes->get('new', 'InfluencerController::new');
+    $routes->post('create', 'InfluencerController::create');
+    $routes->get('edit/(:any)', 'InfluencerController::edit/$1');
 
 
-$routes->post('cambiarFoto', 'InfluencerController::cambiarFoto');
-$routes->post('agregarRedSocial', 'InfluencerController::agregarRedSocial');
-$routes->post('eliminarRedes', 'InfluencerController::elminarRedes');
-$routes->post('actualizarPerfil', 'InfluencerController::actualizarPerfil');
-$routes->post('elminarCategoria', 'InfluencerController::elminarCategoria');
-$routes->post('adicionarCategoria', 'InfluencerController::adicionarCategoria');
-$routes->post('eliminarLenguaje', 'InfluencerController::eliminarLenguaje');
-$routes->post('adicionarIdioma', 'InfluencerController::adicionarIdioma');
-$routes->post('eliminarVideo', 'InfluencerController::eliminarVideo');
-$routes->post('cambiarVideo', 'InfluencerController::cambiarVideo');
-$routes->post('eliminarFotoGaleria', 'InfluencerController::eliminarFotoGaleria');
-$routes->post('agregarFotoGaleria', 'InfluencerController::agregarFotoGaleria');
-$routes->post('editarResenia', 'InfluencerController::editarResenia');
-$routes->post('eliminarMarcas', 'InfluencerController::eliminarMarcas');
-$routes->post('eliminarPagos', 'InfluencerController::eliminarPagos');
-$routes->post('adicionarEmpresa', 'InfluencerController::adicionarEmpresa');
-$routes->post('adicionarPago', 'InfluencerController::adicionarPago');
-$routes->post('editarOferta', 'InfluencerController::editarOferta');
-$routes->get('new2/(:any)', 'InfluencerController::registro/$1');
-$routes->post('guardarRedesSociales', 'InfluencerController::guardarRedesSociales');
-$routes->get('new3/(:any)', 'InfluencerController::registrofinal/$1');
-$routes->post('continuarregistro', 'InfluencerController::continuarregistro');
-$routes->get('mensajes/(:any)', 'InfluencerController::mensajesInfluencer/$1');
-$routes->get('eliminarmensaje/(:any)/(:any)', 'InfluencerController::eliminarMensajes/$1/$2');
-
+    $routes->post('cambiarFoto', 'InfluencerController::cambiarFoto');
+    $routes->post('agregarRedSocial', 'InfluencerController::agregarRedSocial');
+    $routes->post('eliminarRedes', 'InfluencerController::elminarRedes');
+    $routes->post('actualizarPerfil', 'InfluencerController::actualizarPerfil');
+    $routes->post('elminarCategoria', 'InfluencerController::elminarCategoria');
+    $routes->post('adicionarCategoria', 'InfluencerController::adicionarCategoria');
+    $routes->post('eliminarLenguaje', 'InfluencerController::eliminarLenguaje');
+    $routes->post('adicionarIdioma', 'InfluencerController::adicionarIdioma');
+    $routes->post('eliminarVideo', 'InfluencerController::eliminarVideo');
+    $routes->post('cambiarVideo', 'InfluencerController::cambiarVideo');
+    $routes->post('eliminarFotoGaleria', 'InfluencerController::eliminarFotoGaleria');
+    $routes->post('agregarFotoGaleria', 'InfluencerController::agregarFotoGaleria');
+    $routes->post('editarResenia', 'InfluencerController::editarResenia');
+    $routes->post('eliminarMarcas', 'InfluencerController::eliminarMarcas');
+    $routes->post('eliminarPagos', 'InfluencerController::eliminarPagos');
+    $routes->post('adicionarEmpresa', 'InfluencerController::adicionarEmpresa');
+    $routes->post('adicionarPago', 'InfluencerController::adicionarPago');
+    $routes->post('editarOferta', 'InfluencerController::editarOferta');
+    $routes->get('new2/(:any)', 'InfluencerController::registro/$1');
+    $routes->post('guardarRedesSociales', 'InfluencerController::guardarRedesSociales');
+    $routes->get('new3/(:any)', 'InfluencerController::registrofinal/$1');
+    $routes->post('continuarregistro', 'InfluencerController::continuarregistro');
+    $routes->get('mensajes/(:any)', 'InfluencerController::mensajesInfluencer/$1');
+    $routes->get('eliminarmensaje/(:any)/(:any)', 'InfluencerController::eliminarMensajes/$1/$2');
+    $routes->post('contactanos', 'InfluencerController::enviarMensajeContactanos');
 
 });
 

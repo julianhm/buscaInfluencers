@@ -140,7 +140,7 @@
                         </div>
 
                         <div class="form-group mb-4 ">
-                            <textarea class="input-redes" name="resenia" style="resize: none; width: 100%;" rows="6" placeholder="Cuéntanos un poco de ti" value='<?= old('nombre') ?>'></textarea>
+                            <textarea class="input-redes" name="resenia" style="resize: none; width: 100%;" rows="6" placeholder="Cuéntanos un poco de ti" ><?= old('resenia') ?></textarea>
                         </div>
 
 

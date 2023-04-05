@@ -18,15 +18,18 @@ class MensajesAdministradores extends Migration
                 'type'       => 'VARCHAR',
                 'constraint' => '100',
                 'null' => false,
+            ],'correo' => [
+                'type'       => 'VARCHAR',
+                'constraint' => '500',
+                'null' => false,
+            ],'leido' => [
+                'type'       => 'INT',
+                'constraint' => 5,
+                'null' => false,
             ],'cuerpo' => [
                 'type'       => 'VARCHAR',
                 'constraint' => '5000',
                 'null' => false,
-            ],'idadministrador' => [
-                'type'           => 'INT',
-                'constraint'     => 5,
-                'unsigned'       => true,
-                'null' => true,
             ],
         ]);
         $this->forge->addKey('idmensaje', true);

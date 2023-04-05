@@ -19,6 +19,7 @@ use App\Models\InfluencerMarcaModel;
 use App\Models\IdiomaInfluencerModel;
 use App\Models\InfluencersRedesModel;
 use App\Models\InfluencerCategoriaModel;
+use App\Models\MensajeAdministradoresModel;
 
 class InfluencerController extends BaseController
 {
@@ -92,26 +93,70 @@ class InfluencerController extends BaseController
         //SE DEFINEN LOS MODELOS
         $influencerModel=new InfluencerModel();
         $mensajes="";
+        $validation =  \Config\Services::validation();
        
         //SE CREAN LAS REGLAS DE VALIDACION PARA LOS CAMPOS
-        $rules=[
+       /* $rules=[
             'nombre'=>'required|min_length[4]|max_length[20]',
             'alias'=>'required|min_length[2]|max_length[20]',
-            'password'=>'required|min_length[8]|max_length[300]',
+            'password'=>'required|min_length[8]',
             'correo'=>'required|valid_email',
-            'pais'=>'required|max_length[50]',
-            'ciudades'=>'required|max_length[50]',
+            'pais'=>'required',
+            'ciudades'=>'required',
             'resenia'=>'required|min_length[10]|max_length[5000]',
             
         ];
 
+        $validation->setRules(
+            [
+                'nombre'=>'required|min_length[4]|max_length[20]',
+                'alias'=>'required|min_length[2]|max_length[20]',
+                'password'=>'required|min_length[8]',
+                'correo'=>'required|valid_email',
+                'pais'=>'required',
+                'ciudades'=>'required',
+                'resenia'=>'required|min_length[10]|max_length[5000]',
+            ],
+            [   // Errors
+                'nombre' => [
+                    'required' => 'El nombre es requerido',
+                    'min_length' => 'El nombre debe tener como mínimo 4 caracteres',
+                    'max_length' => 'El nombre NO puede tener mas de 20 caracteres',
+                ],
+                'alias' => [
+                    'required' => 'El alias es requerido',
+                    'min_length' => 'El alias debe tener como mínimo 4 caracteres',
+                    'max_length' => 'El alias NO puede tener mas de 20 caracteres',
+                ],'password' => [
+                    'required' => 'El password es requerido',
+                    'min_length' => 'El password debe tener como mínimo 8 caracteres',
+                ], 
+                'correo' => [
+                    'required' => 'El email es requerido',
+                    'valid_email' => 'El email no tiene el formato de un correo',
+                ],
+                'pais' => [
+                    'required' => 'El pais es requerido',
+                    
+                ],
+                'ciudades' => [
+                    'required' => 'La ciudad es requerida',
+                    
+                ],
+                'resenia' => [
+                    'required' => 'La reseña es requerida',
+                    'min_length' => 'La reseña debe tener como mínimo 10 caracteres',
+                ],
+            ]
+        );
+*/
         $imagefile = $this->request->getFiles();
 
         $password= $this->request->getPost('password');
         $passwordotro= $this->request->getPost('passwordver');
 
         //SI SE VALIDAN LAS REGLAS
-        if($this->validate($rules)){
+        //if($this->validate($rules)){
             if($password==$passwordotro){
 
                 // Opciones de contraseña:
@@ -140,89 +185,93 @@ class InfluencerController extends BaseController
                 ];
 
                 //SE CREA EL INFLUENCER
-                $id=$influencerModel->insert($datainsertar);
+                if($influencerModel->insert($datainsertar)===false){
 
-                $cuerpo = "<!DOCTYPE html>
-                <html>
-                <body marginheight='0' topmargin='0' marginwidth='0' style='margin: 0px; background-color: #f2f3f8;' leftmargin='0'>
-                    <!--100% body table-->
-                    <table cellspacing='0' border='0' cellpadding='0' width='100%' bgcolor='#f2f3f8'
-                        style='@import url(https://fonts.googleapis.com/css?family=Rubik:300,400,500,700|Open+Sans:300,400,600,700); font-family: 'Open Sans', sans-serif;'>
-                        <tr>
-                            <td>
-                                <table style='background-color: #f2f3f8; max-width:670px;  margin:0 auto;' width='100%' border='0'
-                                    align='center' cellpadding='0' cellspacing='0'>
-                                    <tr>
-                                        <td style='height:80px;'>&nbsp;</td>
-                                    </tr>
-                                    <tr>
-                                        <td style='text-align:center;'>
-                                          <a href='www.buscoinfluencers.com' title='logo' target='_blank'>
-                                            <img width='60' src='https://www.buscoinfluencers.com/wp-content/uploads/2022/06/Logo-BINF.png' title='logo' alt='logo'>
-                                          </a>
-                                        </td>
-                                    </tr>
-                                    <tr>
-                                        <td style='height:20px;'>&nbsp;</td>
-                                    </tr>
-                                    <tr>
-                                        <td>
-                                            <table width='95%' border='0' align='center' cellpadding='0' cellspacing='0'
-                                                style='max-width:670px;background:#fff; border-radius:3px; text-align:center;-webkit-box-shadow:0 6px 18px 0 rgba(0,0,0,.06);-moz-box-shadow:0 6px 18px 0 rgba(0,0,0,.06);box-shadow:0 6px 18px 0 rgba(0,0,0,.06);'>
-                                                <tr>
-                                                    <td style='height:40px;'>&nbsp;</td>
-                                                </tr>
-                                                <tr>
-                                                    <td style='padding:0 35px;'>
-                                                        <h1 style='color:#1e1e2d; font-weight:500; margin:0;font-size:32px;font-family:'Rubik',sans-serif;'>
-                                                        Bienvenido a Buscoinfluencers.com</h1>
-                                                        <h1 style='color:#1e1e2d; font-weight:500; margin:0;font-size:32px;font-family:'Rubik',sans-serif;'>
-                                                        Confirma tu dirección de correo</h1>
-                                                        <span
-                                                            style='display:inline-block; vertical-align:middle; margin:29px 0 26px; border-bottom:1px solid #cecece; width:100px;'></span>
-                                                        <p style='color:#455056; font-size:15px;line-height:24px; margin:0;'>
-                                                        Toque el botón de abajo para confirmar su dirección de correo electrónico. Si no creó una cuenta con Buscoinfluencers.com, puede eliminar este correo electrónico de manera segura.
-                                                        </p>
-                                                        <a href='".base_url()."/validarCorreo/".$tokens."/".$id."'
-                                                            style='background:#00ffff;text-decoration:none !important; font-weight:500; margin-top:35px; color:#000;text-transform:uppercase; font-size:14px;padding:10px 24px;display:inline-block;border-radius:50px;font-weight: 700;'>
-                                                            Confirmar Correo</a>
-                                                        <p style='color:#455056; font-size:15px;line-height:24px; margin:0; margin-top:35px;'>
-                                                        Si el boton anterior no te funciona, copie y pegue el siguiente enlace en su navegador:
-                                                        </p>
-                                                        <a href='#'>".base_url()."/validarCorreo/".$tokens."/".$id."</a>
-                                                    </td>
-                                                </tr>
-                                                <tr>
-                                                    <td style='height:40px;'>&nbsp;</td>
-                                                </tr>
-                                            </table>
-                                        </td>
-                                    <tr>
-                                        <td style='height:20px;'>&nbsp;</td>
-                                    </tr>
-                                    <tr>
-                                        <td style='text-align:center;'>
-                                            <p style='font-size:14px; color:rgba(69, 80, 86, 0.7411764705882353); line-height:18px; margin:0 0 0;'>&copy; <strong>www.buscoinfluencers.com</strong></p>
-                                        </td>
-                                    </tr>
-                                    <tr>
-                                        <td style='height:80px;'>&nbsp;</td>
-                                    </tr>
-                                </table>
-                            </td>
-                        </tr>
-                    </table>
-                    
-                </body>
+                }else{
+
                 
-                </html>";
-                $asunto="Valida Tu correo y Activa tu cuenta";
-                $this->_enviarCorreo($correo,$cuerpo,$asunto);
-                
-                session()->set('idinfluencer',$id);
 
-                return redirect()->to(base_url()."/influencer/new2/$id")->with('mensaje', 'Tu cuenta se creo con exito, antes de ingresar debes validarla desde tu correo electrónico');
+                        $cuerpo = "<!DOCTYPE html>
+                        <html>
+                        <body marginheight='0' topmargin='0' marginwidth='0' style='margin: 0px; background-color: #f2f3f8;' leftmargin='0'>
+                            <!--100% body table-->
+                            <table cellspacing='0' border='0' cellpadding='0' width='100%' bgcolor='#f2f3f8'
+                                style='@import url(https://fonts.googleapis.com/css?family=Rubik:300,400,500,700|Open+Sans:300,400,600,700); font-family: 'Open Sans', sans-serif;'>
+                                <tr>
+                                    <td>
+                                        <table style='background-color: #f2f3f8; max-width:670px;  margin:0 auto;' width='100%' border='0'
+                                            align='center' cellpadding='0' cellspacing='0'>
+                                            <tr>
+                                                <td style='height:80px;'>&nbsp;</td>
+                                            </tr>
+                                            <tr>
+                                                <td style='text-align:center;'>
+                                                <a href='www.buscoinfluencers.com' title='logo' target='_blank'>
+                                                    <img width='60' src='https://www.buscoinfluencers.com/wp-content/uploads/2022/06/Logo-BINF.png' title='logo' alt='logo'>
+                                                </a>
+                                                </td>
+                                            </tr>
+                                            <tr>
+                                                <td style='height:20px;'>&nbsp;</td>
+                                            </tr>
+                                            <tr>
+                                                <td>
+                                                    <table width='95%' border='0' align='center' cellpadding='0' cellspacing='0'
+                                                        style='max-width:670px;background:#fff; border-radius:3px; text-align:center;-webkit-box-shadow:0 6px 18px 0 rgba(0,0,0,.06);-moz-box-shadow:0 6px 18px 0 rgba(0,0,0,.06);box-shadow:0 6px 18px 0 rgba(0,0,0,.06);'>
+                                                        <tr>
+                                                            <td style='height:40px;'>&nbsp;</td>
+                                                        </tr>
+                                                        <tr>
+                                                            <td style='padding:0 35px;'>
+                                                                <h1 style='color:#1e1e2d; font-weight:500; margin:0;font-size:32px;font-family:'Rubik',sans-serif;'>
+                                                                Bienvenido a Buscoinfluencers.com</h1>
+                                                                <h1 style='color:#1e1e2d; font-weight:500; margin:0;font-size:32px;font-family:'Rubik',sans-serif;'>
+                                                                Confirma tu dirección de correo</h1>
+                                                                <span
+                                                                    style='display:inline-block; vertical-align:middle; margin:29px 0 26px; border-bottom:1px solid #cecece; width:100px;'></span>
+                                                                <p style='color:#455056; font-size:15px;line-height:24px; margin:0;'>
+                                                                Toque el botón de abajo para confirmar su dirección de correo electrónico. Si no creó una cuenta con Buscoinfluencers.com, puede eliminar este correo electrónico de manera segura.
+                                                                </p>
+                                                                <a href='".base_url()."/validarCorreo/".$tokens."/".$id."'
+                                                                    style='background:#00ffff;text-decoration:none !important; font-weight:500; margin-top:35px; color:#000;text-transform:uppercase; font-size:14px;padding:10px 24px;display:inline-block;border-radius:50px;font-weight: 700;'>
+                                                                    Confirmar Correo</a>
+                                                                <p style='color:#455056; font-size:15px;line-height:24px; margin:0; margin-top:35px;'>
+                                                                Si el boton anterior no te funciona, copie y pegue el siguiente enlace en su navegador:
+                                                                </p>
+                                                                <a href='#'>".base_url()."/validarCorreo/".$tokens."/".$id."</a>
+                                                            </td>
+                                                        </tr>
+                                                        <tr>
+                                                            <td style='height:40px;'>&nbsp;</td>
+                                                        </tr>
+                                                    </table>
+                                                </td>
+                                            <tr>
+                                                <td style='height:20px;'>&nbsp;</td>
+                                            </tr>
+                                            <tr>
+                                                <td style='text-align:center;'>
+                                                    <p style='font-size:14px; color:rgba(69, 80, 86, 0.7411764705882353); line-height:18px; margin:0 0 0;'>&copy; <strong>www.buscoinfluencers.com</strong></p>
+                                                </td>
+                                            </tr>
+                                            <tr>
+                                                <td style='height:80px;'>&nbsp;</td>
+                                            </tr>
+                                        </table>
+                                    </td>
+                                </tr>
+                            </table>
+                            
+                        </body>
+                        
+                        </html>";
+                        $asunto="Valida Tu correo y Activa tu cuenta";
+                        $this->_enviarCorreo($correo,$cuerpo,$asunto);
+                        
+                        session()->set('idinfluencer',$id);
 
+                        return redirect()->to(base_url()."/influencer/new2/$id")->with('mensaje', 'Tu cuenta se creo con exito, antes de ingresar debes validarla desde tu correo electrónico');
+                }
             }else{
                 $mensaje="Los password son diferentes";
                 session();
@@ -230,31 +279,71 @@ class InfluencerController extends BaseController
                 return redirect()->back()->withinput();
             }
             
-        }
-        $validation =  \Config\Services::validation();
-        $mensaje=$validation->listErrors();
+        
+        
+                $mensaje=$influencerModel->errors();
                 session();
-                $_SESSION['mensaje'] = $mensaje;
-      return redirect()->back()->withinput();
+                $_SESSION['error'] = $mensaje;
+
+
+
+      return redirect()->back()->withinput();//->with('errors',$this->validation->getErrors());
    }
 
    public function validarCorreo($token=null,$id=null){
       
     $influencer = new InfluencerModel();
     $inf=$influencer->find($id);
-
-  if($inf['tokens']==$token){
+    if($inf!=null){
+        if($inf['tokens']==$token){
     
-    $datos=['tokens'=>"",
-            'validado'=>1];
-            $influencer->update($id,$datos);
+            $datos=['tokens'=>"",
+                    'validado'=>1];
+                    $influencer->update($id,$datos);
+        
+                    return redirect()->to("/")->with('mensaje', 'Correo Validado');
+        
+          }else{
+            return redirect()->to("/")->with('mensaje', 'Tokens Invalido');
+        
+          }
+    }
+    return redirect()->to("/")->with('mensaje', 'Usuario no encontrado');
+  
 
-            return redirect()->to("/")->with('mensaje', 'Correo Validado');
+}
 
-  }else{
-    return redirect()->to("/")->with('mensaje', 'Tokens Invalido');
+// ENVIAR MENSAJE CONTACTANOS
+public function enviarMensajeContactanos(){
 
-  }
+    $correoAdministradorModel= new MensajeAdministradoresModel();
+    
+    $rules=[
+        'nombrecontacto'=>'required|min_length[4]|max_length[20]',
+        'correocontacto'=>'required|valid_email',
+        'cuerpocontacto'=>'required|min_length[5]|max_length[5000]',
+        
+    ];
+
+    $validation =  \Config\Services::validation();
+
+    if($this->validate($rules)){
+
+        $nombre=$this->request->getPost('nombrecontacto');
+        $correo=$this->request->getPost('correocontacto');
+        $cuerpo=$this->request->getPost('cuerpocontacto');
+
+        $data=['nombre'=>$nombre,'correo'=>$correo,'cuerpo'=>$cuerpo,'leido'=>0];
+
+        $correoAdministradorModel->insert($data);
+
+    }else{
+       
+       // $mensaje=$validation->listErrors();
+      session();
+      return redirect()->back()->withinput()->with('errors',$validation->listErrors()); 
+    }
+ 
 
 }
 
