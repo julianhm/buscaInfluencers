@@ -33,7 +33,7 @@
            
         </div>
         <?php $puntaje=0;
-        $porcentaje=100;
+        $porcentaje=0;
         $promedio=0;
         $cont=0;
         foreach ($mensajes as $key => $m) {
@@ -64,6 +64,7 @@
         <!-- 
         <hr style="background-color: #000; opacity: 1">
         -->
+        <?php if($influencer['video']!=""){ ?>
         <div class="d-flex justify-content-center align-items-center video-width mt-4" >
             <!-- video size width="800" height="400" -->
             <video width="100%" height="400" controls>
@@ -72,6 +73,7 @@
                   Su video no es soportado
             </video>
         </div>
+        <?php } ?>
         <div class="text-center my-4" style="padding: 0 20%;">
             <p><?=$influencer['resenia'];?></p>
         </div>
@@ -143,49 +145,52 @@
 
 
         <?php if (count($mensajes)>0) {?>
-        <div class="text-center my-5" style="padding-left: 20%; padding-right: 20%; position: relative;">
-            <h2 class="section-title profile-section-title">Comentarios de clientes</h2>
-                         
-        </div>  
-
-        <!-- Client's Comments Start -->
-  
-        <div class="owl-five owl-carousel owl-theme" style="padding-left: 4%">
-        
-         <?php foreach ($mensajes as $key => $m) {?>
-            <div class="card card-comments">               
-                <div class="card-body user-decription-black text-center" style="color: #696969">
-                    <div>
-                        <h6 class="mb-2 card-title-comment"><?=$m['nombre']?><br><?=$m['empresa']?></h6>
-                    </div>
-                    <div class="card-comment-body-text">
-                            <p class="card-text"><?=$m['cuerpo']?></p>
-                    </div>
-                    <div class="star-rating" style="width: 100px; height: 20px; background-size: 20px;" data-rating="<?=$m['valoracion'] ?>" title="<?=$m['valoracion']."/5" ?>">
-                    <?php $por=$m['valoracion']/5*100; ?>    
-                    <div class="star-value rating-comment" style="background-size: 20px; width: <?php echo $por."%" ?>;">
+            <div class="text-center my-5" style="padding-left: 20%; padding-right: 20%; position: relative;">
+                <h2 class="section-title profile-section-title">Comentarios de clientes</h2>
                             
+            </div>  
+
+            <!-- Client's Comments Start -->
+    
+            <div class="owl-five owl-carousel owl-theme" style="padding-left: 4%">
+            
+            <?php foreach ($mensajes as $key => $m) {?>
+                <div class="card card-comments">               
+                    <div class="card-body user-decription-black text-center" style="color: #696969">
+                        <div>
+                            <h6 class="mb-2 card-title-comment"><?=$m['nombre']?><br><?=$m['empresa']?></h6>
                         </div>
+                        <div class="card-comment-body-text">
+                                <p class="card-text"><?=$m['cuerpo']?></p>
+                        </div>
+                        <div class="star-rating" style="width: 100px; height: 20px; background-size: 20px;" data-rating="<?=$m['valoracion'] ?>" title="<?=$m['valoracion']."/5" ?>">
+                        <?php $por=$m['valoracion']/5*100; ?>    
+                        <div class="star-value rating-comment" style="background-size: 20px; width: <?php echo $por."%" ?>;">
+                                
+                            </div>
+                        </div>
+                        
                     </div>
+
                     
                 </div>
-
-                
-            </div>
         <?php }?>
        
                                                     
         </div>
         <?php } ?>
+
         <!-- Client's Comments End -->
 
 
+        <?php
+        if(!isset($_SESSION['idinfluencer'])){?>
 
-         <div class="row justify-content-center mt-3 mb-5">
+        <div class="row justify-content-center mt-3 mb-5">
             <button type="button" class="btn btn-contactar-influencer btn-lg shrink-on-hover" data-bs-dismiss="modal" data-bs-toggle="modal" data-bs-target="#contactar-modal">CONTACTAR ESTE INFLUENCER</button>
         </div>
         
-
+        
         <div class="row mb-4 profile-container-comentario" >
 
             <div class="text-center user-decription-black my-3"  >
@@ -253,6 +258,7 @@
 
             </form>
         </div>
+        <?php } ?>
     <!-- Content Profile End -->
 
 
