@@ -10,7 +10,7 @@ class IdiomasSeeder extends Seeder
     {
         $this->db->table('idiomas')->where('ididioma >',0)->delete();
         
-        $idiomas=['Español','Ingles','Frances',
+        $idiomas=['Español','Inglés','Francés',
         'Italiano','Mandarín'];
 
         for ($i=0; $i <count($idiomas) ; $i++) { 

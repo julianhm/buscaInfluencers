@@ -11,13 +11,13 @@ class CategoriasSeeder extends Seeder
         $this->db->table('categorias')->where('idcategoria >',0)->delete();
         
         $categorias=['Gastronomia','Farandula','Estilo de vida',
-        'Humanidades','De todo', 'Tecnologia', 'Entretenimiento',
+        'Humanidades','De todo', 'Tecnología', 'Entretenimiento',
         'Belleza', 'Transporte','Esoterismo','Ciencia', 'Cine',
-        'Talentos especiales','Sexo', 'Astrologia', 'Identidad',
-        'Arte y Diseño', 'Politica y Sociedad','Nutricion','Musica',
-        'Superacion', 'Religion','Moda', 'Juegos', 'Salud',
-        'Turismo y viajes', 'Finanzas', 'Educacion','Deportes', 
-        'Amor', 'Aventura','Entrenamiento','Opinion'];
+        'Talentos especiales','Sexo', 'Astrología', 'Identidad',
+        'Arte y Diseño', 'Política y Sociedad','Nutrición','Musica',
+        'Superación', 'Religión','Moda', 'Juegos', 'Salud',
+        'Turismo y viajes', 'Finanzas', 'Educación','Deportes', 
+        'Amor', 'Aventura','Entrenamiento','Opiníon'];
 
         $imagen=['cat1.png','cat2.png','cat3.png','cat4.png','cat5.png',
         'cat1.png','cat2.png','cat3.png','cat4.png','cat5.png','cat1.png','cat2.png','cat3.png','cat4.png','cat5.png',
