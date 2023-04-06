@@ -18,7 +18,7 @@
                 <a href="<?php echo base_url('influencer')."/edit/".$influencer['idinfluencer']?>"><b>Editar perfil</b></a>
         </div>
         <div class="user-decription-black filter_searched" style="border-bottom: 1px solid #000;">
-            <a href="<?php echo base_url("/perfil")."/".$influencer['idinfluencer']?>" ><b>Ver perfil</b></a>
+            <a href="<?php echo base_url("/perfil")."/".$influencer['idinfluencer']?>" target="_blank"><b>Ver perfil</b></a>
         </div>
 
         <div class="user-decription-black filter_searched" style="border-bottom: 1px solid #000;">
