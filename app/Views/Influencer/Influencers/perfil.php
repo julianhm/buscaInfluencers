@@ -134,10 +134,23 @@
         <div class="row justify-content-center text-center" style=" border: 1px solid #000; border-radius: 10px; padding-top: 30px;">
             <div class="containTag">
                 <div id="tagcloud" class="user-decription-black" style="text-align: center;">
-                    <!-- Generar Numeros Aleatorios para el atributo rel de 1 a 12 -->
-                    <p><?php foreach ($marcas as $key => $m) {
-                        echo $m['nombre']."  ";
-                    } ?></p>
+                    
+                    <h2 class="user-decription-black" style="font-size: 30px;"><?php 
+                        $array_num = count($marcas);
+                        for ($i = 0; $i < $array_num; ++$i){
+                            
+                            if ( ($i+1) !== $array_num) {
+                                // print with star separator
+                                echo $marcas[$i]['nombre']."<i class='bi bi-star-fill' style='padding-left: 15px; padding-right: 15px;'></i>";
+
+                            } else {
+                                // print without star separator
+                                echo $marcas[$i]['nombre'];
+                            }
+                                
+                        } ?>             
+                    </h2>
+                     
                 </div>
             </div>
         </div>
@@ -186,7 +199,7 @@
         <?php
         if(!isset($_SESSION['idinfluencer'])){?>
 
-        <div class="row justify-content-center mt-3 mb-5">
+        <div class="row justify-content-center my-5">
             <button type="button" class="btn btn-contactar-influencer btn-lg shrink-on-hover" data-bs-dismiss="modal" data-bs-toggle="modal" data-bs-target="#contactar-modal">CONTACTAR ESTE INFLUENCER</button>
         </div>
         

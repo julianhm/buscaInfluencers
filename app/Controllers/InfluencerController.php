@@ -166,6 +166,8 @@ class InfluencerController extends BaseController
                 $correo= $this->request->getPost('correo');
                 $resenia= $this->request->getPost('resenia');
                 $archivofoto=$this->_upload2('fotoperfil');
+
+                
                 $tokens=bin2hex(openssl_random_pseudo_bytes(16));
                 
                 $datainsertar = [
@@ -1800,10 +1802,10 @@ public function enviarMensajeContactanos(){
                 if($r!=0){
                     if($buscar==null){
                         $redinfluencer->insert(['idinfluencer'=>$id,'idredes'=>$redsocial,'user'=>$usuarioredsocial,'cant_seguidores'=>$r]);
-                        return redirect()->to("/influencer/edit/$id")->with('mensaje', 'Tus Red social se creo con exito');
+                        return redirect()->to("/influencer/edit/$id")->with('mensaje', 'Tus red social se creo con exito');
                     } else{
                         $redinfluencer->update($buscar[0]['id'],['cant_seguidores'=>$r]);
-                        return redirect()->to("/influencer/edit/$id")->with('mensaje', 'Tus Red se actualizó con exito');
+                        return redirect()->to("/influencer/edit/$id")->with('mensaje', 'Tus red se actualizó con exito');
                     }
                 }else{
                     return redirect()->to("/influencer/edit/$id")->with('mensaje', 'No se encontro el usuario de la red social');

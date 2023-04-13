@@ -233,7 +233,7 @@ class IndexController extends BaseController
                     $id=$inf['idinfluencer'];
                     session()->set('idinfluencer',$id);
                     session()->set('time',time());
-                    return redirect()->to(base_url()."/influencer/edit/$id")->with('mensaje', 'Tu login fue correcto');
+                    return redirect()->to(base_url()."/influencer/edit/$id")->with('mensaje', 'Tu inicio de sesión fue correcto');
                 }
             }
         }

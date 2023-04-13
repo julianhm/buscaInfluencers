@@ -526,7 +526,7 @@
                 <div class="modal-body " style="padding-right: 65px; padding-left: 65px; padding-top: 0px;">
 
                     <div class="user-decription-black text-center" style="font-size: 25px;" >
-                        <p>Agrega un Tema</p>
+                        <p>Agrega un tema</p>
                     </div>
 
                     <form action="/influencer/adicionarCategoria" method="POST" class="register-form pt-2" id="adicionarCategoria" name="adicionarCategoria" enctype="multipart/form-data">
@@ -570,7 +570,7 @@
                 <div class="modal-body " style="padding-right: 65px; padding-left: 65px; padding-top: 0px;">
 
                     <div class="user-decription-black text-center" style="font-size: 25px;" >
-                        <p>Agrega un Idioma</p>
+                        <p>Agrega un idioma</p>
                     </div>
 
                     <form action="/influencer/adicionarIdioma" method="POST" class="register-form pt-2" id="adicionarIdioma" name="adicionarIdioma" enctype="multipart/form-data">
@@ -614,7 +614,7 @@
                 <div class="modal-body ">
 
                 <div class="user-decription-black text-center" style="font-size: 25px;" >
-                        <p>Agrega un Video</p>
+                        <p>Agrega un video</p>
                     </div>
 
                 <form action="/influencer/cambiarVideo" method="POST" class="register-form pt-2" enctype="multipart/form-data">
@@ -658,10 +658,10 @@
                 <div class="modal-body ">
 
                 <div class="user-decription-black text-center" style="font-size: 25px;" >
-                        <p>Agrega una Foto de Perfil</p>
+                        <p>Agrega una foto de perfil</p>
                         
                     </div>
-                    
+                    </br>
                 <form action="/influencer/cambiarFoto" method="POST" enctype="multipart/form-data">
             
 
@@ -673,9 +673,13 @@
                             <input id="newfotoo" name="newfotoo" type='file'/>
                             
                         
-                        </br></br></br>
-                        <div class="text-center">
-                            <button type="submit" class="btn btn-get-info user-decription btn-lg" >Cambiar Foto de Perfil</button>
+                        </br></br>
+                            <div class="text-center user-decription-black" style="font-weight: bold; font-size: 13px; margin-left: auto; ">
+                            Te recomendamos que el tamaño de tu foto sea 600px por 600px.
+                        </div>
+                        
+                        <div class="text-center" style="margin-top: 12px;">
+                            <button type="submit" class="btn btn-get-info user-decription btn-lg" >Cambiar foto de perfil</button>
                         </div>
                         
                     </div>
@@ -694,15 +698,13 @@
             <div class="modal-content" style="border-radius: 0rem; border: 2px solid #000;">
                 <div class="modal-header">
 
-                    <div id="info-profile" class="text-center user-decription-black" style="font-weight: bold; font-size: 15px; margin-left: auto; display: none;">
-                        Selecciona una imagen cuadrada!
-                    </div>
+                    
 
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
                 <div class="modal-body ">
                 <div class="user-decription-black text-center" style="font-size: 25px;" >
-                        <p>Agrega algunas Fotos a tu galeria</p>
+                        <p>Agrega algunas fotos a tu galería</p>
                     </div>
                 <form action="/influencer/agregarFotoGaleria" method="POST" class="register-form pt-2" id="agregarFotoGaleria" name="agregarFotoGaleria" enctype="multipart/form-data">
             
@@ -717,7 +719,7 @@
                         </div>
                         </br>
                         <div class="text-center">
-                            <button type="submit" class="btn btn-get-info user-decription btn-lg" >Cambiar Fotos de tu Galeria</button>
+                            <button type="submit" class="btn btn-get-info user-decription btn-lg" >Cambiar fotos de tu galería</button>
                         </div>
                         
                     </div>
