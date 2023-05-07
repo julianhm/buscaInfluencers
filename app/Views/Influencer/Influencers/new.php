@@ -159,10 +159,17 @@
                         <div class="col-lg-12 d-flex align-items-center my-4 btn-media">
                         
                                <!-- Da click sobre la imagen para modificarla-->
+                               
+                        
                             
-                            <input type="file" name="fotoperfil"  class="open-send btn btn-gray-normal btn-lg" style="border-radius: 0.7rem;" value='<?= old('fotoperfil') ?>'  accept="image/*" /> 
+                                <input type="file" name="fotoperfil"  class="open-send btn btn-gray-normal btn-lg" style="border-radius: 0.7rem;" value='<?= old('fotoperfil') ?>'  accept="image/*" /> 
+                       
+                            
                             <!-- data-bs-toggle="modal" data-bs-target="#modal-upload-image" onclick="cleanUpload(); showInfoProfile();" data-id="btn-profile"-->
                         </div>
+                        <div class="text-center user-decription-black" style="">
+                                    Te recomendamos que el tamaño de tu foto sea 600px por 600px.
+                                </div>
 <!--
                         <label class="label" data-toggle="tooltip" title="Cambia tu foto de Perfil">
                             <img class="rounded" id="avatar" src="<?php echo base_url("/uploads")."/perfil.png"?>" alt="avatar">
