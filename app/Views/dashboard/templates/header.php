@@ -11,13 +11,15 @@
     <title>Buscoinfluencers.com - ADMIN</title>
     <link rel="canonical" href="https://www.wrappixel.com/templates/niceadmin-lite/" />
     <!-- Favicon icon -->
-    <link rel="icon" type="image/png" sizes="16x16" href="../img/favicon2.ico">
+    <link rel="icon" type="image/png" sizes="16x16" href=<?php echo base_url('img/favicon2.ico');?> >
     <!-- Custom CSS -->
-    <link href="../lib/chartist/dist/chartist.min.css" rel="stylesheet">
+    <link href=<?php echo base_url('lib/chartist/dist/chartist.min.css');?> rel="stylesheet">
     <!-- Custom CSS -->
-    <link href="../dist/css/style.min.css" rel="stylesheet">
+    <link href=<?php echo base_url('dist/css/style.min.css');?> rel="stylesheet">
 
-    <link href="../css/style.css" rel="stylesheet">
+    <link href=<?php echo base_url('css/summernote-lite.min.css');?> rel="stylesheet">
+
+    <link href=<?php echo base_url('css/style.css');?> rel="stylesheet">
     <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
     <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
     <!--[if lt IE 9]>
