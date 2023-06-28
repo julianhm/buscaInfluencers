@@ -81,7 +81,7 @@
 
 
 
-                <!-- Text editor code -->
+                <!-- Text editor code summernote -->
                 <div class="row">
                     <div class="col-sm-12">
                         <div class="card card-body">
@@ -101,3 +101,4 @@
             <!-- ============================================================== -->
             <!-- End Container fluid  -->
             <!-- ============================================================== -->
+            
