@@ -488,7 +488,7 @@
 
                                 </div>
 
-                                <div class="col-lg-9" style="">
+                                <div class="col-lg-9" >
 
                                     <p class="followers-sm-main"><?=$m['cant_seguidores']?></p>
 
