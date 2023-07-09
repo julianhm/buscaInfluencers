@@ -23,7 +23,7 @@ class App extends BaseConfig
      * environments.
      */
 
-    public string $baseURL = 'http://buscainfluencers.test/';
+    public string $baseURL = 'http://proyecto-influencer.test/';
 
     /**
      * Allowed Hostnames in the Site URL other than the hostname in the baseURL.

@@ -5,9 +5,11 @@ namespace App\Controllers;
 use App\Models\NoticiasModel;
 use App\Models\CategoriasModel;
 use App\Models\InfluencerModel;
+use App\Models\ComentariosModel;
 use App\Models\FuenteNoticiasModel;
 use App\Models\InfluencerCategoriaModel;
 use App\Models\NoticiasRecomendadaModel;
+//use App\Models\curl.class;
 
 class IndexController extends BaseController
 {
@@ -240,9 +242,46 @@ class IndexController extends BaseController
          return redirect()->back()->with('mensaje','Correo y/o contraseña o-incorrecta'); 
  
      }
+
+     //Solicita representante en la pagina
+     public function solicitarRepresentante()
+     {
+         
+         $correo= $this->request->getPost('representanteInputEmail');
+         $nombre= $this->request->getPost('represenatnteInputNombre');
+ 
+ //var_dump(date("Y-m-d h:i:s")."");
+ 
+        if($correo!="" && $nombre!=""){
+
+         
+            $comentar=new ComentariosModel();
+            
+            
+            $datainsertar = [
+                'nombre' => $nombre,
+                'correo' => $correo,
+                'created_at'=>date("Y-m-d h:i:s").""
+            ];
+
+            //SE CREA EL INFLUENCER
+            $id=$comentar->insert($datainsertar);
+
+            
+
+           if($id>0){
+                return redirect()->to(base_url())->with('mensaje','Tu solicitud fué enviada'); 
+            }else{
+                return redirect()->to(base_url())->with('mensaje','Ocurrió un error al enviar tu solicitud'); 
+            }
+        }
+        return redirect()->to(base_url())->with('mensaje','Debes completar todos los campos'); 
+        
+ 
+     }
  
  
-     //Realiza el login de la pagina
+     //Realiza la salida de la cuenta
      public function logout(){
        
          session()->destroy();

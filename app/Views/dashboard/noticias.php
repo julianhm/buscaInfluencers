@@ -1,4 +1,4 @@
-
+         
         <!-- ============================================================== -->
         <!-- End Left Sidebar - style you can find in sidebar.scss  -->
         <!-- ============================================================== -->
@@ -14,6 +14,19 @@
                     <div class="col-5 align-self-center">
                         <h4 class="page-title main-section-title">Noticias</h4>
                     </div>
+<!--  -->
+                     <!--MENSAJES FLASH-->
+          <?php if(session('mensaje')!=""){  ?>
+                    <div class="alert alert-success d-flex align-items-center" role="alert">
+
+                        <svg class="bi flex-shrink-0 me-2" width="24" height="24" role="img" aria-label="Success:"><use xlink:href="#check-circle-fill"/></svg>
+                        <div>
+                        <?php echo session('mensaje'); ?>
+                        
+                        </div>
+
+                        </div>
+                    <?php } ?>
                     <!--
                     <div class="col-7 align-self-center">
                         <div class="d-flex align-items-center justify-content-end">
@@ -53,11 +66,11 @@
                             <table class="table table-striped">
                                 <thead>
                                     <tr>
-                                        <th>Id</th>
+                                        <th>N°</th>
                                         <th>Fecha</th>
                                         <th>Titulo</th>
-                                        <th>Descripcion</th>
                                         <th>Foto</th>
+                                        <th>Favorito</th>
                                         <th>Editar</th>
                                         <th>Borrar</th>
                                     </tr>
@@ -73,17 +86,27 @@
                                         <td><?=$cont?></td>
                                         <td><?=$m['created_at']?></td>
                                         <td><?=$m['titulo']?></td>
-                                        <td><?=$m['cuerpo']?></td>
                                         <td><?=$m['url_foto']?></td>
-                                        <td><a href="<?php ?>" class="btn btn-success"><i class="mdi mdi-pencil menu-icon" ></i></a></td>
+                                        <td><?php if($m['favorito']==1){
+                                            echo "SI";}?></td>
+                                        <td><a href="<?=base_url('/dashboard/editarNoticia/'.$m['idnoticia']) ?>" class="btn btn-success"><i class="mdi mdi-pencil menu-icon" ></i></a></td>
                                         
-                                        <td><a href="#" data-href="<?php ?>"data-toggle="modal" data-target="#modal-confirma" data-placement="top" title="Eliminar registro" class="btn btn-danger"><i class="mdi mdi-window-close menu-icon" ></i></a></td>
+                                        <td><a id="<?=$m['idnoticia']?>"  data-bs-toggle="modal" data-bs-target="#exampleModalEliminarnot" data-placement="top" title="Eliminar noticia" class="btn btn-danger" onclick="recibir(<?=$m['idnoticia']?>);"  ><i class="mdi mdi-window-close menu-icon" ></i></a></td>
                                     </tr>
                                     <?php } ?>
-                                    
-                      
+
                                 </tbody>
                             </table>
+                                <script>
+                                        function recibir(numero)
+                                        {
+                                            //alert(document.getElementById(numero).id);
+                                            //var valor = document.getElementById("eliminar"+numero).value;
+                                           
+                                            document.getElementById("eliminarnoticiamodal").value=numero;        
+                                            
+                                        }
+                                </script>
                         </div>
                     </div>
                 </div>
@@ -93,4 +116,68 @@
             <!-- ============================================================== -->
             <!-- End Container fluid  -->
             <!-- ============================================================== -->
+
+             <!-- Modal Representante Confirmación Start -->
+
+    <div class="modal fade" id="exampleModalEliminarnot" tabindex="-1" aria-labelledby="exampleModalEliminarnot" aria-hidden="true">
+
+<div class="modal-dialog modal-dialog-centered">
+
+    <div class="modal-content" style="border-radius: 0rem; border: 2px solid #000;">
+
+        <div class="modal-header">
+
+            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+
+        </div>
+
+        <div class="modal-body ">
+
+            <img class="img-hecho mb-3" src="<?=base_url('img/warning.png')?>" >
+
+            <div class="text-center user-decription-black" style="font-weight: bold; font-size: 35px">
+
+                
+
+                <p>¡ADVERTENCIA!</p>
+
+            </div>
+
+            <div class="text-center user-decription-black" style="font-weight: bold; font-size: 15px">
+
+                <p>ESTAS SEGURO DE QUERER ELIMINAR ESTA <br>
+
+                NOTICIA. ESTA ACCION NO SE PUEDE REVERTIR</p>
+
+            </div>
+            <form action="<?= route_to('eliminarNotidash') ?>" method="POST" class="form-horizontal"  enctype="multipart/form-data">
+                <input id="eliminarnoticiamodal" name="eliminarnoticiamodal" type="hidden" >
+
+
+                <div class="text-center">
+
+                    <button type="submit" id="botonEliminar" class="btn btn-get-info user-decription btn-lg" >Aceptar</button>
+
+                </div>
+            </form>
+            <br>
+            <div class="text-center">
+
+            <button  class="btn btn-get-info user-decription btn-lg"  data-bs-dismiss="modal" aria-label="Close">Cancelar</button>
+
+            </div>
+
+
+
+        </div>
+
+        <div class="modal-footer"></div>
+
+    </div>
+
+</div>
+
+</div>
+
+<!-- Modal Representante Confirmación End -->
    

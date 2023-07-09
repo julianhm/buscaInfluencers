@@ -14,6 +14,18 @@
                     <div class="col-5 align-self-center">
                         <h4 class="page-title main-section-title">Solicitud de representante</h4>
                     </div>
+                    <?php if(session('mensaje')!=""){  ?>
+                    <div class="alert alert-success d-flex align-items-center" role="alert">
+
+                        <svg class="bi flex-shrink-0 me-2" width="24" height="24" role="img" aria-label="Success:"><use xlink:href="#check-circle-fill"/></svg>
+                        <div>
+                        <?php echo session('mensaje'); ?>
+                        
+                        </div>
+
+                        </div>
+                    <?php } ?>
+
                     <!--
                     <div class="col-7 align-self-center">
                         <div class="d-flex align-items-center justify-content-end">
@@ -49,23 +61,38 @@
                                         <th>Fecha</th>    
                                         <th>Nombre</th>
                                         <th>Correo</th>
-                                        <th>Aceptar</th>
-                                        <th>Denegar</th>
+                                        <!--<th>Aceptar</th>-->
+                                        <th>Eliminar</th>
                                     </tr>
                                 </thead>
                                 <tbody>
+                                    <?php foreach ($comentarios as $key => $m) {?>
                                     <tr>
-                                        <td>1</td>
-                                        <td>01/08/2022</td>
-                                        <td>Juan Carlos perez</td>
-                                        <td>juankperez@gmail.com</td>
+                                        <td><?=$m['idcomentario']?></td>
+                                        <td><?=$m['created_at']?></td>
+                                        <td><?=$m['nombre']?></td>
+                                        <td><?=$m['correo']?></td>
                           
-                                        <td><a href="<?php ?>" class="btn btn-success"><i class="mdi mdi-account-check" ></i></a></td>
+                                        <!--<td><a href="<?php ?>" class="btn btn-success"><i class="mdi mdi-account-check" ></i></a></td>-->
+                                       
+                                        <td><a data-bs-toggle="modal" data-bs-target="#exampleModalEliminar" data-placement="top" title="Eliminar registro" class="btn btn-danger" onclick="recibir4(<?=$m['idcomentario']?>);"><i class="mdi mdi-account-remove menu-icon" ></i></a></td>
+                                    </tr>                                   
+                                
+                                <?php  } ?>
 
-                                        <td><a href="#" data-href="<?php ?>"data-toggle="modal" data-target="#modal-confirma" data-placement="top" title="Eliminar registro" class="btn btn-danger"><i class="mdi mdi-account-remove menu-icon" ></i></a></td>
-                                    </tr>
+                                    
                                 </tbody>
                             </table>
+                            <script>
+                                        function recibir4(numero)
+                                        {
+                                            //alert(document.getElementById(numero).id);
+                                            //var valor = document.getElementById("eliminar"+numero).value;
+                                           
+                                            document.getElementById("eliminarcomentariomodal").value=numero;        
+                                            
+                                        }
+                                </script>
                         </div>
                     </div>
                 </div>
@@ -74,4 +101,67 @@
             <!-- ============================================================== -->
             <!-- End Container fluid  -->
             <!-- ============================================================== -->
-   
+    <!-- Modal Representante Confirmación Start -->
+
+    <div class="modal fade" id="exampleModalEliminar" tabindex="-1" aria-labelledby="exampleModalEliminar" aria-hidden="true">
+
+        <div class="modal-dialog modal-dialog-centered">
+
+            <div class="modal-content" style="border-radius: 0rem; border: 2px solid #000;">
+
+                <div class="modal-header">
+
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+
+                </div>
+
+                <div class="modal-body ">
+
+                    <img class="img-hecho mb-3" src="<?=base_url('img/warning.png')?>" >
+
+                    <div class="text-center user-decription-black" style="font-weight: bold; font-size: 35px">
+
+                        
+
+                        <p>¡ADVERTENCIA!</p>
+
+                    </div>
+
+                    <div class="text-center user-decription-black" style="font-weight: bold; font-size: 15px">
+
+                        <p>ESTAS SEGURO DE QUERER ELIMINAR ESTE <br>
+
+                        COMENTARIO.</p>
+
+                    </div>
+
+                    <form action="<?= route_to('eliminarComentariodash') ?>" method="POST" class="form-horizontal"  enctype="multipart/form-data">
+                        <input id="eliminarcomentariomodal" name="eliminarcomentariomodal" type="hidden" >
+
+
+                        <div class="text-center">
+
+                            <button type="submit" id="botonEliminar" class="btn btn-get-info user-decription btn-lg" >Aceptar</button>
+
+                        </div>
+                    </form>
+                    <br>
+                    <div class="text-center">
+
+                    <button  class="btn btn-get-info user-decription btn-lg"  data-bs-dismiss="modal" aria-label="Close">Cancelar</button>
+
+                    </div>
+
+
+
+                </div>
+
+                <div class="modal-footer"></div>
+
+            </div>
+
+        </div>
+
+    </div>
+
+    <!-- Modal Representante Confirmación End -->
