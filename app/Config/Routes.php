@@ -271,18 +271,29 @@ $routes->group('dashboard', static function ($routes) {
     $routes->post('editarFoto', 'dashboard\DashboardController::cambiarFotoAdmin',['as'=>'cambiarFotoAdmindash']);
     $routes->post('editarNombre', 'dashboard\DashboardController::cambiarNombreCorreo',['as'=>'cambiarNombreAdmindash']);
     $routes->post('editarClave', 'dashboard\DashboardController::cambiarClave',['as'=>'cambiarClaveAdmindash']);
-
+    $routes->get('idiomas', 'dashboard\DashboardController::idiomas',['as'=>'idiomasdash']);
+    $routes->get('nuevoidioma', 'dashboard\DashboardController::nuevoIdioma',['as'=>'nuevoidiomadash']);
+    $routes->post('crearnuevoidioma', 'dashboard\DashboardController::crearNuevoIdioma',['as'=>'crearnuevoidiomadash']);
+    $routes->post('eliminarIdioma', 'dashboard\DashboardController::eliminarIdioma',['as'=>'eliminarIdiomdash']);
+   
+    
     $routes->get('influencers', 'dashboard\DashboardController::influencers',['as'=>'influencerdash']);
 
     $routes->get('mensajes', 'dashboard\DashboardController::mensajes',['as'=>'mensajesdash']);
 
     $routes->get('noticias', 'dashboard\DashboardController::noticias',['as'=>'noticiasdash']);
+    
 
     $routes->get('nuevanoticia', 'dashboard\DashboardController::nuevaNoticia',['as'=>'nuevanoticiadash']);
 
     $routes->post('crearnoticia', 'dashboard\DashboardController::crearnoticia',['as'=>'crearnoticiadash']);
     $routes->post('crearnuevanoticia', 'dashboard\DashboardController::crearNuevaNoticia',['as'=>'crearnuevanoticiadash']);
-
+    $routes->get('categorias', 'dashboard\DashboardController::categorias',['as'=>'categoriasdash']);
+    $routes->get('nuevacategoria', 'dashboard\DashboardController::nuevacategorias',['as'=>'nuevacategoriasdash']);
+    $routes->post('crearnuevacategoria', 'dashboard\DashboardController::crearNuevaCategoria',['as'=>'crearnuevacategoriadash']);
+    $routes->get('editarCategoria/(:any)', 'dashboard\DashboardController::editarCategoria/$1');
+    $routes->post('editarnuevacategoria', 'dashboard\DashboardController::editarNuevaCategoria',['as'=>'editarnuevacategoriadash']);
+    $routes->post('eliminarCategoria', 'dashboard\DashboardController::eliminarCategoria',['as'=>'eliminarCatdash']);
     $routes->get('representantes', 'dashboard\DashboardController::representantes',['as'=>'representantesdash']);
 
     $routes->get('cuenta', 'dashboard\DashboardController::cuenta',['as'=>'cuentasdash']);

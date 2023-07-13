@@ -123,10 +123,10 @@
                                 <img src="<?=base_url('fotosnoticias/'.$url_foto)?>" alt="user" class="rounded-circle" width="31">
                             </a>
                             <ul class="dropdown-menu dropdown-menu-end user-dd animated" aria-labelledby="navbarDropdown">
-                                <a class="dropdown-item user-decription-black" href="<?=base_url('/dashboard/cuenta')?>"><i class="ti-user me-1 ms-1"></i>
+                                <a class="dropdown-item user-decription-black" href="<?=base_url('dashboard/cuenta')?>"><i class="ti-user me-1 ms-1"></i>
                                     Mi Perfil</a>
                                 
-                                <a class="dropdown-item" href="<?=base_url('/dashboard/logout')?>"><i class="ti-back-right me-1 ms-1"></i>
+                                <a class="dropdown-item" href="<?=base_url('dashboard/logout')?>"><i class="ti-back-right me-1 ms-1"></i>
                                     Cerrar Sesion</a>
                             </ul>
                         </li>
@@ -189,10 +189,24 @@
                             </a>
                         </li>
                         <li class="sidebar-item">
+                            <a class="sidebar-link user-decription-black waves-effect waves-dark sidebar-link" href="<?= route_to('categoriasdash') ?>"
+                                aria-expanded="false">
+                                <i class="mdi mdi-arrange-send-to-back"></i>
+                                <span class="hide-menu">CATEGORIAS</span>
+                            </a>
+                        </li>
+                        <li class="sidebar-item">
+                            <a class="sidebar-link user-decription-black waves-effect waves-dark sidebar-link" href="<?= route_to('idiomasdash') ?>"
+                                aria-expanded="false">
+                                <i class="mdi mdi-instapaper"></i>
+                                <span class="hide-menu">IDIOMAS</span>
+                            </a>
+                        </li>
+                        <li class="sidebar-item">
                             <a class="sidebar-link user-decription-black waves-effect waves-dark sidebar-link" href="<?= route_to('cuentasdash') ?>"
                                 aria-expanded="false">
                                 <i class="mdi mdi-briefcase"></i>
-                                <span class="hide-menu">MI CUENTA</span>
+                                <span class="hide-menu">PERFIL</span>
                             </a>
                         </li>
                         

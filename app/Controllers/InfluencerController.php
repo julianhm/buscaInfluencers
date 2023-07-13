@@ -27,7 +27,7 @@ class InfluencerController extends BaseController
     //CARGA LA PAGINA DEL PERFIL DEL INFLUENCER
     public function index()
     {
-        $this->logout();
+        //$this->logout();
         $dataHeader =['titulo' => 'Busca Influencer',
                 'mensaje'=>"",];
 
@@ -866,6 +866,12 @@ public function enviarMensajeContactanos(){
             $idredes=$influredes->where('idinfluencer', $id)->findAll();
             $ididioma= $influidioma->where('idinfluencer', $id)->findAll();
 
+             //ACATUALIZAR REDES SOCIALES
+            $misInfluRedes=$influredes->where("idinfluencer",$id);
+            foreach ($misInfluRedes as $key => $m) {
+                $this->_actualizarRedesSociales($id,$m['idredes']);
+            }
+
             $misCategorias=[];
             $categoriasNoUso= $categoria->findAll();
             //var_dump($categoriasNoUso);
@@ -1529,23 +1535,23 @@ public function enviarMensajeContactanos(){
 
     function _validar_clave($clave,&$error_clave){
         if(strlen($clave) < 6){
-           $error_clave = "La clave debe tener al menos 6 caracteres";
+           $error_clave = "La contraseña debe tener al menos 6 caracteres";
            return false;
         }
         if(strlen($clave) > 16){
-           $error_clave = "La clave no puede tener más de 16 caracteres";
+           $error_clave = "La contraseña no puede tener más de 16 caracteres";
            return false;
         }
         if (!preg_match('`[a-z]`',$clave)){
-           $error_clave = "La clave debe tener al menos una letra minúscula";
+           $error_clave = "La contraseña debe tener al menos una letra minúscula";
            return false;
         }
         if (!preg_match('`[A-Z]`',$clave)){
-           $error_clave = "La clave debe tener al menos una letra mayúscula";
+           $error_clave = "La contraseña debe tener al menos una letra mayúscula";
            return false;
         }
         if (!preg_match('`[0-9]`',$clave)){
-           $error_clave = "La clave debe tener al menos un caracter numérico";
+           $error_clave = "La contraseña debe tener al menos un caracter numérico";
            return false;
         }
         $error_clave = "";
@@ -1611,7 +1617,7 @@ public function enviarMensajeContactanos(){
      public function olvidoClave(){
         
         $data=[];
-        $dataHeader=['titulo'=>'Olvido Clave','mensaje'=>""];
+        $dataHeader=['titulo'=>'Restaurar contraseña','mensaje'=>""];
         
         
         //CARGAR LA VISTA
@@ -1637,445 +1643,447 @@ public function enviarMensajeContactanos(){
             $paso=$influencer->update($id,$data);
 
             $cuerpo = "<!DOCTYPE html>
-            <html xmlns:v='urn:schemas-microsoft-com:vml' xmlns:o='urn:schemas-microsoft-com:office:office' lang='en'>
-            
-            <head>
-                <title></title>
-                <meta http-equiv='Content-Type' content='text/html; charset=utf-8'>
-                <meta name='viewport' content='width=device-width, initial-scale=1.0'>
-                <!--[if mso]><xml><o:OfficeDocumentSettings><o:PixelsPerInch>96</o:PixelsPerInch><o:AllowPNG/></o:OfficeDocumentSettings></xml><![endif]-->
-                <!--[if !mso]><!-->
-                <link href='https://fonts.googleapis.com/css?family=Montserrat' rel='stylesheet' type='text/css'>
-                <!--<![endif]-->
-                <style>
-                    * {
-                        box-sizing: border-box;
-                    }
-            
-                    body {
-                        margin: 0;
-                        padding: 0;
-                    }
-            
-                    a[x-apple-data-detectors] {
-                        color: inherit !important;
-                        text-decoration: inherit !important;
-                    }
-            
-                    #MessageViewBody a {
-                        color: inherit;
-                        text-decoration: none;
-                    }
-            
-                    p {
-                        line-height: inherit
-                    }
-            
-                    .desktop_hide,
-                    .desktop_hide table {
-                        mso-hide: all;
-                        display: none;
-                        max-height: 0px;
-                        overflow: hidden;
-                    }
-            
-                    .font_mont {
-                        font-family: 'Montserrat';
-                    }
-            
-                    @media (max-width:820px) {
-                        .social_block.desktop_hide .social-table {
-                            display: inline-block !important;
-                        }
-            
-                        .row-content {
-                            width: 100% !important;
-                        }
-            
-                        .mobile_hide {
-                            display: none;
-                        }
-            
-                        .stack .column {
-                            width: 100%;
-                            display: block;
-                        }
-            
-                        .mobile_hide {
-                            min-height: 0;
-                            max-height: 0;
-                            max-width: 0;
-                            overflow: hidden;
-                            font-size: 0px;
-                        }
-            
-                        .desktop_hide,
-                        .desktop_hide table {
-                            display: table !important;
-                            max-height: none !important;
-                        }
-                    }
-            
-                    @media (max-width:768px) {
-            
-                        .row-3 .column-1 .block-2.paragraph_block td.pad>div,
-                        .row-3 .column-1 .block-5.paragraph_block td.pad>div,
-                        .row-3 .column-1 .block-8.paragraph_block td.pad>div {
-                            text-align: justify !important;
-                            font-size: 16px !important;
-                        }
-            
-                        .row-3 .column-1 .block-2.paragraph_block td.pad,
-                        .row-3 .column-1 .block-5.paragraph_block td.pad,
-                        .row-3 .column-1 .block-8.paragraph_block td.pad,
-                        .row-5 .column-1 .block-1.social_block td.pad {
-                            padding: 0 30px !important;
-                        }
-            
-                        .row-3 .column-1 .block-1.paragraph_block td.pad>div {
-                            text-align: center !important;
-                            font-size: 20px !important;
-                        }
-            
-                        .row-3 .column-1 .block-1.paragraph_block td.pad {
-                            padding: 0 30px 10px !important;
-                        }
-            
-                        .row-2 .column-1 .block-4.heading_block td.pad {
-                            padding: 10px 30px !important;
-                        }
-            
-                        .row-2 .column-1 .block-4.heading_block h1 {
-                            font-size: 22px !important;
-                        }
-            
-                        .row-1 .column-1 .block-1.image_block td.pad {
-                            padding: 15px 0 0 !important;
-                        }
-            
-                        .row-1 .column-1 .block-1.image_block img,
-                        .row-6 .column-1 .block-2.button_block .alignment div,
-                        .row-6 .column-2 .block-2.button_block .alignment div {
-                            display: inline-block !important;
-                        }
-            
-                        .row-1 .column-1 .block-1.image_block .alignment,
-                        .row-6 .column-1 .block-2.button_block .alignment,
-                        .row-6 .column-2 .block-2.button_block .alignment {
-                            text-align: center !important;
-                        }
-            
-                        .row-6 .column-1 .block-2.button_block a span,
-                        .row-6 .column-1 .block-2.button_block div,
-                        .row-6 .column-1 .block-2.button_block div span,
-                        .row-6 .column-2 .block-2.button_block a span,
-                        .row-6 .column-2 .block-2.button_block div,
-                        .row-6 .column-2 .block-2.button_block div span {
-                            line-height: 2 !important;
-                        }
-                    }
-                </style>
-            </head>
-            
-            <body style='background-color: transparent; margin: 0; padding: 0; -webkit-text-size-adjust: none; text-size-adjust: none;'>
-                <table class='nl-container' width='100%' border='0' cellpadding='0' cellspacing='0' role='presentation' style='mso-table-lspace: 0pt; mso-table-rspace: 0pt; background-color: transparent;'>
-                    <tbody>
-                        <tr>
-                            <td>
-                                <table class='row row-1' align='center' width='100%' border='0' cellpadding='0' cellspacing='0' role='presentation' style='mso-table-lspace: 0pt; mso-table-rspace: 0pt; background-color: #e8e5ec;'>
-                                    <tbody>
-                                        <tr>
-                                            <td>
-                                                <table class='row-content stack' align='center' border='0' cellpadding='0' cellspacing='0' role='presentation' style='mso-table-lspace: 0pt; mso-table-rspace: 0pt; background-color: #ffffff; border-radius: 0; color: #000000; width: 800px;' width='800'>
-                                                    <tbody>
-                                                        <tr>
-                                                            <td class='column column-1' width='100%' style='mso-table-lspace: 0pt; mso-table-rspace: 0pt; font-weight: 400; text-align: left; vertical-align: top; padding-top: 0px; padding-bottom: 0px; border-top: 0px; border-right: 0px; border-bottom: 0px; border-left: 0px;'>
-                                                                <table class='image_block block-1' width='100%' border='0' cellpadding='0' cellspacing='0' role='presentation' style='mso-table-lspace: 0pt; mso-table-rspace: 0pt;'>
-                                                                    <tr>
-                                                                        <td class='pad' style='padding-left:60px;padding-top:20px;width:100%;padding-right:0px;'>
-                                                                            <div class='alignment' align='left' style='line-height:10px'><img src='".base_url()."/public/img/verificacion/logo-binf.png' style='display: block; height: auto; border: 0; width: 160px; max-width: 100%;' width='160' alt='Logo Binf' title='Logo Binf'></div>
-                                                                        </td>
-                                                                    </tr>
-                                                                </table>
+<html xmlns:v='urn:schemas-microsoft-com:vml' xmlns:o='urn:schemas-microsoft-com:office:office' lang='en'>
+
+<head>
+	<title></title>
+	<meta http-equiv='Content-Type' content='text/html; charset=utf-8'>
+	<meta name='viewport' content='width=device-width, initial-scale=1.0'>
+	<!--[if mso]><xml><o:OfficeDocumentSettings><o:PixelsPerInch>96</o:PixelsPerInch><o:AllowPNG/></o:OfficeDocumentSettings></xml><![endif]-->
+	<!--[if !mso]><!-->
+	<link href='https://fonts.googleapis.com/css?family=Montserrat' rel='stylesheet' type='text/css'>
+	<!--<![endif]-->
+	<style>
+		* {
+			box-sizing: border-box;
+		}
+
+		body {
+			margin: 0;
+			padding: 0;
+		}
+
+		a[x-apple-data-detectors] {
+			color: inherit !important;
+			text-decoration: inherit !important;
+		}
+
+		#MessageViewBody a {
+			color: inherit;
+			text-decoration: none;
+		}
+
+		p {
+			line-height: inherit
+		}
+
+		.desktop_hide,
+		.desktop_hide table {
+			mso-hide: all;
+			display: none;
+			max-height: 0px;
+			overflow: hidden;
+		}
+
+        .font_mont {
+			font-family: 'Montserrat';
+		}
+
+		@media (max-width:820px) {
+			.social_block.desktop_hide .social-table {
+				display: inline-block !important;
+			}
+
+			.row-content {
+				width: 100% !important;
+			}
+
+			.mobile_hide {
+				display: none;
+			}
+
+			.stack .column {
+				width: 100%;
+				display: block;
+			}
+
+			.mobile_hide {
+				min-height: 0;
+				max-height: 0;
+				max-width: 0;
+				overflow: hidden;
+				font-size: 0px;
+			}
+
+			.desktop_hide,
+			.desktop_hide table {
+				display: table !important;
+				max-height: none !important;
+			}
+		}
+
+		@media (max-width:768px) {
+
+			.row-3 .column-1 .block-2.paragraph_block td.pad>div,
+			.row-3 .column-1 .block-5.paragraph_block td.pad>div,
+			.row-3 .column-1 .block-8.paragraph_block td.pad>div {
+				text-align: justify !important;
+				font-size: 16px !important;
+			}
+
+			.row-3 .column-1 .block-2.paragraph_block td.pad,
+			.row-3 .column-1 .block-5.paragraph_block td.pad,
+			.row-3 .column-1 .block-8.paragraph_block td.pad,
+			.row-5 .column-1 .block-1.social_block td.pad {
+				padding: 0 30px !important;
+			}
+
+			.row-3 .column-1 .block-1.paragraph_block td.pad>div {
+				text-align: center !important;
+				font-size: 20px !important;
+			}
+
+			.row-3 .column-1 .block-1.paragraph_block td.pad {
+				padding: 0 30px 10px !important;
+			}
+
+			.row-2 .column-1 .block-4.heading_block td.pad {
+				padding: 10px 30px !important;
+			}
+
+			.row-2 .column-1 .block-4.heading_block h1 {
+				font-size: 22px !important;
+			}
+
+			.row-1 .column-1 .block-1.image_block td.pad {
+				padding: 15px 0 0 !important;
+			}
+
+			.row-1 .column-1 .block-1.image_block img,
+			.row-6 .column-1 .block-2.button_block .alignment div,
+			.row-6 .column-2 .block-2.button_block .alignment div {
+				display: inline-block !important;
+			}
+
+			.row-1 .column-1 .block-1.image_block .alignment,
+			.row-6 .column-1 .block-2.button_block .alignment,
+			.row-6 .column-2 .block-2.button_block .alignment {
+				text-align: center !important;
+			}
+
+			.row-6 .column-1 .block-2.button_block a span,
+			.row-6 .column-1 .block-2.button_block div,
+			.row-6 .column-1 .block-2.button_block div span,
+			.row-6 .column-2 .block-2.button_block a span,
+			.row-6 .column-2 .block-2.button_block div,
+			.row-6 .column-2 .block-2.button_block div span {
+				line-height: 2 !important;
+			}
+		}
+	</style>
+</head>
+
+<body style='background-color: transparent; margin: 0; padding: 0; -webkit-text-size-adjust: none; text-size-adjust: none;'>
+	<table class='nl-container' width='100%' border='0' cellpadding='0' cellspacing='0' role='presentation' style='mso-table-lspace: 0pt; mso-table-rspace: 0pt; background-color: transparent;'>
+		<tbody>
+			<tr>
+				<td>
+					<table class='row row-1' align='center' width='100%' border='0' cellpadding='0' cellspacing='0' role='presentation' style='mso-table-lspace: 0pt; mso-table-rspace: 0pt; background-color: #e8e5ec;'>
+						<tbody>
+							<tr>
+								<td>
+									<table class='row-content stack' align='center' border='0' cellpadding='0' cellspacing='0' role='presentation' style='mso-table-lspace: 0pt; mso-table-rspace: 0pt; background-color: #ffffff; border-radius: 0; color: #000000; width: 800px;' width='800'>
+										<tbody>
+											<tr>
+												<td class='column column-1' width='100%' style='mso-table-lspace: 0pt; mso-table-rspace: 0pt; font-weight: 400; text-align: left; vertical-align: top; padding-top: 0px; padding-bottom: 0px; border-top: 0px; border-right: 0px; border-bottom: 0px; border-left: 0px;'>
+													<table class='image_block block-1' width='100%' border='0' cellpadding='0' cellspacing='0' role='presentation' style='mso-table-lspace: 0pt; mso-table-rspace: 0pt;'>
+														<tr>
+															<td class='pad' style='padding-left:60px;padding-top:20px;width:100%;padding-right:0px;'>
+																<div class='alignment' align='left' style='line-height:10px'><img src='".base_url()."/public/img/verificacion/logo-binf.png' style='display: block; height: auto; border: 0; width: 160px; max-width: 100%;' width='160' alt='Logo Binf' title='Logo Binf'></div>
+															</td>
+														</tr>
+													</table>
+												</td>
+											</tr>
+										</tbody>
+									</table>
+								</td>
+							</tr>
+						</tbody>
+					</table>
+					<table class='row row-2' align='center' width='100%' border='0' cellpadding='0' cellspacing='0' role='presentation' style='mso-table-lspace: 0pt; mso-table-rspace: 0pt; background-color: #e8e5ec;'>
+						<tbody>
+							<tr>
+								<td>
+									<table class='row-content stack' align='center' border='0' cellpadding='0' cellspacing='0' role='presentation' style='mso-table-lspace: 0pt; mso-table-rspace: 0pt; background-color: #ffffff; color: #000000; width: 800px;' width='800'>
+										<tbody>
+											<tr>
+												<td class='column column-1' width='100%' style='mso-table-lspace: 0pt; mso-table-rspace: 0pt; font-weight: 400; text-align: left; vertical-align: top; padding-bottom: 5px; border-top: 0px; border-right: 0px; border-bottom: 0px; border-left: 0px;'>
+													<div class='spacer_block' style='height:5px;line-height:5px;font-size:1px;'>&#8202;</div>
+													<div class='spacer_block mobile_hide' style='height:25px;line-height:25px;font-size:1px;'>&#8202;</div>
+													<div class='spacer_block desktop_hide' style='mso-hide: all; display: none; max-height: 0; overflow: hidden; height: 25px; line-height: 25px; font-size: 1px;'>&#8202;</div>
+													<table class='heading_block block-4' width='100%' border='0' cellpadding='0' cellspacing='0' role='presentation' style='mso-table-lspace: 0pt; mso-table-rspace: 0pt;'>
+														<tr>
+															<td class='pad font_mont' style='padding-bottom:10px;padding-top:10px;text-align:center;width:100%;'>
+																<h1 style='margin: 0; color: #1d1d1b; direction: ltr; font-size: 32px; font-weight: 700; letter-spacing: normal; line-height: 120%; text-align: center; margin-top: 0; margin-bottom: 0;'><span class='tinyMce-placeholder'>Restablece tu contraseña</span></h1>
+															</td>
+														</tr>
+													</table>
+													<table class='divider_block block-5' width='100%' border='0' cellpadding='10' cellspacing='0' role='presentation' style='mso-table-lspace: 0pt; mso-table-rspace: 0pt;'>
+														<tr>
+															<td class='pad'>
+																<div class='alignment' align='center'>
+																	<table border='0' cellpadding='0' cellspacing='0' role='presentation' width='70%' style='mso-table-lspace: 0pt; mso-table-rspace: 0pt;'>
+																		<tr>
+																			<td class='divider_inner' style='font-size: 1px; line-height: 1px; border-top: 7px solid #1D1D1B;'><span>&#8202;</span></td>
+																		</tr>
+																	</table>
+																</div>
+															</td>
+														</tr>
+													</table>
+												</td>
+											</tr>
+										</tbody>
+									</table>
+								</td>
+							</tr>
+						</tbody>
+					</table>
+					<table class='row row-3' align='center' width='100%' border='0' cellpadding='0' cellspacing='0' role='presentation' style='mso-table-lspace: 0pt; mso-table-rspace: 0pt; background-color: #e8e5ec;'>
+						<tbody>
+							<tr>
+								<td>
+									<table class='row-content stack' align='center' border='0' cellpadding='0' cellspacing='0' role='presentation' style='mso-table-lspace: 0pt; mso-table-rspace: 0pt; background-color: #ffffff; color: #000000; width: 800px;' width='800'>
+										<tbody>
+											<tr>
+												<td class='column column-1' width='100%' style='mso-table-lspace: 0pt; mso-table-rspace: 0pt; font-weight: 400; text-align: left; vertical-align: top; padding-top: 5px; padding-bottom: 5px; border-top: 0px; border-right: 0px; border-bottom: 0px; border-left: 0px;'>
+													
+                                                    <table class='paragraph_block block-1' width='100%' border='0' cellpadding='0' cellspacing='0' role='presentation' style='mso-table-lspace: 0pt; mso-table-rspace: 0pt; word-break: break-word;'>
+														<tr>
+															<td class='pad' style='padding-bottom:15px;padding-left:60px;padding-right:60px;'>
+																<div style='color:#000000;direction:ltr;font-family:Arial, Helvetica Neue, Helvetica, sans-serif;font-size:24px;font-weight:700;letter-spacing:0px;line-height:180%;text-align:center;mso-line-height-alt:43.2px;'>
+																	<p style='margin: 0;'>Hola ".$influ["nombreinflu"]."</p>
+																</div>
+															</td>
+														</tr>
+													</table>
+                                                    
+													<table class='paragraph_block block-2' width='100%' border='0' cellpadding='0' cellspacing='0' role='presentation' style='mso-table-lspace: 0pt; mso-table-rspace: 0pt; word-break: break-word;'>
+														<tr>
+															<td class='pad' style='padding-left:60px;padding-right:60px;'>
+																<div style='color:#726f70;direction:ltr;font-family:Arial, Helvetica Neue, Helvetica, sans-serif;font-size:16px;font-weight:400;letter-spacing:0px;line-height:180%;text-align:center;mso-line-height-alt:28.8px;'>
+																	<p style='margin: 0;'>
+																		<br>Hemos recibido una solicitud para restablecer tu contraseña. Para continuar haz clic en el siguiente botón para restablecer tu contraseña<br>
+																	</p>
+
+																</div>
+															</td>
+														</tr>
+													</table>
+
+
+													
+
+													<div class='spacer_block desktop_hide' style='mso-hide: all; display: none; max-height: 0; overflow: hidden; height: 40px; line-height: 40px; font-size: 1px;'>&#8202;</div>
+													<div class='spacer_block mobile_hide' style='height:40px;line-height:40px;font-size:1px;'>&#8202;</div>
+
+													<table class='paragraph_block block-8' width='100%' border='0' cellpadding='0' cellspacing='0' role='presentation' style='mso-table-lspace: 0pt; mso-table-rspace: 0pt; word-break: break-word;'>
+														<tr>
+                                                            <td class='column column-1' style='mso-table-lspace: 0pt; mso-table-rspace: 0pt; font-weight: 400; text-align: left; padding-bottom: 5px; padding-top: 5px; vertical-align: top; border-top: 0px; border-right: 0px; border-bottom: 0px; border-left: 0px;' width='100%'>
+                                                            <table border='0' cellpadding='10' cellspacing='0' class='button_block block-1' role='presentation' style='mso-table-lspace: 0pt; mso-table-rspace: 0pt;' width='100%'>
+                                                            <tr>
+                                                            <td class='pad'>
+                                                            	<a href='".base_url()."/respassword/".$tokens."/".$influ["idinfluencer"]."'>
+                                                            <div align='center' class='alignment'><!--[if mso]><v:roundrect xmlns:v='urn:schemas-microsoft-com:vml' xmlns:w='urn:schemas-microsoft-com:office:word' style='height:50px;width:188px;v-text-anchor:middle;' arcsize='8%' stroke='false' fillcolor='#000000'><w:anchorlock/><v:textbox inset='0px,0px,0px,0px'><center style='color:#ffffff; font-family:Arial, sans-serif; font-size:20px'><![endif]-->
+                                                            <div style='text-decoration:none;display:inline-block;color:#ffffff;background-color:#000000;border-radius:4px;width:auto;border-top:0px solid transparent;font-weight:700;border-right:0px solid transparent;border-bottom:0px solid transparent;border-left:0px solid transparent;padding-top:5px;padding-bottom:5px;font-family:Arial, Helvetica, sans-serif;font-size:20px;text-align:center;mso-border-alt:none;word-break:keep-all;'><span style='padding-left:20px;padding-right:20px;font-size:20px;display:inline-block;letter-spacing:normal;'><span dir='ltr' style='word-break: break-word; line-height: 40px;'>Restablecer contraseña</span></span></div><!--[if mso]></center></v:textbox></v:roundrect><![endif]-->
+                                                            </div>
                                                             </td>
-                                                        </tr>
-                                                    </tbody>
-                                                </table>
-                                            </td>
-                                        </tr>
-                                    </tbody>
-                                </table>
-                                <table class='row row-2' align='center' width='100%' border='0' cellpadding='0' cellspacing='0' role='presentation' style='mso-table-lspace: 0pt; mso-table-rspace: 0pt; background-color: #e8e5ec;'>
-                                    <tbody>
-                                        <tr>
-                                            <td>
-                                                <table class='row-content stack' align='center' border='0' cellpadding='0' cellspacing='0' role='presentation' style='mso-table-lspace: 0pt; mso-table-rspace: 0pt; background-color: #ffffff; color: #000000; width: 800px;' width='800'>
-                                                    <tbody>
-                                                        <tr>
-                                                            <td class='column column-1' width='100%' style='mso-table-lspace: 0pt; mso-table-rspace: 0pt; font-weight: 400; text-align: left; vertical-align: top; padding-bottom: 5px; border-top: 0px; border-right: 0px; border-bottom: 0px; border-left: 0px;'>
-                                                                <div class='spacer_block' style='height:5px;line-height:5px;font-size:1px;'>&#8202;</div>
-                                                                <div class='spacer_block mobile_hide' style='height:25px;line-height:25px;font-size:1px;'>&#8202;</div>
-                                                                <div class='spacer_block desktop_hide' style='mso-hide: all; display: none; max-height: 0; overflow: hidden; height: 25px; line-height: 25px; font-size: 1px;'>&#8202;</div>
-                                                                <table class='heading_block block-4' width='100%' border='0' cellpadding='0' cellspacing='0' role='presentation' style='mso-table-lspace: 0pt; mso-table-rspace: 0pt;'>
-                                                                    <tr>
-                                                                        <td class='pad font_mont' style='padding-bottom:10px;padding-top:10px;text-align:center;width:100%;'>
-                                                                            <h1 style='margin: 0; color: #1d1d1b; direction: ltr; font-size: 32px; font-weight: 700; letter-spacing: normal; line-height: 120%; text-align: center; margin-top: 0; margin-bottom: 0;'><span class='tinyMce-placeholder'>Restablece tu contraseña</span></h1>
-                                                                        </td>
-                                                                    </tr>
-                                                                </table>
-                                                                <table class='divider_block block-5' width='100%' border='0' cellpadding='10' cellspacing='0' role='presentation' style='mso-table-lspace: 0pt; mso-table-rspace: 0pt;'>
-                                                                    <tr>
-                                                                        <td class='pad'>
-                                                                            <div class='alignment' align='center'>
-                                                                                <table border='0' cellpadding='0' cellspacing='0' role='presentation' width='70%' style='mso-table-lspace: 0pt; mso-table-rspace: 0pt;'>
-                                                                                    <tr>
-                                                                                        <td class='divider_inner' style='font-size: 1px; line-height: 1px; border-top: 7px solid #1D1D1B;'><span>&#8202;</span></td>
-                                                                                    </tr>
-                                                                                </table>
-                                                                            </div>
-                                                                        </td>
-                                                                    </tr>
-                                                                </table>
+                                                            </a>
+                                                            </tr>
+                                                            </table>
                                                             </td>
-                                                        </tr>
-                                                    </tbody>
-                                                </table>
-                                            </td>
-                                        </tr>
-                                    </tbody>
-                                </table>
-                                <table class='row row-3' align='center' width='100%' border='0' cellpadding='0' cellspacing='0' role='presentation' style='mso-table-lspace: 0pt; mso-table-rspace: 0pt; background-color: #e8e5ec;'>
-                                    <tbody>
-                                        <tr>
-                                            <td>
-                                                <table class='row-content stack' align='center' border='0' cellpadding='0' cellspacing='0' role='presentation' style='mso-table-lspace: 0pt; mso-table-rspace: 0pt; background-color: #ffffff; color: #000000; width: 800px;' width='800'>
-                                                    <tbody>
-                                                        <tr>
-                                                            <td class='column column-1' width='100%' style='mso-table-lspace: 0pt; mso-table-rspace: 0pt; font-weight: 400; text-align: left; vertical-align: top; padding-top: 5px; padding-bottom: 5px; border-top: 0px; border-right: 0px; border-bottom: 0px; border-left: 0px;'>
-                                                                <table class='paragraph_block block-1' width='100%' border='0' cellpadding='0' cellspacing='0' role='presentation' style='mso-table-lspace: 0pt; mso-table-rspace: 0pt; word-break: break-word;'>
-                                                                    <tr>
-                                                                        <td class='pad' style='padding-bottom:15px;padding-left:60px;padding-right:60px;'>
-                                                                            <div style='color:#000000;direction:ltr;font-family:Arial, Helvetica Neue, Helvetica, sans-serif;font-size:24px;font-weight:700;letter-spacing:0px;line-height:180%;text-align:center;mso-line-height-alt:43.2px;'>
-                                                                                <p style='margin: 0;'>Hola</p>
-                                                                            </div>
-                                                                        </td>
-                                                                    </tr>
-                                                                </table>
-                                                                <table class='paragraph_block block-2' width='100%' border='0' cellpadding='0' cellspacing='0' role='presentation' style='mso-table-lspace: 0pt; mso-table-rspace: 0pt; word-break: break-word;'>
-                                                                    <tr>
-                                                                        <td class='pad' style='padding-left:60px;padding-right:60px;'>
-                                                                            <div style='color:#726f70;direction:ltr;font-family:Arial, Helvetica Neue, Helvetica, sans-serif;font-size:16px;font-weight:400;letter-spacing:0px;line-height:180%;text-align:center;mso-line-height-alt:28.8px;'>
-                                                                                <p style='margin: 0;'>
-                                                                                    <br>Hemos recibido una solicitud para restablecer tu contraseña. Para continuar haz clic en el siguiente botón para restablecer tu contraseña<br>
-                                                                                </p>
-            
-                                                                            </div>
-                                                                        </td>
-                                                                    </tr>
-                                                                </table>
-            
-            
-                                                                
-            
-                                                                <div class='spacer_block desktop_hide' style='mso-hide: all; display: none; max-height: 0; overflow: hidden; height: 40px; line-height: 40px; font-size: 1px;'>&#8202;</div>
-                                                                <div class='spacer_block mobile_hide' style='height:40px;line-height:40px;font-size:1px;'>&#8202;</div>
-            
-                                                                <table class='paragraph_block block-8' width='100%' border='0' cellpadding='0' cellspacing='0' role='presentation' style='mso-table-lspace: 0pt; mso-table-rspace: 0pt; word-break: break-word;'>
-                                                                    <tr>
-                                                                        <td class='column column-1' style='mso-table-lspace: 0pt; mso-table-rspace: 0pt; font-weight: 400; text-align: left; padding-bottom: 5px; padding-top: 5px; vertical-align: top; border-top: 0px; border-right: 0px; border-bottom: 0px; border-left: 0px;' width='100%'>
-                                                                        <table border='0' cellpadding='10' cellspacing='0' class='button_block block-1' role='presentation' style='mso-table-lspace: 0pt; mso-table-rspace: 0pt;' width='100%'>
-                                                                        <tr>
-                                                                        <td class='pad'>
-                                                                            <a href='".base_url()."/respassword/".$tokens."/".$influ["idinfluencer"]."'>
-                                                                        <div align='center' class='alignment'><!--[if mso]><v:roundrect xmlns:v='urn:schemas-microsoft-com:vml' xmlns:w='urn:schemas-microsoft-com:office:word' style='height:50px;width:188px;v-text-anchor:middle;' arcsize='8%' stroke='false' fillcolor='#000000'><w:anchorlock/><v:textbox inset='0px,0px,0px,0px'><center style='color:#ffffff; font-family:Arial, sans-serif; font-size:20px'><![endif]-->
-                                                                        <div style='text-decoration:none;display:inline-block;color:#ffffff;background-color:#000000;border-radius:4px;width:auto;border-top:0px solid transparent;font-weight:700;border-right:0px solid transparent;border-bottom:0px solid transparent;border-left:0px solid transparent;padding-top:5px;padding-bottom:5px;font-family:Arial, Helvetica, sans-serif;font-size:20px;text-align:center;mso-border-alt:none;word-break:keep-all;'><span style='padding-left:20px;padding-right:20px;font-size:20px;display:inline-block;letter-spacing:normal;'><span dir='ltr' style='word-break: break-word; line-height: 40px;'>Restablecer contraseña</span></span></div><!--[if mso]></center></v:textbox></v:roundrect><![endif]-->
-                                                                        </div>
-                                                                        </td>
-                                                                        </a>
-                                                                        </tr>
-                                                                        </table>
-                                                                        </td>
-                                                                        </tr>
-                                                                </table>
-            
-                                                                <div class='spacer_block desktop_hide' style='mso-hide: all; display: none; max-height: 0; overflow: hidden; height: 40px; line-height: 40px; font-size: 1px;'>&#8202;</div>
-                                                                <div class='spacer_block mobile_hide' style='height:40px;line-height:40px;font-size:1px;'>&#8202;</div>
-            
-                                                                <table class='paragraph_block block-5' width='100%' border='0' cellpadding='0' cellspacing='0' role='presentation' style='mso-table-lspace: 0pt; mso-table-rspace: 0pt; word-break: break-word;'>
-                                                                    <tr>
-                                                                        <td class='pad' style='padding-left:60px;padding-right:60px;'>
-                                                                            <div style='color:#726f70;direction:ltr;font-family:Arial, Helvetica Neue, Helvetica, sans-serif;font-size:16px;font-weight:400;letter-spacing:0px;line-height:180%;text-align:center;mso-line-height-alt:28.8px;'>
-                                                                                <p style='margin: 0;'>Si no realizaste esta solicitud, no se requiere realizar ninguna otra acción. <br>En caso que necesites asistencia, escribenos en nuestras redes sociales o contactanos directamente.</p>
-                                                                            </div>
-                                                                        </td>
-                                                                    </tr>
-                                                                </table>
-                                                                
-                                                                
-                                                            </td>
-                                                        </tr>
-                                                    </tbody>
-                                                </table>
-                                            </td>
-                                        </tr>
-                                    </tbody>
-                                </table>
-                                <table class='row row-4' align='center' width='100%' border='0' cellpadding='0' cellspacing='0' role='presentation' style='mso-table-lspace: 0pt; mso-table-rspace: 0pt; background-color: #e8e5ec;'>
-                                    <tbody>
-                                        <tr>
-                                            <td>
-                                                <table class='row-content stack' align='center' border='0' cellpadding='0' cellspacing='0' role='presentation' style='mso-table-lspace: 0pt; mso-table-rspace: 0pt; background-color: #ffffff; color: #000000; width: 800px;' width='800'>
-                                                    <tbody>
-                                                        <tr>
-                                                            <td class='column column-1' width='100%' style='mso-table-lspace: 0pt; mso-table-rspace: 0pt; font-weight: 400; text-align: left; vertical-align: top; border-top: 0px; border-right: 0px; border-bottom: 0px; border-left: 0px;'>
-                                                                <div class='spacer_block' style='height:5px;line-height:5px;font-size:1px;'>&#8202;</div>
-                                                                <div class='spacer_block desktop_hide' style='mso-hide: all; display: none; max-height: 0; overflow: hidden; height: 50px; line-height: 50px; font-size: 1px;'>&#8202;</div>
-                                                                <div class='spacer_block mobile_hide' style='height:100px;line-height:100px;font-size:1px;'>&#8202;</div>
-                                                                <div class='spacer_block' style='height:5px;line-height:5px;font-size:1px;'>&#8202;</div>
-                                                            </td>
-                                                        </tr>
-                                                    </tbody>
-                                                </table>
-                                            </td>
-                                        </tr>
-                                    </tbody>
-                                </table>
-                                <table class='row row-5' align='center' width='100%' border='0' cellpadding='0' cellspacing='0' role='presentation' style='mso-table-lspace: 0pt; mso-table-rspace: 0pt; background-color: #e8e5ec;'>
-                                    <tbody>
-                                        <tr>
-                                            <td>
-                                                <table class='row-content stack' align='center' border='0' cellpadding='0' cellspacing='0' role='presentation' style='mso-table-lspace: 0pt; mso-table-rspace: 0pt; background-color: #ffffff; color: #000000; width: 800px;' width='800'>
-                                                    <tbody>
-                                                        <tr>
-                                                            <td class='column column-1' width='100%' style='mso-table-lspace: 0pt; mso-table-rspace: 0pt; font-weight: 400; text-align: left; vertical-align: top; padding-top: 5px; padding-bottom: 5px; border-top: 0px; border-right: 0px; border-bottom: 0px; border-left: 0px;'>
-                                                                <table class='social_block block-1' width='100%' border='0' cellpadding='0' cellspacing='0' role='presentation' style='mso-table-lspace: 0pt; mso-table-rspace: 0pt;'>
-                                                                    <tr>
-                                                                        <td class='pad' style='text-align:center;padding-right:0px;padding-left:0px;'>
-                                                                            <div class='alignment' align='center'>
-                                                                                <table class='social-table' width='137.98228128460687px' border='0' cellpadding='0' cellspacing='0' role='presentation' style='mso-table-lspace: 0pt; mso-table-rspace: 0pt; display: inline-block;'>
-                                                                                    <tr>
-                                                                                        <td style='padding:0 7px 0 7px;'><a href='https://www.instagram.com/buscoinfluencers/' target='_blank'><img src='".base_url()."/public/img/verificacion/instagram.png' width='31.238095238095237' height='32' alt='Instagram' title='Instagram' style='display: block; height: auto; border: 0;'></a></td>
-                                                                                        <td style='padding:0 7px 0 7px;'><a href='https://wa.link/d17wli' target='_blank'><img src='".base_url()."/public/img/verificacion/whatsapp.png' width='32.74418604651163' height='32' alt='Whatsapp' title='Whats app' style='display: block; height: auto; border: 0;'></a></td>
-                                                                                        <td style='padding:0 7px 0 7px;'><a href='https://wa.link/d17wli' target='_blank'><img src='".base_url()."/public/img/verificacion/tiktok.png' width='32' height='32' alt='Tiktok' title='Tiktok' style='display: block; height: auto; border: 0;'></a></td>
-                                                                                    </tr>
-                                                                                </table>
-                                                                            </div>
-                                                                        </td>
-                                                                    </tr>
-                                                                </table>
-                                                                <table class='paragraph_block block-2' width='100%' border='0' cellpadding='0' cellspacing='0' role='presentation' style='mso-table-lspace: 0pt; mso-table-rspace: 0pt; word-break: break-word;'>
-                                                                    <tr>
-                                                                        <td class='pad' style='padding-left:60px;padding-right:60px;padding-top:15px;'>
-                                                                            <div style='color:#979ca2;direction:ltr;font-family:Arial, Helvetica Neue, Helvetica, sans-serif;font-size:14px;font-weight:400;letter-spacing:0px;line-height:180%;text-align:center;mso-line-height-alt:25.2px;'>
-                                                                                <p style='margin: 0;'>Este correo electrónico fue enviado por:<br>WD Studios Corporation SAS. Cra 101 # 12A bis-70, Cali, Colombia.<br>Teléfonos: (2) 405 9935 &nbsp;/ &nbsp;Móvil: 316 7627511</p>
-                                                                            </div>
-                                                                        </td>
-                                                                    </tr>
-                                                                </table>
-                                                                <table class='paragraph_block block-4' width='100%' border='0' cellpadding='0' cellspacing='0' role='presentation' style='mso-table-lspace: 0pt; mso-table-rspace: 0pt; word-break: break-word;'>
-                                                                    <tr>
-                                                                        <td class='pad' style='padding-left:60px;padding-right:60px;padding-top:25px;'>
-                                                                            <div style='color:#979ca2;direction:ltr;font-family:Arial, Helvetica Neue, Helvetica, sans-serif;font-size:14px;font-weight:400;letter-spacing:0px;line-height:150%;text-align:center;mso-line-height-alt:21px;'>
-                                                                                <p style='margin: 0;'>Este mensaje ha sido verificado con herramientas de eliminación de virus y contenido malicioso. Si tiene algún&nbsp;inconveniente con la información recibida comuníquese con nosotros vía telefónica o respondamos este mismo correo. Recomendamos agregarnos a sus contactos para mantener una comunicación más efectiva.</p>
-                                                                            </div>
-                                                                        </td>
-                                                                    </tr>
-                                                                </table>
-                                                                <table class='divider_block block-5' width='100%' border='0' cellpadding='10' cellspacing='0' role='presentation' style='mso-table-lspace: 0pt; mso-table-rspace: 0pt;'>
-                                                                    <tr>
-                                                                        <td class='pad'>
-                                                                            <div class='alignment' align='center'>
-                                                                                <table border='0' cellpadding='0' cellspacing='0' role='presentation' width='70%' style='mso-table-lspace: 0pt; mso-table-rspace: 0pt;'>
-                                                                                    <tr>
-                                                                                        <td class='divider_inner' style='font-size: 1px; line-height: 1px; border-top: 2px solid #979CA2;'><span>&#8202;</span></td>
-                                                                                    </tr>
-                                                                                </table>
-                                                                            </div>
-                                                                        </td>
-                                                                    </tr>
-                                                                </table>
-                                                            </td>
-                                                        </tr>
-                                                    </tbody>
-                                                </table>
-                                            </td>
-                                        </tr>
-                                    </tbody>
-                                </table>
-                                <table class='row row-6' align='center' width='100%' border='0' cellpadding='0' cellspacing='0' role='presentation' style='mso-table-lspace: 0pt; mso-table-rspace: 0pt; background-color: #e8e5ec;'>
-                                    <tbody>
-                                        <tr>
-                                            <td>
-                                                <table class='row-content stack' align='center' border='0' cellpadding='0' cellspacing='0' role='presentation' style='mso-table-lspace: 0pt; mso-table-rspace: 0pt; background-color: #ffffff; border-radius: 0; color: #000000; width: 800px;' width='800'>
-                                                    <tbody>
-                                                        <tr>
-                                                            <td class='column column-1' width='50%' style='mso-table-lspace: 0pt; mso-table-rspace: 0pt; font-weight: 400; text-align: left; vertical-align: middle; border-top: 0px; border-right: 0px; border-bottom: 0px; border-left: 0px;'>
-                                                                <table class='button_block block-2' width='100%' border='0' cellpadding='0' cellspacing='0' role='presentation' style='mso-table-lspace: 0pt; mso-table-rspace: 0pt;'>
-                                                                    <tr>
-                                                                        <td class='pad' style='text-align:right;padding-top:5px;padding-bottom:5px;'>
-                                                                            <div class='alignment' align='right'>
-                                                                                <!--[if mso]><v:roundrect xmlns:v='urn:schemas-microsoft-com:vml' xmlns:w='urn:schemas-microsoft-com:office:word' href='https://www.buscoinfluencers.com/aviso-de-privacidad-2/' style='height:38px;width:173px;v-text-anchor:middle;' arcsize='11%' stroke='false' fill='false'><w:anchorlock/><v:textbox inset='0px,0px,0px,0px'><center style='color:#979ca2; font-family:Arial, sans-serif; font-size:14px'><![endif]--><a href='https://www.buscoinfluencers.com/aviso-de-privacidad-2/' target='_blank' style='text-decoration:none;display:inline-block;color:#979ca2;background-color:transparent;border-radius:4px;width:auto;border-top:0px solid transparent;font-weight:400;border-right:0px solid transparent;border-bottom:0px solid transparent;border-left:0px solid transparent;padding-top:5px;padding-bottom:5px;font-family:Arial, Helvetica Neue, Helvetica, sans-serif;font-size:14px;text-align:center;mso-border-alt:none;word-break:keep-all;'><span style='padding-left:20px;padding-right:20px;font-size:14px;display:inline-block;letter-spacing:normal;'><span dir='ltr' style='word-break: break-word; line-height: 28px;'>Política de privacidad</span></span></a>
-                                                                                <!--[if mso]></center></v:textbox></v:roundrect><![endif]-->
-                                                                            </div>
-                                                                        </td>
-                                                                    </tr>
-                                                                </table>
-                                                            </td>
-                                                            <td class='column column-2' width='50%' style='mso-table-lspace: 0pt; mso-table-rspace: 0pt; font-weight: 400; text-align: left; vertical-align: middle; border-top: 0px; border-right: 0px; border-bottom: 0px; border-left: 0px;'>
-                                                                <table class='button_block block-2' width='100%' border='0' cellpadding='0' cellspacing='0' role='presentation' style='mso-table-lspace: 0pt; mso-table-rspace: 0pt;'>
-                                                                    <tr>
-                                                                        <td class='pad' style='text-align:left;padding-top:5px;padding-bottom:5px;'>
-                                                                            <div class='alignment' align='left'>
-                                                                                <!--[if mso]><v:roundrect xmlns:v='urn:schemas-microsoft-com:vml' xmlns:w='urn:schemas-microsoft-com:office:word' href='https://www.buscoinfluencers.com/terminos-y-condiciones-2/' style='height:38px;width:187px;v-text-anchor:middle;' arcsize='11%' stroke='false' fill='false'><w:anchorlock/><v:textbox inset='0px,0px,0px,0px'><center style='color:#979ca2; font-family:Arial, sans-serif; font-size:14px'><![endif]--><a href='https://www.buscoinfluencers.com/terminos-y-condiciones-2/' target='_blank' style='text-decoration:none;display:inline-block;color:#979ca2;background-color:transparent;border-radius:4px;width:auto;border-top:0px solid transparent;font-weight:400;border-right:0px solid transparent;border-bottom:0px solid transparent;border-left:0px solid transparent;padding-top:5px;padding-bottom:5px;font-family:Arial, Helvetica Neue, Helvetica, sans-serif;font-size:14px;text-align:center;mso-border-alt:none;word-break:keep-all;'><span style='padding-left:20px;padding-right:20px;font-size:14px;display:inline-block;letter-spacing:normal;'><span dir='ltr' style='word-break: break-word; line-height: 28px;'>Términos y condiciones</span></span></a>
-                                                                                <!--[if mso]></center></v:textbox></v:roundrect><![endif]-->
-                                                                            </div>
-                                                                        </td>
-                                                                    </tr>
-                                                                </table>
-                                                            </td>
-                                                        </tr>
-                                                    </tbody>
-                                                </table>
-                                            </td>
-                                        </tr>
-                                    </tbody>
-                                </table>
-                                <table class='row row-7' align='center' width='100%' border='0' cellpadding='0' cellspacing='0' role='presentation' style='mso-table-lspace: 0pt; mso-table-rspace: 0pt; background-color: #e8e5ec;'>
-                                    <tbody>
-                                        <tr>
-                                            <td>
-                                                <table class='row-content stack' align='center' border='0' cellpadding='0' cellspacing='0' role='presentation' style='mso-table-lspace: 0pt; mso-table-rspace: 0pt; background-color: #ffffff; border-radius: 0; color: #000000; width: 800px;' width='800'>
-                                                    <tbody>
-                                                        <tr>
-                                                            <td class='column column-1' width='100%' style='mso-table-lspace: 0pt; mso-table-rspace: 0pt; font-weight: 400; text-align: left; vertical-align: middle; padding-top: 5px; padding-bottom: 5px; border-top: 0px; border-right: 0px; border-bottom: 0px; border-left: 0px;'>
-                                                                <table class='icons_block block-1' width='100%' border='0' cellpadding='0' cellspacing='0' role='presentation' style='mso-table-lspace: 0pt; mso-table-rspace: 0pt;'>
-                                                                    <tr>
-                                                                        <td class='pad' style='vertical-align: middle; color: #000000; font-family: inherit; font-size: 14px; text-align: center; padding-bottom: 25px;'>
-                                                                            <table class='alignment' cellpadding='0' cellspacing='0' role='presentation' align='center' style='mso-table-lspace: 0pt; mso-table-rspace: 0pt;'>
-                                                                                <tr>
-                                                                                    <td style='vertical-align: middle; text-align: center; padding-top: 5px; padding-bottom: 5px; padding-left: 5px; padding-right: 5px;'><img class='icon' src='".base_url()."/public/img/verificacion/wd-studios.png' alt='WD STUDIOS' height='32' width='62' align='center' style='display: block; height: auto; margin: 0 auto; border: 0;'></td>
-                                                                                </tr>
-                                                                            </table>
-                                                                        </td>
-                                                                    </tr>
-                                                                </table>
-                                                            </td>
-                                                        </tr>
-                                                    </tbody>
-                                                </table>
-                                            </td>
-                                        </tr>
-                                    </tbody>
-                                </table>
-                            </td>
-                        </tr>
-                    </tbody>
-                </table><!-- End -->
-            </body>
-            
-            </html>";
+                                                            </tr>
+													</table>
+
+													<div class='spacer_block desktop_hide' style='mso-hide: all; display: none; max-height: 0; overflow: hidden; height: 40px; line-height: 40px; font-size: 1px;'>&#8202;</div>
+													<div class='spacer_block mobile_hide' style='height:40px;line-height:40px;font-size:1px;'>&#8202;</div>
+
+													<table class='paragraph_block block-5' width='100%' border='0' cellpadding='0' cellspacing='0' role='presentation' style='mso-table-lspace: 0pt; mso-table-rspace: 0pt; word-break: break-word;'>
+														<tr>
+															<td class='pad' style='padding-left:60px;padding-right:60px;'>
+																<div style='color:#726f70;direction:ltr;font-family:Arial, Helvetica Neue, Helvetica, sans-serif;font-size:16px;font-weight:400;letter-spacing:0px;line-height:180%;text-align:center;mso-line-height-alt:28.8px;'>
+																	<p style='margin: 0;'>Si no realizaste esta solicitud, no se requiere realizar ninguna otra acción. <br>En caso que necesites asistencia, escribenos en nuestras redes sociales o contactanos directamente.</p>
+																</div>
+															</td>
+														</tr>
+													</table>
+													
+													
+												</td>
+											</tr>
+										</tbody>
+									</table>
+								</td>
+							</tr>
+						</tbody>
+					</table>
+					<table class='row row-4' align='center' width='100%' border='0' cellpadding='0' cellspacing='0' role='presentation' style='mso-table-lspace: 0pt; mso-table-rspace: 0pt; background-color: #e8e5ec;'>
+						<tbody>
+							<tr>
+								<td>
+									<table class='row-content stack' align='center' border='0' cellpadding='0' cellspacing='0' role='presentation' style='mso-table-lspace: 0pt; mso-table-rspace: 0pt; background-color: #ffffff; color: #000000; width: 800px;' width='800'>
+										<tbody>
+											<tr>
+												<td class='column column-1' width='100%' style='mso-table-lspace: 0pt; mso-table-rspace: 0pt; font-weight: 400; text-align: left; vertical-align: top; border-top: 0px; border-right: 0px; border-bottom: 0px; border-left: 0px;'>
+													<div class='spacer_block' style='height:5px;line-height:5px;font-size:1px;'>&#8202;</div>
+													<div class='spacer_block desktop_hide' style='mso-hide: all; display: none; max-height: 0; overflow: hidden; height: 50px; line-height: 50px; font-size: 1px;'>&#8202;</div>
+													<div class='spacer_block mobile_hide' style='height:100px;line-height:100px;font-size:1px;'>&#8202;</div>
+													<div class='spacer_block' style='height:5px;line-height:5px;font-size:1px;'>&#8202;</div>
+												</td>
+											</tr>
+										</tbody>
+									</table>
+								</td>
+							</tr>
+						</tbody>
+					</table>
+					<table class='row row-5' align='center' width='100%' border='0' cellpadding='0' cellspacing='0' role='presentation' style='mso-table-lspace: 0pt; mso-table-rspace: 0pt; background-color: #e8e5ec;'>
+						<tbody>
+							<tr>
+								<td>
+									<table class='row-content stack' align='center' border='0' cellpadding='0' cellspacing='0' role='presentation' style='mso-table-lspace: 0pt; mso-table-rspace: 0pt; background-color: #ffffff; color: #000000; width: 800px;' width='800'>
+										<tbody>
+											<tr>
+												<td class='column column-1' width='100%' style='mso-table-lspace: 0pt; mso-table-rspace: 0pt; font-weight: 400; text-align: left; vertical-align: top; padding-top: 5px; padding-bottom: 5px; border-top: 0px; border-right: 0px; border-bottom: 0px; border-left: 0px;'>
+													<table class='social_block block-1' width='100%' border='0' cellpadding='0' cellspacing='0' role='presentation' style='mso-table-lspace: 0pt; mso-table-rspace: 0pt;'>
+														<tr>
+															<td class='pad' style='text-align:center;padding-right:0px;padding-left:0px;'>
+																<div class='alignment' align='center'>
+																	<table class='social-table' width='137.98228128460687px' border='0' cellpadding='0' cellspacing='0' role='presentation' style='mso-table-lspace: 0pt; mso-table-rspace: 0pt; display: inline-block;'>
+																		<tr>
+																			<td style='padding:0 7px 0 7px;'><a href='https://www.instagram.com/buscoinfluencers/' target='_blank'><img src='".base_url()."/public/img/verificacion/instagram.png' width='31.238095238095237' height='32' alt='Instagram' title='Instagram' style='display: block; height: auto; border: 0;'></a></td>
+																			<td style='padding:0 7px 0 7px;'><a href='https://wa.link/d17wli' target='_blank'><img src='".base_url()."/public/img/verificacion/whatsapp.png' width='32.74418604651163' height='32' alt='Whatsapp' title='Whats app' style='display: block; height: auto; border: 0;'></a></td>
+																			<td style='padding:0 7px 0 7px;'><a href='https://wa.link/d17wli' target='_blank'><img src='".base_url()."/public/img/verificacion/tiktok.png' width='32' height='32' alt='Tiktok' title='Tiktok' style='display: block; height: auto; border: 0;'></a></td>
+																		</tr>
+																	</table>
+																</div>
+															</td>
+														</tr>
+													</table>
+													<table class='paragraph_block block-2' width='100%' border='0' cellpadding='0' cellspacing='0' role='presentation' style='mso-table-lspace: 0pt; mso-table-rspace: 0pt; word-break: break-word;'>
+														<tr>
+															<td class='pad' style='padding-left:60px;padding-right:60px;padding-top:15px;'>
+																<div style='color:#979ca2;direction:ltr;font-family:Arial, Helvetica Neue, Helvetica, sans-serif;font-size:14px;font-weight:400;letter-spacing:0px;line-height:180%;text-align:center;mso-line-height-alt:25.2px;'>
+																	<p style='margin: 0;'>Este correo electrónico fue enviado por:<br>WD Studios Corporation SAS. Cra 101 # 12A bis-70, Cali, Colombia.<br>Teléfonos: (2) 405 9935 &nbsp;/ &nbsp;Móvil: 316 7627511</p>
+																</div>
+															</td>
+														</tr>
+													</table>
+													<table class='paragraph_block block-4' width='100%' border='0' cellpadding='0' cellspacing='0' role='presentation' style='mso-table-lspace: 0pt; mso-table-rspace: 0pt; word-break: break-word;'>
+														<tr>
+															<td class='pad' style='padding-left:60px;padding-right:60px;padding-top:25px;'>
+																<div style='color:#979ca2;direction:ltr;font-family:Arial, Helvetica Neue, Helvetica, sans-serif;font-size:14px;font-weight:400;letter-spacing:0px;line-height:150%;text-align:center;mso-line-height-alt:21px;'>
+																	<p style='margin: 0;'>Este mensaje ha sido verificado con herramientas de eliminación de virus y contenido malicioso. Si tiene algún&nbsp;inconveniente con la información recibida comuníquese con nosotros vía telefónica o respondamos este mismo correo. Recomendamos agregarnos a sus contactos para mantener una comunicación más efectiva.</p>
+																</div>
+															</td>
+														</tr>
+													</table>
+													<table class='divider_block block-5' width='100%' border='0' cellpadding='10' cellspacing='0' role='presentation' style='mso-table-lspace: 0pt; mso-table-rspace: 0pt;'>
+														<tr>
+															<td class='pad'>
+																<div class='alignment' align='center'>
+																	<table border='0' cellpadding='0' cellspacing='0' role='presentation' width='70%' style='mso-table-lspace: 0pt; mso-table-rspace: 0pt;'>
+																		<tr>
+																			<td class='divider_inner' style='font-size: 1px; line-height: 1px; border-top: 2px solid #979CA2;'><span>&#8202;</span></td>
+																		</tr>
+																	</table>
+																</div>
+															</td>
+														</tr>
+													</table>
+												</td>
+											</tr>
+										</tbody>
+									</table>
+								</td>
+							</tr>
+						</tbody>
+					</table>
+					<table class='row row-6' align='center' width='100%' border='0' cellpadding='0' cellspacing='0' role='presentation' style='mso-table-lspace: 0pt; mso-table-rspace: 0pt; background-color: #e8e5ec;'>
+						<tbody>
+							<tr>
+								<td>
+									<table class='row-content stack' align='center' border='0' cellpadding='0' cellspacing='0' role='presentation' style='mso-table-lspace: 0pt; mso-table-rspace: 0pt; background-color: #ffffff; border-radius: 0; color: #000000; width: 800px;' width='800'>
+										<tbody>
+											<tr>
+												<td class='column column-1' width='50%' style='mso-table-lspace: 0pt; mso-table-rspace: 0pt; font-weight: 400; text-align: left; vertical-align: middle; border-top: 0px; border-right: 0px; border-bottom: 0px; border-left: 0px;'>
+													<table class='button_block block-2' width='100%' border='0' cellpadding='0' cellspacing='0' role='presentation' style='mso-table-lspace: 0pt; mso-table-rspace: 0pt;'>
+														<tr>
+															<td class='pad' style='text-align:right;padding-top:5px;padding-bottom:5px;'>
+																<div class='alignment' align='right'>
+																	<!--[if mso]><v:roundrect xmlns:v='urn:schemas-microsoft-com:vml' xmlns:w='urn:schemas-microsoft-com:office:word' href='https://www.buscoinfluencers.com/aviso-de-privacidad-2/' style='height:38px;width:173px;v-text-anchor:middle;' arcsize='11%' stroke='false' fill='false'><w:anchorlock/><v:textbox inset='0px,0px,0px,0px'><center style='color:#979ca2; font-family:Arial, sans-serif; font-size:14px'><![endif]--><a href='https://www.buscoinfluencers.com/aviso-de-privacidad-2/' target='_blank' style='text-decoration:none;display:inline-block;color:#979ca2;background-color:transparent;border-radius:4px;width:auto;border-top:0px solid transparent;font-weight:400;border-right:0px solid transparent;border-bottom:0px solid transparent;border-left:0px solid transparent;padding-top:5px;padding-bottom:5px;font-family:Arial, Helvetica Neue, Helvetica, sans-serif;font-size:14px;text-align:center;mso-border-alt:none;word-break:keep-all;'><span style='padding-left:20px;padding-right:20px;font-size:14px;display:inline-block;letter-spacing:normal;'><span dir='ltr' style='word-break: break-word; line-height: 28px;'>Política de privacidad</span></span></a>
+																	<!--[if mso]></center></v:textbox></v:roundrect><![endif]-->
+																</div>
+															</td>
+														</tr>
+													</table>
+												</td>
+												<td class='column column-2' width='50%' style='mso-table-lspace: 0pt; mso-table-rspace: 0pt; font-weight: 400; text-align: left; vertical-align: middle; border-top: 0px; border-right: 0px; border-bottom: 0px; border-left: 0px;'>
+													<table class='button_block block-2' width='100%' border='0' cellpadding='0' cellspacing='0' role='presentation' style='mso-table-lspace: 0pt; mso-table-rspace: 0pt;'>
+														<tr>
+															<td class='pad' style='text-align:left;padding-top:5px;padding-bottom:5px;'>
+																<div class='alignment' align='left'>
+																	<!--[if mso]><v:roundrect xmlns:v='urn:schemas-microsoft-com:vml' xmlns:w='urn:schemas-microsoft-com:office:word' href='https://www.buscoinfluencers.com/terminos-y-condiciones-2/' style='height:38px;width:187px;v-text-anchor:middle;' arcsize='11%' stroke='false' fill='false'><w:anchorlock/><v:textbox inset='0px,0px,0px,0px'><center style='color:#979ca2; font-family:Arial, sans-serif; font-size:14px'><![endif]--><a href='https://www.buscoinfluencers.com/terminos-y-condiciones-2/' target='_blank' style='text-decoration:none;display:inline-block;color:#979ca2;background-color:transparent;border-radius:4px;width:auto;border-top:0px solid transparent;font-weight:400;border-right:0px solid transparent;border-bottom:0px solid transparent;border-left:0px solid transparent;padding-top:5px;padding-bottom:5px;font-family:Arial, Helvetica Neue, Helvetica, sans-serif;font-size:14px;text-align:center;mso-border-alt:none;word-break:keep-all;'><span style='padding-left:20px;padding-right:20px;font-size:14px;display:inline-block;letter-spacing:normal;'><span dir='ltr' style='word-break: break-word; line-height: 28px;'>Términos y condiciones</span></span></a>
+																	<!--[if mso]></center></v:textbox></v:roundrect><![endif]-->
+																</div>
+															</td>
+														</tr>
+													</table>
+												</td>
+											</tr>
+										</tbody>
+									</table>
+								</td>
+							</tr>
+						</tbody>
+					</table>
+					<table class='row row-7' align='center' width='100%' border='0' cellpadding='0' cellspacing='0' role='presentation' style='mso-table-lspace: 0pt; mso-table-rspace: 0pt; background-color: #e8e5ec;'>
+						<tbody>
+							<tr>
+								<td>
+									<table class='row-content stack' align='center' border='0' cellpadding='0' cellspacing='0' role='presentation' style='mso-table-lspace: 0pt; mso-table-rspace: 0pt; background-color: #ffffff; border-radius: 0; color: #000000; width: 800px;' width='800'>
+										<tbody>
+											<tr>
+												<td class='column column-1' width='100%' style='mso-table-lspace: 0pt; mso-table-rspace: 0pt; font-weight: 400; text-align: left; vertical-align: middle; padding-top: 5px; padding-bottom: 5px; border-top: 0px; border-right: 0px; border-bottom: 0px; border-left: 0px;'>
+													<table class='icons_block block-1' width='100%' border='0' cellpadding='0' cellspacing='0' role='presentation' style='mso-table-lspace: 0pt; mso-table-rspace: 0pt;'>
+														<tr>
+															<td class='pad' style='vertical-align: middle; color: #000000; font-family: inherit; font-size: 14px; text-align: center; padding-bottom: 25px;'>
+																<table class='alignment' cellpadding='0' cellspacing='0' role='presentation' align='center' style='mso-table-lspace: 0pt; mso-table-rspace: 0pt;'>
+																	<tr>
+																		<td style='vertical-align: middle; text-align: center; padding-top: 5px; padding-bottom: 5px; padding-left: 5px; padding-right: 5px;'><img class='icon' src='".base_url()."/public/img/verificacion/wd-studios.png' alt='WD STUDIOS' height='32' width='62' align='center' style='display: block; height: auto; margin: 0 auto; border: 0;'></td>
+																	</tr>
+																</table>
+															</td>
+														</tr>
+													</table>
+												</td>
+											</tr>
+										</tbody>
+									</table>
+								</td>
+							</tr>
+						</tbody>
+					</table>
+				</td>
+			</tr>
+		</tbody>
+	</table><!-- End -->
+</body>
+
+</html>";
             $asunto="Restablecimiento de Contraseña";
-            $this->_enviarCorreo($influ['correo'],$cuerpo);
+            $this->_enviarCorreo($influ['correo'],$cuerpo,$asunto);
             
             return redirect()->to("/")->with('mensaje', 'Revisa la bandeja de entrada de tu correo.');
   
@@ -2095,7 +2103,7 @@ public function enviarMensajeContactanos(){
 
     $email = \Config\Services::email();
 
-    $email->setFrom("noreply@buscoinfluencer.com", 'WD STUDIO CORP');
+    $email->setFrom("noreply@buscoinfluencers.com", 'Busco Influencers');
     $email->setTo($correo);
     
 
@@ -2103,7 +2111,16 @@ public function enviarMensajeContactanos(){
     
     $email->setMessage($cuerpo);
 
-    $email->send();
+    if ($email->send())
+	{
+	    var_dump('Email enviado correctamente');
+		
+	}
+	else
+	{
+	    var_dump('Email No enviado<br />'. $email->printDebugger(['headers']));
+		
+	}
    
     
 }
@@ -2143,10 +2160,10 @@ public function enviarMensajeContactanos(){
             $datos=['tokens'=>"",
             'password'=>$mipass];
             $influencer->update($id,$datos);
-            return redirect()->to("/")->with('mensaje', 'La clave se restauró correctamente');
+            return redirect()->to("/")->with('mensaje', 'La contraseña se restauró correctamente');
 
         }else{
-            return redirect()->back()->with('mensaje', 'Las claves no son iguales');
+            return redirect()->back()->with('mensaje', 'Las contraseñas no son iguales');
         }
 
 
@@ -2229,6 +2246,49 @@ public function enviarMensajeContactanos(){
     foreach ($redesSociales as $key => $m) {
         
         $nombre= $this->request->getPost($m['idredes']);
+        
+
+        if(!($nombre=="" || $nombre==null)){
+            $cont++;
+            $miArray=['idinfluencer'=>$id,'idredes'=>$m['idredes']];
+            $obj=$influencerredesmodel->where($miArray)->findAll();
+            
+            $r=$this->buscarSeguidoresAPI($m['idredes'],$nombre);
+            
+            if($r!=0){
+                if($obj==null){
+                    $influencerredesmodel->insert(['idinfluencer'=>$id,'idredes'=>$m['idredes'],'user'=>$nombre,'cant_seguidores'=>$r]);
+                    return "Su red social se agrego correctamente";
+                } else{
+                    $influencerredesmodel->update($obj[0]['id'],['cant_seguidores'=>$r]);
+                    return "Su red social se actualizó correctamente";
+                }
+            }else{
+                
+                return "No se encontro el usuario de la red social";
+            }
+            
+        }
+
+
+    }
+    if($cont==0){
+        return "No se agregó ningun usuario";
+    }
+    
+    
+}
+
+
+private function _actualizarRedesSociales($id,$idRedes){
+    
+    $redesmodel=new RedesModel();
+    $influencerredesmodel=new InfluencersRedesModel();
+    $redesSociales= $redesmodel->where('activa',1)->findAll();
+    $cont=0;    
+    foreach ($redesSociales as $key => $m) {
+        
+        $nombre= $idRedes;
         
 
         if(!($nombre=="" || $nombre==null)){

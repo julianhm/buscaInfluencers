@@ -74,10 +74,13 @@
                                             </div>
                                             <br>
                                             <div class="comment-body ">
-                                                <h6 class="font-medium" style="font-weight: bold;"><?=$m['nombre']?></h6><span class="mb-3 d-block"><?=$m['cuerpo']?></span>
+                                                <h6 class="font-medium" style="font-weight: bold;">Nombre: <?=$m['nombre']?></h6>
+                                                <br>
+                                                Mensaje:
+                                                <span class="mb-3 d-block"><?=$m['cuerpo']?></span>
                                             </div>
                                             <div class="comment-footer ">
-                                                <span class="text-muted float-end user-decription-black"><?=$m['correo']?></span>
+                                                <span class="text-muted float-end user-decription-black">Correo: <?=$m['correo']?></span>
                                             </div>
                                           
                                             
@@ -101,7 +104,9 @@
                         </div>
                     </div>
                 </div>
-            
+                <div class="container">
+                <?=$pager->links();?>  
+                                    </div>
             </div>
             <!-- ============================================================== -->
             <!-- End Container fluid  -->

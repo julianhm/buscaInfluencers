@@ -103,6 +103,7 @@
                         </div>
                     </div>
                 </div>
+                <?=$pager->links();?> 
   
             </div>                                
             </div>

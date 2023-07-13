@@ -15,7 +15,7 @@ class IndexController extends BaseController
 {
     public function index()
     {
-        $this->logout();
+        //$this->logout();
         $influencer = new InfluencerModel();
         $misinfluencer= $influencer-> findAll();
 

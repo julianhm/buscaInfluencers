@@ -218,6 +218,28 @@ class UsuarioController extends BaseController
         $misPaises= $pais->findAll();
         $ciudades=$this->_cargarCiudades($misPaises);
        
+          $miArreglo=array();
+
+      for ($i=0; $i < count ($influencerBuscado); $i++) { 
+        for ($j=$i+1; $j <count ($influencerBuscado); $j++) { 
+            if($influencerBuscado[$i]['idinfluencer']== $influencerBuscado[$j]['idinfluencer']){
+                array_push($miArreglo,$j);
+                  
+            }
+        }
+      }
+      
+      $miArreglo=array_unique($miArreglo,SORT_REGULAR);
+      //var_dump($miArreglo);
+      
+
+      foreach ($miArreglo as $key => $m) {
+        $idalma=$m;
+        
+           $influencerBuscado=array_diff_key($influencerBuscado,array_flip((array) [$idalma]));
+      }
+
+        
 
         $data=['influencer'=>$influencerBuscado,
                 'criteriosBusqueda'=>$criteriosBusqueda,
@@ -437,6 +459,29 @@ class UsuarioController extends BaseController
         $pagos = new PagoModel();
         $misPaises= $pais->findAll();
         $ciudades=$this->_cargarCiudades($misPaises);
+
+           $miArreglo=array();
+
+      for ($i=0; $i < count ($influencerBuscado); $i++) { 
+        for ($j=$i+1; $j <count ($influencerBuscado); $j++) { 
+            if($influencerBuscado[$i]['idinfluencer']== $influencerBuscado[$j]['idinfluencer']){
+                array_push($miArreglo,$j);
+                  
+            }
+        }
+      }
+      
+      $miArreglo=array_unique($miArreglo,SORT_REGULAR);
+      //var_dump($miArreglo);
+      
+
+      foreach ($miArreglo as $key => $m) {
+        $idalma=$m;
+        
+           $influencerBuscado=array_diff_key($influencerBuscado,array_flip((array) [$idalma]));
+      }
+
+        
         
         $data=['influencer'=>$influencerBuscado,
                 'criteriosBusqueda'=>$criteriosBusqueda,

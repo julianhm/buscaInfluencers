@@ -12,7 +12,7 @@
             <div class="page-breadcrumb">
                 <div class="row">
                     <div class="col-5 align-self-center">
-                        <h4 class="page-title main-section-title">Noticias</h4>
+                        <h4 class="page-title main-section-title">Categorias</h4>
                     </div>
 <!--  -->
                      <!--MENSAJES FLASH-->
@@ -56,7 +56,7 @@
                         <h4 class="card-title"><?php ?></h4>
                         <div>
                             <p>
-                                <a class="btn btn-white-normal btn-lg" href="<?= route_to('nuevanoticiadash') ?>" class="btn btn-info">Crear noticia</a>
+                                <a class="btn btn-white-normal btn-lg" href="<?= route_to('nuevacategoriasdash') ?>" class="btn btn-info">Crear Categoria</a>
 
                                 
                             </p>
@@ -67,31 +67,29 @@
                                 <thead>
                                     <tr>
                                         <th>N°</th>
-                                        <th>Fecha</th>
-                                        <th>Titulo</th>
+                                        <th>Nombre</th>
+                                        <th>Mostrada</th>
                                         <th>Foto</th>
-                                        <th>Publicado</th>
                                         <th>Editar</th>
                                         <th>Borrar</th>
                                     </tr>
                                 </thead>
                                 <tbody>
-                                    <?php 
+                                <?php 
                                     $cont=0;
-                                    foreach ($noticias as $key => $m) {
+                                    foreach ($categorias as $key => $m) {
                                         $cont++;?>
                                         
                                    
                                     <tr>
                                         <td><?=$cont?></td>
-                                        <td><?=$m['created_at']?></td>
-                                        <td><?=$m['titulo']?></td>
-                                        <td><?=$m['url_foto']?></td>
-                                        <td><?php if($m['favorito']==1){
-                                            echo "SI";}?></td>
-                                        <td><a href="<?=base_url('/dashboard/editarNoticia/'.$m['idnoticia']) ?>" class="btn btn-success"><i class="mdi mdi-pencil menu-icon" ></i></a></td>
+                                        <td><?=$m['nombrecat']?></td>
+                                        <td><?php if($m['mostradas']==1){?> <i class="mdi mdi-checkbox-marked-circle"></i><?php }else{?><i class="mdi mdi-checkbox-blank-circle-outline"><?php } ?></td>
+                                        <td><?=$m['imagen']?></td>
                                         
-                                        <td><a id="<?=$m['idnoticia']?>"  data-bs-toggle="modal" data-bs-target="#exampleModalEliminarnot" data-placement="top" title="Eliminar noticia" class="btn btn-danger" onclick="recibir(<?=$m['idnoticia']?>);"  ><i class="mdi mdi-window-close menu-icon" ></i></a></td>
+                                        <td><a href="<?=base_url('/dashboard/editarCategoria/'.$m['idcategoria']) ?>" class="btn btn-success"><i class="mdi mdi-pencil menu-icon" ></i></a></td>
+                                        
+                                        <td><a id="<?=$m['idcategoria']?>"  data-bs-toggle="modal" data-bs-target="#exampleModalEliminarcat" data-placement="top" title="Eliminar Categoria" class="btn btn-danger" onclick="recibir(<?=$m['idcategoria']?>);"  ><i class="mdi mdi-window-close menu-icon" ></i></a></td>
                                     </tr>
                                     <?php } ?>
 
@@ -103,7 +101,7 @@
                                             //alert(document.getElementById(numero).id);
                                             //var valor = document.getElementById("eliminar"+numero).value;
                                            
-                                            document.getElementById("eliminarnoticiamodal").value=numero;        
+                                            document.getElementById("eliminarcategoriamodal").value=numero;        
                                             
                                         }
                                 </script>
@@ -121,7 +119,7 @@
 
              <!-- Modal Representante Confirmación Start -->
 
-    <div class="modal fade" id="exampleModalEliminarnot" tabindex="-1" aria-labelledby="exampleModalEliminarnot" aria-hidden="true">
+    <div class="modal fade" id="exampleModalEliminarcat" tabindex="-1" aria-labelledby="exampleModalEliminarcat" aria-hidden="true">
 
 <div class="modal-dialog modal-dialog-centered">
 
@@ -149,11 +147,11 @@
 
                 <p>ESTAS SEGURO DE QUERER ELIMINAR ESTA <br>
 
-                NOTICIA. ESTA ACCION NO SE PUEDE REVERTIR</p>
+                CATEGORIA. ESTA ACCION NO SE PUEDE REVERTIR</p>
 
             </div>
-            <form action="<?= route_to('eliminarNotidash') ?>" method="POST" class="form-horizontal"  enctype="multipart/form-data">
-                <input id="eliminarnoticiamodal" name="eliminarnoticiamodal" type="hidden" >
+            <form action="<?= route_to('eliminarCatdash') ?>" method="POST" class="form-horizontal"  enctype="multipart/form-data">
+                <input id="eliminarcategoriamodal" name="eliminarcategoriamodal" type="hidden" >
 
 
                 <div class="text-center">
