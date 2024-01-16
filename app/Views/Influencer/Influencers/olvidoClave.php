@@ -4,7 +4,7 @@
 
    
     <!-- Content Register Start -->
-    <div class="container">
+    <div class="container mt-3">
         <div class="row">
             <div class="text-center" >
 
@@ -17,19 +17,21 @@
                         
                         <div class="d-flex justify-content-center mb-4">
                             <div class="section-title">
-                               Escribe tu Correo Registrado
+                               Escribe tu correo registrado
                             </div>
                         </div>
 
                       
-                        <div class="form-group">
-                            <img class="icon-input" src=<?php echo base_url('img/icon-email.png')?> for="correo">
+                        <div class="form-group mb-5">
+                            <img class="icon-input mb-2" src=<?php echo base_url('img/icon-email.png')?> for="correo">
                             
                             <input class="input-modify" type="email" name="correorestaurar" id="correorestaurar" placeholder="Tu correo electronico registrado" value='<?= old('correo') ?>'>
                         </div>
                         
                         <div style="padding-left: 10%; padding-right: 10%;">
+                        <!--
                             <hr class="break_line">
+                        -->
                         </div>
 
 
@@ -37,7 +39,7 @@
 
                         <div class="d-flex justify-content-center mb-4">
                             <div class="btn-register">
-                                <input type="submit" name="submit" id="submit"class="btn btn-login btn-lg btn-register-width user-decription-black" style="font-size: 20px;" value= "RESTAURAR!"/>
+                                <input type="submit" name="submit" id="submit"class="btn btn-login btn-lg btn-register-width user-decription-black" style="font-size: 20px; width: fit-content; padding: 12px 45px;" value= "RESTAURAR!"/>
                                <!-- data-bs-dismiss="modal" data-bs-toggle="modal" data-bs-target="#confirmation-modal"-->
                             </div>
                         </div>

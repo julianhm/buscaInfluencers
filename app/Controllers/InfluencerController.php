@@ -48,6 +48,18 @@ class InfluencerController extends BaseController
     }
 
 
+    //CARGA LA PAGINA DE REGISTRO EXITOSO
+    public function registroExitoso()
+    {
+        $dataHeader =['titulo' => 'Bienvenido!',
+                'mensaje'=>"",];
+        echo view("influencer/templates/header",$dataHeader);
+        echo view("influencer/influencers/registro-exitoso");
+        echo view("influencer/templates/footerindex");
+
+    }
+
+
     //METODO QUE ME PERMITE CARGAR PAGINAS
     private function _loadDefaultView($dataHeader,$data,$view){
 
@@ -87,6 +99,9 @@ class InfluencerController extends BaseController
     }
 
 
+    
+
+
 
     //CREA EL NUEVO INFLUENCER
     public function create(){
@@ -101,7 +116,7 @@ class InfluencerController extends BaseController
         $validation->setRules(
             [
                 'nombre'=>'required|min_length[4]|max_length[20]',
-                'alias'=>'required|min_length[2]|max_length[20]',
+                'alias'=>'required|min_length[2]|max_length[20]|is_unique[influencers.alias]',
                 'password'=>'required|min_length[8]|matches[passwordver]',
                 'correo'=>'required|valid_email|is_unique[influencers.correo]',
                 'pais'=>'is_not_unique[paises.idpais]',
@@ -115,18 +130,19 @@ class InfluencerController extends BaseController
                     'max_length' => 'El nombre NO puede tener mas de 20 caracteres',
                 ],
                 'alias' => [
-                    'required' => 'El alias es requerido',
-                    'min_length' => 'El alias debe tener como mínimo 4 caracteres',
-                    'max_length' => 'El alias NO puede tener mas de 20 caracteres',
+                    'required' => 'El nombre de usuario es requerido',
+                    'min_length' => 'Tu nombre de usuario debe tener como mínimo 4 caracteres',
+                    'max_length' => 'Tu nombre de usuario NO puede tener mas de 20 caracteres',
+                    'is_unique'=>' Tu nombre de usuario no esta disponible',
                 ],'password' => [
-                    'required' => 'El password es requerido',
-                    'min_length' => 'El password debe tener como mínimo 8 caracteres',
-                    'matches'=>'Los password No coinciden'
+                    'required' => 'La contraseña es requerido',
+                    'min_length' => 'La contraseña debe tener como mínimo 8 caracteres',
+                    'matches'=>'las contraseñas No coinciden'
                 ], 
                 'correo' => [
-                    'required' => 'El email es requerido',
-                    'valid_email' => 'El email no tiene el formato de un correo',
-                    'is_unique'=>'El email ya esta registrado en la base de datos',
+                    'required' => 'El correo es requerido',
+                    'valid_email' => 'El correo no tiene el formato de un correo',
+                    'is_unique'=>'El correo ya esta registrado',
 
                 ],
                 'pais' => [
@@ -167,6 +183,10 @@ class InfluencerController extends BaseController
                 $resenia= $this->request->getPost('resenia');
                 $archivofoto=$this->_upload2('fotoperfil');
 
+                if (!isset($archivofoto)) {
+                    $archivofoto='default.png';
+                }
+
                 
                 $tokens=bin2hex(openssl_random_pseudo_bytes(16));
                 
@@ -182,6 +202,39 @@ class InfluencerController extends BaseController
                     'tokens'=>$tokens,
                     'validado'=>0, 
                 ];
+                //Add user to mailchimp
+                // let's start with some variables
+                $api_key = '2e164634dba741bbe097664501727be9-us9';
+                $email = $correo; // the user we are going to subscribe
+                $status = 'subscribed'; // we are going to talk about it in just a little bit
+                $merge_fields = array( 'FNAME' => $nombreinflu ); // FNAME, LNAME or something else
+                $list_id = 'da1fbbcad5'; // List / Audience ID
+
+                // start our Mailchimp connection
+                $connection = curl_init();
+                curl_setopt( 
+                    $connection, 
+                    CURLOPT_URL, 
+                    'https://' . substr( $api_key, strpos( $api_key, '-' ) + 1 ) . '.api.mailchimp.com/3.0/lists/' . $list_id . '/members/' . md5( strtolower( $email ) )
+                );
+                curl_setopt( $connection, CURLOPT_HTTPHEADER, array( 'Content-Type: application/json', 'Authorization: Basic '. base64_encode( 'user:'.$api_key ) ) );
+                curl_setopt( $connection, CURLOPT_RETURNTRANSFER, true );
+                curl_setopt( $connection, CURLOPT_CUSTOMREQUEST, 'PUT' );
+                curl_setopt( $connection, CURLOPT_POST, true );
+                curl_setopt( $connection, CURLOPT_SSL_VERIFYPEER, false );
+                curl_setopt( 
+                    $connection, 
+                    CURLOPT_POSTFIELDS, 
+                    json_encode( array(
+                        'apikey'        => $api_key,
+                        'email_address' => $email,
+                        'status'        => $status,
+                        'merge_fields'  => $merge_fields,
+                        //'tags' => array( 'Coffee', 'Snowboard' ) // you can specify some tags here as well
+                    ) )
+                );
+                
+                $result = curl_exec( $connection );
 
                 //SE CREA EL INFLUENCER
                 $id=$influencerModel->insert($datainsertar);
@@ -194,11 +247,8 @@ class InfluencerController extends BaseController
                         <head>
                             <title></title>
                             <meta http-equiv='Content-Type' content='text/html; charset=utf-8'>
-                            <meta name='viewport' content='width=device-width, initial-scale=1.0'>
-                            <!--[if mso]><xml><o:OfficeDocumentSettings><o:PixelsPerInch>96</o:PixelsPerInch><o:AllowPNG/></o:OfficeDocumentSettings></xml><![endif]-->
-                            <!--[if !mso]><!-->
-                            <link href='https://fonts.googleapis.com/css?family=Montserrat' rel='stylesheet' type='text/css'>
-                            <!--<![endif]-->
+                            <meta name='viewport' content='width=device-width, initial-scale=1.0'><!--[if mso]><xml><o:OfficeDocumentSettings><o:PixelsPerInch>96</o:PixelsPerInch><o:AllowPNG/></o:OfficeDocumentSettings></xml><![endif]--><!--[if !mso]><!-->
+                            <link href='https://fonts.googleapis.com/css2?family=Montserrat:wght@100;200;300;400;500;600;700;800;900' rel='stylesheet' type='text/css'><!--<![endif]-->
                             <style>
                                 * {
                                     box-sizing: border-box;
@@ -230,22 +280,43 @@ class InfluencerController extends BaseController
                                     max-height: 0px;
                                     overflow: hidden;
                                 }
-
-                                .font_mont {
-                                    font-family: 'Montserrat';
+                        
+                                .image_block img+div {
+                                    display: none;
                                 }
                         
-                                @media (max-width:820px) {
-                                    .social_block.desktop_hide .social-table {
+                                @media (max-width:768px) {
+                                    .desktop_hide table.icons-inner {
                                         display: inline-block !important;
                                     }
+
+                                    .titulo {
+                                        text-align: center !important;
+                                    }
                         
-                                    .row-content {
-                                        width: 100% !important;
+                                    u + #body a {
+                                    color: inherit !important;
+                                    text-decoration: none !important;
+                                    font-size: inherit !important;
+                                    font-family: inherit !important;
+                                    font-weight: inherit !important;
+                                    line-height: inherit !important;
+                                    }
+                        
+                                    .icons-inner {
+                                        text-align: center;
+                                    }
+                        
+                                    .icons-inner td {
+                                        margin: 0 auto;
                                     }
                         
                                     .mobile_hide {
                                         display: none;
+                                    }
+                        
+                                    .row-content {
+                                        width: 100% !important;
                                     }
                         
                                     .stack .column {
@@ -266,86 +337,55 @@ class InfluencerController extends BaseController
                                         display: table !important;
                                         max-height: none !important;
                                     }
-                                }
                         
-                                @media (max-width:768px) {
-                        
-                                    .row-3 .column-1 .block-2.paragraph_block td.pad>div,
-                                    .row-3 .column-1 .block-5.paragraph_block td.pad>div,
-                                    .row-3 .column-1 .block-8.paragraph_block td.pad>div {
-                                        text-align: justify !important;
-                                        font-size: 16px !important;
-                                    }
-                        
-                                    .row-3 .column-1 .block-2.paragraph_block td.pad,
-                                    .row-3 .column-1 .block-5.paragraph_block td.pad,
-                                    .row-3 .column-1 .block-8.paragraph_block td.pad,
-                                    .row-5 .column-1 .block-1.social_block td.pad {
-                                        padding: 0 30px !important;
-                                    }
-                        
-                                    .row-3 .column-1 .block-1.paragraph_block td.pad>div {
-                                        text-align: center !important;
-                                        font-size: 20px !important;
-                                    }
-                        
-                                    .row-3 .column-1 .block-1.paragraph_block td.pad {
-                                        padding: 0 30px 10px !important;
-                                    }
-                        
-                                    .row-2 .column-1 .block-4.heading_block td.pad {
-                                        padding: 10px 30px !important;
-                                    }
-                        
-                                    .row-2 .column-1 .block-4.heading_block h1 {
+                                    .row-2 .column-1 .block-1.heading_block h1 {
                                         font-size: 22px !important;
                                     }
                         
-                                    .row-1 .column-1 .block-1.image_block td.pad {
-                                        padding: 15px 0 0 !important;
+                                    .row-2 .column-1 .block-4.paragraph_block td.pad>div {
+                                        text-align: left !important;
+                                        font-size: 15px !important;
                                     }
                         
-                                    .row-1 .column-1 .block-1.image_block img,
-                                    .row-6 .column-1 .block-2.button_block .alignment div,
-                                    .row-6 .column-2 .block-2.button_block .alignment div {
-                                        display: inline-block !important;
+                                    .row-2 .column-1 .block-3.heading_block h2 {
+                                        font-size: 19px !important;
                                     }
                         
-                                    .row-1 .column-1 .block-1.image_block .alignment,
-                                    .row-6 .column-1 .block-2.button_block .alignment,
-                                    .row-6 .column-2 .block-2.button_block .alignment {
+                                    .row-5 .column-1 .block-1.paragraph_block td.pad>div,
+                                    .row-5 .column-2 .block-1.paragraph_block td.pad>div {
                                         text-align: center !important;
                                     }
                         
-                                    .row-6 .column-1 .block-2.button_block a span,
-                                    .row-6 .column-1 .block-2.button_block div,
-                                    .row-6 .column-1 .block-2.button_block div span,
-                                    .row-6 .column-2 .block-2.button_block a span,
-                                    .row-6 .column-2 .block-2.button_block div,
-                                    .row-6 .column-2 .block-2.button_block div span {
-                                        line-height: 2 !important;
+                                    .row-2 .column-1 {
+                                        padding: 20px 5px 15px !important;
+                                    }
+                        
+                                    .row-4 .column-1 {
+                                        padding: 0 5px !important;
                                     }
                                 }
                             </style>
                         </head>
                         
-                        <body style='background-color: transparent; margin: 0; padding: 0; -webkit-text-size-adjust: none; text-size-adjust: none;'>
-                            <table class='nl-container' width='100%' border='0' cellpadding='0' cellspacing='0' role='presentation' style='mso-table-lspace: 0pt; mso-table-rspace: 0pt; background-color: transparent;'>
+                        <body id='body' style='background-color: #f9f9f9; margin: 0; padding: 0; -webkit-text-size-adjust: none; text-size-adjust: none;'>
+                            <table class='nl-container' width='100%' border='0' cellpadding='0' cellspacing='0' role='presentation' style='mso-table-lspace: 0pt; mso-table-rspace: 0pt; background-color: #f9f9f9;'>
                                 <tbody>
                                     <tr>
                                         <td>
-                                            <table class='row row-1' align='center' width='100%' border='0' cellpadding='0' cellspacing='0' role='presentation' style='mso-table-lspace: 0pt; mso-table-rspace: 0pt; background-color: #e8e5ec;'>
+                                            <table class='row row-1' align='center' width='100%' border='0' cellpadding='0' cellspacing='0' role='presentation' style='mso-table-lspace: 0pt; mso-table-rspace: 0pt;'>
                                                 <tbody>
                                                     <tr>
                                                         <td>
-                                                            <table class='row-content stack' align='center' border='0' cellpadding='0' cellspacing='0' role='presentation' style='mso-table-lspace: 0pt; mso-table-rspace: 0pt; background-color: #ffffff; border-radius: 0; color: #000000; width: 800px;' width='800'>
+                                                            <table class='row-content stack' align='center' border='0' cellpadding='0' cellspacing='0' role='presentation' style='mso-table-lspace: 0pt; mso-table-rspace: 0pt; color: #000000; width: 800.00px; margin: 0 auto;' width='800.00'>
                                                                 <tbody>
                                                                     <tr>
-                                                                        <td class='column column-1' width='100%' style='mso-table-lspace: 0pt; mso-table-rspace: 0pt; font-weight: 400; text-align: left; vertical-align: top; padding-top: 0px; padding-bottom: 0px; border-top: 0px; border-right: 0px; border-bottom: 0px; border-left: 0px;'>
+                                                                        <td class='column column-1' width='100%' style='mso-table-lspace: 0pt; mso-table-rspace: 0pt; font-weight: 400; text-align: left; background-color: #ffffff; padding-top: 25px; vertical-align: top; border-top: 0px; border-right: 0px; border-bottom: 0px; border-left: 0px;'>
                                                                             <table class='image_block block-1' width='100%' border='0' cellpadding='0' cellspacing='0' role='presentation' style='mso-table-lspace: 0pt; mso-table-rspace: 0pt;'>
                                                                                 <tr>
-                                                                                    <td class='pad' style='padding-left:60px;padding-top:20px;width:100%;padding-right:0px;'>
-                                                                                        <div class='alignment' align='left' style='line-height:10px'><img src='".base_url()."/public/img/verificacion/logo-binf.png' style='display: block; height: auto; border: 0; width: 160px; max-width: 100%;' width='160' alt='Logo Binf' title='Logo Binf'></div>
+                                                                                    <td class='pad' style='width:100%;padding-right:0px;padding-left:0px;'>
+                                                                                        <div class='alignment' align='center' style='line-height:10px'>
+                                                                                            <div style='max-width: 140px;'><a href='https://buscoinfluencers.com/' target='_blank' style='outline:none' tabindex='-1'><img src='".base_url()."/public/img/verificacion/logo-binf.png' style='display: block; height: auto; border: 0; width: 100%;' width='140' alt='Logo Binf' title='Logo Binf'></a></div>
+                                                                                        </div>
                                                                                     </td>
                                                                                 </tr>
                                                                             </table>
@@ -357,175 +397,148 @@ class InfluencerController extends BaseController
                                                     </tr>
                                                 </tbody>
                                             </table>
-                                            <table class='row row-2' align='center' width='100%' border='0' cellpadding='0' cellspacing='0' role='presentation' style='mso-table-lspace: 0pt; mso-table-rspace: 0pt; background-color: #e8e5ec;'>
+                                            <table class='row row-2' align='center' width='100%' border='0' cellpadding='0' cellspacing='0' role='presentation' style='mso-table-lspace: 0pt; mso-table-rspace: 0pt;'>
                                                 <tbody>
                                                     <tr>
                                                         <td>
-                                                            <table class='row-content stack' align='center' border='0' cellpadding='0' cellspacing='0' role='presentation' style='mso-table-lspace: 0pt; mso-table-rspace: 0pt; background-color: #ffffff; color: #000000; width: 800px;' width='800'>
+                                                            <table class='row-content stack' align='center' border='0' cellpadding='0' cellspacing='0' role='presentation' style='mso-table-lspace: 0pt; mso-table-rspace: 0pt; border-radius: 0; color: #000000; width: 800.00px; margin: 0 auto;' width='800.00'>
                                                                 <tbody>
                                                                     <tr>
-                                                                        <td class='column column-1' width='100%' style='mso-table-lspace: 0pt; mso-table-rspace: 0pt; font-weight: 400; text-align: left; vertical-align: top; padding-bottom: 5px; border-top: 0px; border-right: 0px; border-bottom: 0px; border-left: 0px;'>
-                                                                            <div class='spacer_block' style='height:5px;line-height:5px;font-size:1px;'>&#8202;</div>
-                                                                            <div class='spacer_block mobile_hide' style='height:25px;line-height:25px;font-size:1px;'>&#8202;</div>
-                                                                            <div class='spacer_block desktop_hide' style='mso-hide: all; display: none; max-height: 0; overflow: hidden; height: 25px; line-height: 25px; font-size: 1px;'>&#8202;</div>
-                                                                            <table class='heading_block block-4' width='100%' border='0' cellpadding='0' cellspacing='0' role='presentation' style='mso-table-lspace: 0pt; mso-table-rspace: 0pt;'>
+                                                                        <td class='column column-1' width='100%' style='mso-table-lspace: 0pt; mso-table-rspace: 0pt; font-weight: 400; text-align: left; background-color: #ffffff; padding-bottom: 15px; padding-left: 60px; padding-right: 60px; padding-top: 20px; vertical-align: top; border-top: 0px; border-right: 0px; border-bottom: 0px; border-left: 0px;'>
+                                                                            <table class='heading_block block-1' width='100%' border='0' cellpadding='10' cellspacing='0' role='presentation' style='mso-table-lspace: 0pt; mso-table-rspace: 0pt;'>
                                                                                 <tr>
-                                                                                    <td class='pad font_mont' style='padding-bottom:10px;padding-top:10px;text-align:center;width:100%;'>
-                                                                                        <h1 class='font_mont' style='margin: 0; color: #1d1d1b; direction: ltr; font-size: 32px; font-weight: 700; letter-spacing: normal; line-height: 120%; text-align: center; margin-top: 0; margin-bottom: 0;'><span class='tinyMce-placeholder'>Verifica tu registro</span></h1>
+                                                                                    <td class='pad'>
+                                                                                        <h1 class='titulo' style='text-align: center; margin: 0; color: #000000; direction: ltr; font-family: Montserrat, Trebuchet MS, Lucida Grande, Lucida Sans Unicode, Lucida Sans, Tahoma, sans-serif; font-size: 38px; font-weight: 900; letter-spacing: normal; line-height: 120%; text-align: center; margin-top: 0; margin-bottom: 0; mso-line-height-alt: 45.6px;'><em><span class='tinyMce-placeholder'><strong>Verifica tu registro</strong></span></em></h1>
                                                                                     </td>
                                                                                 </tr>
                                                                             </table>
-                                                                            <table class='divider_block block-5' width='100%' border='0' cellpadding='10' cellspacing='0' role='presentation' style='mso-table-lspace: 0pt; mso-table-rspace: 0pt;'>
+                                                                            <table class='divider_block block-2' width='100%' border='0' cellpadding='10' cellspacing='0' role='presentation' style='mso-table-lspace: 0pt; mso-table-rspace: 0pt;'>
                                                                                 <tr>
                                                                                     <td class='pad'>
                                                                                         <div class='alignment' align='center'>
-                                                                                            <table border='0' cellpadding='0' cellspacing='0' role='presentation' width='70%' style='mso-table-lspace: 0pt; mso-table-rspace: 0pt;'>
+                                                                                            <table border='0' cellpadding='0' cellspacing='0' role='presentation' width='80%' style='mso-table-lspace: 0pt; mso-table-rspace: 0pt;'>
                                                                                                 <tr>
-                                                                                                    <td class='divider_inner' style='font-size: 1px; line-height: 1px; border-top: 7px solid #1D1D1B;'><span>&#8202;</span></td>
+                                                                                                    <td class='divider_inner' style='font-size: 1px; line-height: 1px; border-top: 5px solid #000000;'><span>&#8202;</span></td>
                                                                                                 </tr>
                                                                                             </table>
                                                                                         </div>
                                                                                     </td>
                                                                                 </tr>
                                                                             </table>
-                                                                        </td>
-                                                                    </tr>
-                                                                </tbody>
-                                                            </table>
-                                                        </td>
-                                                    </tr>
-                                                </tbody>
-                                            </table>
-                                            <table class='row row-3' align='center' width='100%' border='0' cellpadding='0' cellspacing='0' role='presentation' style='mso-table-lspace: 0pt; mso-table-rspace: 0pt; background-color: #e8e5ec;'>
-                                                <tbody>
-                                                    <tr>
-                                                        <td>
-                                                            <table class='row-content stack' align='center' border='0' cellpadding='0' cellspacing='0' role='presentation' style='mso-table-lspace: 0pt; mso-table-rspace: 0pt; background-color: #ffffff; color: #000000; width: 800px;' width='800'>
-                                                                <tbody>
-                                                                    <tr>
-                                                                        <td class='column column-1' width='100%' style='mso-table-lspace: 0pt; mso-table-rspace: 0pt; font-weight: 400; text-align: left; vertical-align: top; padding-top: 5px; padding-bottom: 5px; border-top: 0px; border-right: 0px; border-bottom: 0px; border-left: 0px;'>
-                                                                            <table class='paragraph_block block-1' width='100%' border='0' cellpadding='0' cellspacing='0' role='presentation' style='mso-table-lspace: 0pt; mso-table-rspace: 0pt; word-break: break-word;'>
+                                                                            <table class='heading_block block-3' width='100%' border='0' cellpadding='0' cellspacing='0' role='presentation' style='mso-table-lspace: 0pt; mso-table-rspace: 0pt;'>
                                                                                 <tr>
-                                                                                    <td class='pad' style='padding-bottom:15px;padding-left:60px;padding-right:60px;'>
-                                                                                        <div style='color:#000000;direction:ltr;font-family:Arial, Helvetica Neue, Helvetica, sans-serif;font-size:24px;font-weight:700;letter-spacing:0px;line-height:180%;text-align:center;mso-line-height-alt:43.2px;'>
-                                                                                            <p style='margin: 0;'>Bienvenida/o a Busco Influencers</p>
-                                                                                        </div>
+                                                                                    <td class='pad' style='padding-bottom:15px;padding-left:10px;padding-right:10px;padding-top:10px;text-align:center;width:100%;'>
+                                                                                        <h2 style='margin: 0; color: #000000; direction: ltr; font-family: Montserrat, Trebuchet MS, Lucida Grande, Lucida Sans Unicode, Lucida Sans, Tahoma, sans-serif; font-size: 24px; font-weight: 800; letter-spacing: normal; line-height: 120%; text-align: center; margin-top: 0; margin-bottom: 0; mso-line-height-alt: 28.799999999999997px;'><span class='tinyMce-placeholder'>Bienvenida/o a Busco Influencers</span></h2>
                                                                                     </td>
                                                                                 </tr>
                                                                             </table>
-                                                                            <table class='paragraph_block block-2' width='100%' border='0' cellpadding='0' cellspacing='0' role='presentation' style='mso-table-lspace: 0pt; mso-table-rspace: 0pt; word-break: break-word;'>
+                                                                            <table class='paragraph_block block-4' width='100%' border='0' cellpadding='10' cellspacing='0' role='presentation' style='mso-table-lspace: 0pt; mso-table-rspace: 0pt; word-break: break-word;'>
                                                                                 <tr>
-                                                                                    <td class='pad' style='padding-left:60px;padding-right:60px;'>
-                                                                                        <div style='color:#726f70;direction:ltr;font-family:Arial, Helvetica Neue, Helvetica, sans-serif;font-size:16px;font-weight:400;letter-spacing:0px;line-height:180%;text-align:center;mso-line-height-alt:28.8px;'>
-                                                                                            <p style='margin: 0;'>Te damos la bienvenida a un nuevo sitio creado para darte a conocer en el<br>universo digital. Con <span style='color: #000000;'><strong>BuscoInfluencers.com</strong></span> tienes una gran oportunidad de estar<br>en un directorio cada vez más completo de creadores de contenido en todas las<br>categorías. Más de una vez habrás escuchado a alguien preguntar por algún<br>influencer para cierto proyecto o producto; pues bien, en <span style='color: #000000;'><strong>buscoinfluencers.com</strong></span><br>todos tendrán esa respuesta sin buscar tanto.</p>
-                                                                                        </div>
-                                                                                    </td>
-                                                                                </tr>
-                                                                            </table>
-                                                                            <div class='spacer_block desktop_hide' style='mso-hide: all; display: none; max-height: 0; overflow: hidden; height: 40px; line-height: 40px; font-size: 1px;'>&#8202;</div>
-                                                                            <div class='spacer_block mobile_hide' style='height:40px;line-height:40px;font-size:1px;'>&#8202;</div>
-                                                                            <table class='paragraph_block block-5' width='100%' border='0' cellpadding='0' cellspacing='0' role='presentation' style='mso-table-lspace: 0pt; mso-table-rspace: 0pt; word-break: break-word;'>
-                                                                                <tr>
-                                                                                    <td class='pad' style='padding-left:60px;padding-right:60px;'>
-                                                                                        <div style='color:#726f70;direction:ltr;font-family:Arial, Helvetica Neue, Helvetica, sans-serif;font-size:16px;font-weight:400;letter-spacing:0px;line-height:180%;text-align:center;mso-line-height-alt:28.8px;'>
+                                                                                    <td class='pad'>
+                                                                                        <div style='text-align: center; color:#726f70;direction:ltr;font-family:Arial, Helvetica Neue, Helvetica, sans-serif;font-size:16px;font-weight:400;letter-spacing:0px;line-height:180%;text-align:center;mso-line-height-alt:28.8px;'>
+                                                                                            <p style='margin: 0; margin-bottom: 15px;'>Te damos la bienvenida a un nuevo sitio creado para darte a conocer en el<br>universo digital. Con&nbsp;<span style='color: #010100;'><strong>BuscoInfluencers.com</strong></span>&nbsp;tienes una gran oportunidad de estar<br>en un directorio cada vez más completo de creadores de contenido en todas las<br>categorías. Más de una vez habrás escuchado a alguien preguntar por algún<br>influencer para cierto proyecto o producto; pues bien, en&nbsp;<span style='color: #010100;'><strong>buscoinfluencers.com</strong></span><br>todos tendrán esa respuesta sin buscar tanto.</p>
                                                                                             <p style='margin: 0;'>Para continuar necesitas verificar tu cuenta en nuestra plataforma. Haz clic en el siguiente botón para confirmar tu correo electrónico:</p>
                                                                                         </div>
                                                                                     </td>
                                                                                 </tr>
                                                                             </table>
-                                                                            <div class='spacer_block desktop_hide' style='mso-hide: all; display: none; max-height: 0; overflow: hidden; height: 40px; line-height: 40px; font-size: 1px;'>&#8202;</div>
-                                                                            <div class='spacer_block mobile_hide' style='height:40px;line-height:40px;font-size:1px;'>&#8202;</div>
-                                                                            <table class='paragraph_block block-8' width='100%' border='0' cellpadding='0' cellspacing='0' role='presentation' style='mso-table-lspace: 0pt; mso-table-rspace: 0pt; word-break: break-word;'>
+                                                                            <div class='spacer_block block-5' style='height:25px;line-height:25px;font-size:1px;'>&#8202;</div>
+                                                                            <table class='image_block block-6' width='100%' border='0' cellpadding='0' cellspacing='0' role='presentation' style='mso-table-lspace: 0pt; mso-table-rspace: 0pt;'>
                                                                                 <tr>
-                                                                                    <td class='column column-1' style='mso-table-lspace: 0pt; mso-table-rspace: 0pt; font-weight: 400; text-align: left; padding-bottom: 5px; padding-top: 5px; vertical-align: top; border-top: 0px; border-right: 0px; border-bottom: 0px; border-left: 0px;' width='100%'>
-                                                                                    <table border='0' cellpadding='10' cellspacing='0' class='button_block block-1' role='presentation' style='mso-table-lspace: 0pt; mso-table-rspace: 0pt;' width='100%'>
-                                                                                    <tr>
+                                                                                    <td class='pad' style='width:100%;'>
+                                                                                        <div class='alignment' align='center' style='line-height:10px'>
+                                                                                            <div style='max-width: 202px;'><a href='".base_url()."/validarCorreo/".$tokens."/".$id."' target='_blank' style='outline:none' tabindex='-1'><img src='".base_url()."/public/img/verificacion/btn-verificar-cuenta.png' style='display: block; height: auto; border: 0; width: 100%;' width='202' alt='Verifica tu cuenta' title='Verifica tu cuenta'></a></div>
+                                                                                        </div>
+                                                                                    </td>
+                                                                                </tr>
+                                                                            </table>
+                                                                            <div class='spacer_block block-7' style='height:45px;line-height:45px;font-size:1px;'>&#8202;</div>
+                                                                        </td>
+                                                                    </tr>
+                                                                </tbody>
+                                                            </table>
+                                                        </td>
+                                                    </tr>
+                                                </tbody>
+                                            </table>
+                                            <table class='row row-3' align='center' width='100%' border='0' cellpadding='0' cellspacing='0' role='presentation' style='mso-table-lspace: 0pt; mso-table-rspace: 0pt;'>
+                                                <tbody>
+                                                    <tr>
+                                                        <td>
+                                                            <table class='row-content' align='center' border='0' cellpadding='0' cellspacing='0' role='presentation' style='mso-table-lspace: 0pt; mso-table-rspace: 0pt; border-radius: 0; color: #000000; width: 800.00px; margin: 0 auto;' width='800.00'>
+                                                                <tbody>
+                                                                    <tr>
+                                                                        <td class='column column-1' width='46%' style='mso-table-lspace: 0pt; mso-table-rspace: 0pt; font-weight: 400; text-align: left; background-color: #ffffff; vertical-align: top; border-top: 0px; border-right: 0px; border-bottom: 0px; border-left: 0px;'>
+                                                                            <table class='image_block block-1' width='100%' border='0' cellpadding='0' cellspacing='0' role='presentation' style='mso-table-lspace: 0pt; mso-table-rspace: 0pt;'>
+                                                                                <tr>
+                                                                                    <td class='pad' style='padding-right:10px;width:100%;'>
+                                                                                        <div class='alignment' align='right' style='line-height:10px'>
+                                                                                            <div style='max-width: 27px;'><a href='https://www.instagram.com/buscoinfluencers/' target='_blank' style='outline:none' tabindex='-1'><img src='".base_url()."/public/img/verificacion/binf-ig.png' style='display: block; height: auto; border: 0; width: 100%;' width='27' alt='Binf - Instagram' title='Binf - Instagram'></a></div>
+                                                                                        </div>
+                                                                                    </td>
+                                                                                </tr>
+                                                                            </table>
+                                                                        </td>
+                                                                        <td class='column column-1' width='8%' style='mso-table-lspace: 0pt; mso-table-rspace: 0pt; font-weight: 400; text-align: left; background-color: #ffffff; vertical-align: top; border-top: 0px; border-right: 0px; border-bottom: 0px; border-left: 0px;'>
+                                                                            <table class='image_block block-1' width='100%' border='0' cellpadding='0' cellspacing='0' role='presentation' style='mso-table-lspace: 0pt; mso-table-rspace: 0pt;'>
+                                                                                <tr>
+                                                                                    <td class='pad' style='width:100%;'>
+                                                                                        <div class='alignment' align='center' style='line-height:10px'>
+                                                                                            <div style='max-width: 27px;'><a href='https://wa.link/ipree3' target='_blank' style='outline:none' tabindex='-1'><img src='<?=base_url('public/img/verificacion/binf-wpp.png')?>' style='display: block; height: auto; border: 0; width: 100%;' width='27' alt='Binf - WhatsApp' title='Binf - WhatsApp'></a></div>
+                                                                                        </div>
+                                                                                    </td>
+                                                                                </tr>
+                                                                            </table>
+                                                                        </td>
+                                                                        <td class='column column-2' width='46%' style='mso-table-lspace: 0pt; mso-table-rspace: 0pt; font-weight: 400; text-align: left; background-color: #ffffff; vertical-align: top; border-top: 0px; border-right: 0px; border-bottom: 0px; border-left: 0px;'>
+                                                                            <table class='image_block block-1' width='100%' border='0' cellpadding='0' cellspacing='0' role='presentation' style='mso-table-lspace: 0pt; mso-table-rspace: 0pt;'>
+                                                                                <tr>
+                                                                                    <td class='pad' style='padding-left:10px;width:100%;'>
+                                                                                        <div class='alignment' align='left' style='line-height:10px'>
+                                                                                            <div style='max-width: 27px;'><a href='https://www.tiktok.com/@binfluencers' target='_blank' style='outline:none' tabindex='-1'><img src='".base_url()."/public/img/verificacion/binf-tik-tok.png' style='display: block; height: auto; border: 0; width: 100%;' width='27' alt='Binf - TikTok' title='Binf - TikTok'></a></div>
+                                                                                        </div>
+                                                                                    </td>
+                                                                                </tr>
+                                                                            </table>
+                                                                        </td>
+                                                                    </tr>
+                                                                </tbody>
+                                                            </table>
+                                                        </td>
+                                                    </tr>
+                                                </tbody>
+                                            </table>
+                                            <table class='row row-4' align='center' width='100%' border='0' cellpadding='0' cellspacing='0' role='presentation' style='mso-table-lspace: 0pt; mso-table-rspace: 0pt;'>
+                                                <tbody>
+                                                    <tr>
+                                                        <td>
+                                                            <table class='row-content stack' align='center' border='0' cellpadding='0' cellspacing='0' role='presentation' style='mso-table-lspace: 0pt; mso-table-rspace: 0pt; border-radius: 0; color: #000000; width: 800.00px; margin: 0 auto;' width='800.00'>
+                                                                <tbody>
+                                                                    <tr>
+                                                                        <td class='column column-1' width='100%' style='mso-table-lspace: 0pt; mso-table-rspace: 0pt; font-weight: 400; text-align: left; background-color: #ffffff; padding-left: 60px; padding-right: 60px; vertical-align: top; border-top: 0px; border-right: 0px; border-bottom: 0px; border-left: 0px;'>
+                                                                            <table class='paragraph_block block-1' width='100%' border='0' cellpadding='0' cellspacing='0' role='presentation' style='mso-table-lspace: 0pt; mso-table-rspace: 0pt; word-break: break-word;'>
+                                                                                <tr>
+                                                                                    <td class='pad' style='padding-bottom:10px;padding-left:10px;padding-right:10px;padding-top:15px;'>
+                                                                                        <div style='text-align: center; color:#726f70;direction:ltr;font-family:Arial, Helvetica Neue, Helvetica, sans-serif;font-size:14px;font-weight:400;letter-spacing:0px;line-height:180%;text-align:center;mso-line-height-alt:25.2px;'>
+                                                                                            <p style='margin: 0;'>Este correo electrónico fue enviado por:<br>WD Studios Corporation SAS. Cra 101 # 12A bis-70, Cali, Colombia.<br>Móvil: (318) 619-7481</p>
+                                                                                        </div>
+                                                                                    </td>
+                                                                                </tr>
+                                                                            </table>
+                                                                            <table class='paragraph_block block-2' width='100%' border='0' cellpadding='10' cellspacing='0' role='presentation' style='mso-table-lspace: 0pt; mso-table-rspace: 0pt; word-break: break-word;'>
+                                                                                <tr>
                                                                                     <td class='pad'>
-                                                                                        <a href='".base_url()."/validarCorreo/".$tokens."/".$id."'>
-                                                                                            <div align='center' class='alignment'><!--[if mso]><v:roundrect xmlns:v='urn:schemas-microsoft-com:vml' xmlns:w='urn:schemas-microsoft-com:office:word' style='height:50px;width:188px;v-text-anchor:middle;' arcsize='8%' stroke='false' fillcolor='#000000'><w:anchorlock/><v:textbox inset='0px,0px,0px,0px'><center style='color:#ffffff; font-family:Arial, sans-serif; font-size:20px'><![endif]-->
-                                                                                            <div style='text-decoration:none;display:inline-block;color:#ffffff;background-color:#000000;border-radius:4px;width:auto;border-top:0px solid transparent;font-weight:700;border-right:0px solid transparent;border-bottom:0px solid transparent;border-left:0px solid transparent;padding-top:5px;padding-bottom:5px;font-family:Arial, Helvetica, sans-serif;font-size:20px;text-align:center;mso-border-alt:none;word-break:keep-all;'><span style='padding-left:20px;padding-right:20px;font-size:20px;display:inline-block;letter-spacing:normal;'><span dir='ltr' style='word-break: break-word; line-height: 40px;'>Verificar cuenta</span></span></div><!--[if mso]></center></v:textbox></v:roundrect><![endif]-->
-                                                                                            </div>
-                                                                                        </a>
-                                                                                    </td>
-                                                                                    </tr>
-                                                                                    </table>
-                                                                                    </td>
-                                                                                    </tr>
-                                                                            </table>
-                                                                        </td>
-                                                                    </tr>
-                                                                </tbody>
-                                                            </table>
-                                                        </td>
-                                                    </tr>
-                                                </tbody>
-                                            </table>
-                                            <table class='row row-4' align='center' width='100%' border='0' cellpadding='0' cellspacing='0' role='presentation' style='mso-table-lspace: 0pt; mso-table-rspace: 0pt; background-color: #e8e5ec;'>
-                                                <tbody>
-                                                    <tr>
-                                                        <td>
-                                                            <table class='row-content stack' align='center' border='0' cellpadding='0' cellspacing='0' role='presentation' style='mso-table-lspace: 0pt; mso-table-rspace: 0pt; background-color: #ffffff; color: #000000; width: 800px;' width='800'>
-                                                                <tbody>
-                                                                    <tr>
-                                                                        <td class='column column-1' width='100%' style='mso-table-lspace: 0pt; mso-table-rspace: 0pt; font-weight: 400; text-align: left; vertical-align: top; border-top: 0px; border-right: 0px; border-bottom: 0px; border-left: 0px;'>
-                                                                            <div class='spacer_block' style='height:5px;line-height:5px;font-size:1px;'>&#8202;</div>
-                                                                            <div class='spacer_block desktop_hide' style='mso-hide: all; display: none; max-height: 0; overflow: hidden; height: 50px; line-height: 50px; font-size: 1px;'>&#8202;</div>
-                                                                            <div class='spacer_block mobile_hide' style='height:100px;line-height:100px;font-size:1px;'>&#8202;</div>
-                                                                            <div class='spacer_block' style='height:5px;line-height:5px;font-size:1px;'>&#8202;</div>
-                                                                        </td>
-                                                                    </tr>
-                                                                </tbody>
-                                                            </table>
-                                                        </td>
-                                                    </tr>
-                                                </tbody>
-                                            </table>
-                                            <table class='row row-5' align='center' width='100%' border='0' cellpadding='0' cellspacing='0' role='presentation' style='mso-table-lspace: 0pt; mso-table-rspace: 0pt; background-color: #e8e5ec;'>
-                                                <tbody>
-                                                    <tr>
-                                                        <td>
-                                                            <table class='row-content stack' align='center' border='0' cellpadding='0' cellspacing='0' role='presentation' style='mso-table-lspace: 0pt; mso-table-rspace: 0pt; background-color: #ffffff; color: #000000; width: 800px;' width='800'>
-                                                                <tbody>
-                                                                    <tr>
-                                                                        <td class='column column-1' width='100%' style='mso-table-lspace: 0pt; mso-table-rspace: 0pt; font-weight: 400; text-align: left; vertical-align: top; padding-top: 5px; padding-bottom: 5px; border-top: 0px; border-right: 0px; border-bottom: 0px; border-left: 0px;'>
-                                                                            <table class='social_block block-1' width='100%' border='0' cellpadding='0' cellspacing='0' role='presentation' style='mso-table-lspace: 0pt; mso-table-rspace: 0pt;'>
-                                                                                <tr>
-                                                                                    <td class='pad' style='text-align:center;padding-right:0px;padding-left:0px;'>
-                                                                                        <div class='alignment' align='center'>
-                                                                                            <table class='social-table' width='137.98228128460687px' border='0' cellpadding='0' cellspacing='0' role='presentation' style='mso-table-lspace: 0pt; mso-table-rspace: 0pt; display: inline-block;'>
-                                                                                                <tr>
-                                                                                                    <td style='padding:0 7px 0 7px;'><a href='https://www.instagram.com/buscoinfluencers/' target='_blank'><img src='".base_url()."/public/img/verificacion/instagram.png' width='31.238095238095237' height='32' alt='Instagram' title='Instagram' style='display: block; height: auto; border: 0;'></a></td>
-                                                                                                    <td style='padding:0 7px 0 7px;'><a href='https://wa.link/d17wli' target='_blank'><img src='".base_url()."/public/img/verificacion/whatsapp.png' width='32.74418604651163' height='32' alt='Whatsapp' title='Whats app' style='display: block; height: auto; border: 0;'></a></td>
-                                                                                                    <td style='padding:0 7px 0 7px;'><a href='https://wa.link/d17wli' target='_blank'><img src='".base_url()."/public/img/verificacion/tiktok.png' width='32' height='32' alt='Tiktok' title='Tiktok' style='display: block; height: auto; border: 0;'></a></td>
-                                                                                                </tr>
-                                                                                            </table>
-                                                                                        </div>
-                                                                                    </td>
-                                                                                </tr>
-                                                                            </table>
-                                                                            <table class='paragraph_block block-2' width='100%' border='0' cellpadding='0' cellspacing='0' role='presentation' style='mso-table-lspace: 0pt; mso-table-rspace: 0pt; word-break: break-word;'>
-                                                                                <tr>
-                                                                                    <td class='pad' style='padding-left:60px;padding-right:60px;padding-top:15px;'>
-                                                                                        <div style='color:#979ca2;direction:ltr;font-family:Arial, Helvetica Neue, Helvetica, sans-serif;font-size:14px;font-weight:400;letter-spacing:0px;line-height:180%;text-align:center;mso-line-height-alt:25.2px;'>
-                                                                                            <p style='margin: 0;'>Este correo electrónico fue enviado por:<br>WD Studios Corporation SAS. Cra 101 # 12A bis-70, Cali, Colombia.<br>Teléfonos: (2) 405 9935 &nbsp;/ &nbsp;Móvil: 316 7627511</p>
-                                                                                        </div>
-                                                                                    </td>
-                                                                                </tr>
-                                                                            </table>
-                                                                            <table class='paragraph_block block-4' width='100%' border='0' cellpadding='0' cellspacing='0' role='presentation' style='mso-table-lspace: 0pt; mso-table-rspace: 0pt; word-break: break-word;'>
-                                                                                <tr>
-                                                                                    <td class='pad' style='padding-left:60px;padding-right:60px;padding-top:25px;'>
-                                                                                        <div style='color:#979ca2;direction:ltr;font-family:Arial, Helvetica Neue, Helvetica, sans-serif;font-size:14px;font-weight:400;letter-spacing:0px;line-height:150%;text-align:center;mso-line-height-alt:21px;'>
+                                                                                        <div style='text-align: center; color:#726f70;direction:ltr;font-family:Arial, Helvetica Neue, Helvetica, sans-serif;font-size:14px;font-weight:400;letter-spacing:0px;line-height:150%;text-align:center;mso-line-height-alt:21px;'>
                                                                                             <p style='margin: 0;'>Este mensaje ha sido verificado con herramientas de eliminación de virus y contenido malicioso. Si tiene algún&nbsp;inconveniente con la información recibida comuníquese con nosotros vía telefónica o respondamos este mismo correo. Recomendamos agregarnos a sus contactos para mantener una comunicación más efectiva.</p>
                                                                                         </div>
                                                                                     </td>
                                                                                 </tr>
                                                                             </table>
-                                                                            <table class='divider_block block-5' width='100%' border='0' cellpadding='10' cellspacing='0' role='presentation' style='mso-table-lspace: 0pt; mso-table-rspace: 0pt;'>
+                                                                            <table class='divider_block block-3' width='100%' border='0' cellpadding='10' cellspacing='0' role='presentation' style='mso-table-lspace: 0pt; mso-table-rspace: 0pt;'>
                                                                                 <tr>
                                                                                     <td class='pad'>
                                                                                         <div class='alignment' align='center'>
-                                                                                            <table border='0' cellpadding='0' cellspacing='0' role='presentation' width='70%' style='mso-table-lspace: 0pt; mso-table-rspace: 0pt;'>
+                                                                                            <table border='0' cellpadding='0' cellspacing='0' role='presentation' width='85%' style='mso-table-lspace: 0pt; mso-table-rspace: 0pt;'>
                                                                                                 <tr>
                                                                                                     <td class='divider_inner' style='font-size: 1px; line-height: 1px; border-top: 2px solid #979CA2;'><span>&#8202;</span></td>
                                                                                                 </tr>
@@ -542,32 +555,30 @@ class InfluencerController extends BaseController
                                                     </tr>
                                                 </tbody>
                                             </table>
-                                            <table class='row row-6' align='center' width='100%' border='0' cellpadding='0' cellspacing='0' role='presentation' style='mso-table-lspace: 0pt; mso-table-rspace: 0pt; background-color: #e8e5ec;'>
+                                            <table class='row row-5' align='center' width='100%' border='0' cellpadding='0' cellspacing='0' role='presentation' style='mso-table-lspace: 0pt; mso-table-rspace: 0pt;'>
                                                 <tbody>
                                                     <tr>
                                                         <td>
-                                                            <table class='row-content stack' align='center' border='0' cellpadding='0' cellspacing='0' role='presentation' style='mso-table-lspace: 0pt; mso-table-rspace: 0pt; background-color: #ffffff; border-radius: 0; color: #000000; width: 800px;' width='800'>
+                                                            <table class='row-content stack' align='center' border='0' cellpadding='0' cellspacing='0' role='presentation' style='mso-table-lspace: 0pt; mso-table-rspace: 0pt; border-radius: 0; color: #000000; width: 800.00px; margin: 0 auto;' width='800.00'>
                                                                 <tbody>
                                                                     <tr>
-                                                                        <td class='column column-1' width='50%' style='mso-table-lspace: 0pt; mso-table-rspace: 0pt; font-weight: 400; text-align: left; vertical-align: middle; border-top: 0px; border-right: 0px; border-bottom: 0px; border-left: 0px;'>
-                                                                            <table class='button_block block-2' width='100%' border='0' cellpadding='0' cellspacing='0' role='presentation' style='mso-table-lspace: 0pt; mso-table-rspace: 0pt;'>
+                                                                        <td class='column column-1' width='50%' style='mso-table-lspace: 0pt; mso-table-rspace: 0pt; font-weight: 400; text-align: left; background-color: #ffffff; padding-top: 10px; vertical-align: top; border-top: 0px; border-right: 0px; border-bottom: 0px; border-left: 0px;'>
+                                                                            <table class='paragraph_block block-1' width='100%' border='0' cellpadding='0' cellspacing='0' role='presentation' style='mso-table-lspace: 0pt; mso-table-rspace: 0pt; word-break: break-word;'>
                                                                                 <tr>
-                                                                                    <td class='pad' style='text-align:right;padding-top:5px;padding-bottom:5px;'>
-                                                                                        <div class='alignment' align='right'>
-                                                                                            <!--[if mso]><v:roundrect xmlns:v='urn:schemas-microsoft-com:vml' xmlns:w='urn:schemas-microsoft-com:office:word' href='".base_url()."public/aviso-de-privacidad-2/' style='height:38px;width:173px;v-text-anchor:middle;' arcsize='11%' stroke='false' fill='false'><w:anchorlock/><v:textbox inset='0px,0px,0px,0px'><center style='color:#979ca2; font-family:Arial, sans-serif; font-size:14px'><![endif]--><a href='https://www.buscoinfluencers.com/aviso-de-privacidad-2/' target='_blank' style='text-decoration:none;display:inline-block;color:#979ca2;background-color:transparent;border-radius:4px;width:auto;border-top:0px solid transparent;font-weight:400;border-right:0px solid transparent;border-bottom:0px solid transparent;border-left:0px solid transparent;padding-top:5px;padding-bottom:5px;font-family:Arial, Helvetica Neue, Helvetica, sans-serif;font-size:14px;text-align:center;mso-border-alt:none;word-break:keep-all;'><span style='padding-left:20px;padding-right:20px;font-size:14px;display:inline-block;letter-spacing:normal;'><span dir='ltr' style='word-break: break-word; line-height: 28px;'>Política de privacidad</span></span></a>
-                                                                                            <!--[if mso]></center></v:textbox></v:roundrect><![endif]-->
+                                                                                    <td class='pad' style='padding-bottom:10px;padding-left:10px;padding-right:15px;padding-top:10px;'>
+                                                                                        <div style='text-align: right; color:#726f70;direction:ltr;font-family:Arial, Helvetica Neue, Helvetica, sans-serif;font-size:14px;font-weight:400;letter-spacing:0px;line-height:150%;text-align:right;mso-line-height-alt:21px;'>
+                                                                                            <p style='margin: 0;'><a href='https://www.buscoinfluencers.com/aviso-de-privacidad-2/' target='_blank' style='text-decoration: none; color: #726f70;' rel='noopener'>Política de privacidad.</a></p>
                                                                                         </div>
                                                                                     </td>
                                                                                 </tr>
                                                                             </table>
                                                                         </td>
-                                                                        <td class='column column-2' width='50%' style='mso-table-lspace: 0pt; mso-table-rspace: 0pt; font-weight: 400; text-align: left; vertical-align: middle; border-top: 0px; border-right: 0px; border-bottom: 0px; border-left: 0px;'>
-                                                                            <table class='button_block block-2' width='100%' border='0' cellpadding='0' cellspacing='0' role='presentation' style='mso-table-lspace: 0pt; mso-table-rspace: 0pt;'>
+                                                                        <td class='column column-2' width='50%' style='mso-table-lspace: 0pt; mso-table-rspace: 0pt; font-weight: 400; text-align: left; background-color: #ffffff; padding-top: 10px; vertical-align: top; border-top: 0px; border-right: 0px; border-bottom: 0px; border-left: 0px;'>
+                                                                            <table class='paragraph_block block-1' width='100%' border='0' cellpadding='0' cellspacing='0' role='presentation' style='mso-table-lspace: 0pt; mso-table-rspace: 0pt; word-break: break-word;'>
                                                                                 <tr>
-                                                                                    <td class='pad' style='text-align:left;padding-top:5px;padding-bottom:5px;'>
-                                                                                        <div class='alignment' align='left'>
-                                                                                            <!--[if mso]><v:roundrect xmlns:v='urn:schemas-microsoft-com:vml' xmlns:w='urn:schemas-microsoft-com:office:word' href='https://www.buscoinfluencers.com/terminos-y-condiciones-2/' style='height:38px;width:187px;v-text-anchor:middle;' arcsize='11%' stroke='false' fill='false'><w:anchorlock/><v:textbox inset='0px,0px,0px,0px'><center style='color:#979ca2; font-family:Arial, sans-serif; font-size:14px'><![endif]--><a href='https://www.buscoinfluencers.com/terminos-y-condiciones-2/' target='_blank' style='text-decoration:none;display:inline-block;color:#979ca2;background-color:transparent;border-radius:4px;width:auto;border-top:0px solid transparent;font-weight:400;border-right:0px solid transparent;border-bottom:0px solid transparent;border-left:0px solid transparent;padding-top:5px;padding-bottom:5px;font-family:Arial, Helvetica Neue, Helvetica, sans-serif;font-size:14px;text-align:center;mso-border-alt:none;word-break:keep-all;'><span style='padding-left:20px;padding-right:20px;font-size:14px;display:inline-block;letter-spacing:normal;'><span dir='ltr' style='word-break: break-word; line-height: 28px;'>Términos y condiciones</span></span></a>
-                                                                                            <!--[if mso]></center></v:textbox></v:roundrect><![endif]-->
+                                                                                    <td class='pad' style='padding-bottom:10px;padding-left:15px;padding-right:10px;padding-top:10px;'>
+                                                                                        <div style='color:#726f70;direction:ltr;font-family:Arial, Helvetica Neue, Helvetica, sans-serif;font-size:14px;font-weight:400;letter-spacing:0px;line-height:150%;text-align:left;mso-line-height-alt:21px;'>
+                                                                                            <p style='margin: 0;'><a href='https://www.buscoinfluencers.com/terminos-y-condiciones-2/' target='_blank' style='text-decoration: none; color: #726f70;' rel='noopener'>Términos y condiciones.</a></p>
                                                                                         </div>
                                                                                     </td>
                                                                                 </tr>
@@ -580,22 +591,20 @@ class InfluencerController extends BaseController
                                                     </tr>
                                                 </tbody>
                                             </table>
-                                            <table class='row row-7' align='center' width='100%' border='0' cellpadding='0' cellspacing='0' role='presentation' style='mso-table-lspace: 0pt; mso-table-rspace: 0pt; background-color: #e8e5ec;'>
+                                            <table class='row row-6' align='center' width='100%' border='0' cellpadding='0' cellspacing='0' role='presentation' style='mso-table-lspace: 0pt; mso-table-rspace: 0pt;'>
                                                 <tbody>
                                                     <tr>
                                                         <td>
-                                                            <table class='row-content stack' align='center' border='0' cellpadding='0' cellspacing='0' role='presentation' style='mso-table-lspace: 0pt; mso-table-rspace: 0pt; background-color: #ffffff; border-radius: 0; color: #000000; width: 800px;' width='800'>
+                                                            <table class='row-content stack' align='center' border='0' cellpadding='0' cellspacing='0' role='presentation' style='mso-table-lspace: 0pt; mso-table-rspace: 0pt; border-radius: 0; color: #000000; width: 800.00px; margin: 0 auto;' width='800.00'>
                                                                 <tbody>
                                                                     <tr>
-                                                                        <td class='column column-1' width='100%' style='mso-table-lspace: 0pt; mso-table-rspace: 0pt; font-weight: 400; text-align: left; vertical-align: middle; padding-top: 5px; padding-bottom: 5px; border-top: 0px; border-right: 0px; border-bottom: 0px; border-left: 0px;'>
-                                                                            <table class='icons_block block-1' width='100%' border='0' cellpadding='0' cellspacing='0' role='presentation' style='mso-table-lspace: 0pt; mso-table-rspace: 0pt;'>
+                                                                        <td class='column column-1' width='100%' style='mso-table-lspace: 0pt; mso-table-rspace: 0pt; font-weight: 400; text-align: left; background-color: #ffffff; padding-bottom: 40px; padding-top: 15px; vertical-align: top; border-top: 0px; border-right: 0px; border-bottom: 0px; border-left: 0px;'>
+                                                                            <table class='image_block block-1' width='100%' border='0' cellpadding='0' cellspacing='0' role='presentation' style='mso-table-lspace: 0pt; mso-table-rspace: 0pt;'>
                                                                                 <tr>
-                                                                                    <td class='pad' style='vertical-align: middle; color: #000000; font-family: inherit; font-size: 14px; text-align: center; padding-bottom: 25px;'>
-                                                                                        <table class='alignment' cellpadding='0' cellspacing='0' role='presentation' align='center' style='mso-table-lspace: 0pt; mso-table-rspace: 0pt;'>
-                                                                                            <tr>
-                                                                                                <td style='vertical-align: middle; text-align: center; padding-top: 5px; padding-bottom: 5px; padding-left: 5px; padding-right: 5px;'><img class='icon' src='".base_url()."/public/img/verificacion/wd-studios.png' alt='WD STUDIOS' height='32' width='62' align='center' style='display: block; height: auto; margin: 0 auto; border: 0;'></td>
-                                                                                            </tr>
-                                                                                        </table>
+                                                                                    <td class='pad' style='width:100%;'>
+                                                                                        <div class='alignment' align='center' style='line-height:10px'>
+                                                                                            <div style='max-width: 57px;'><img src='".base_url()."/public/img/verificacion/wd-studios.png' style='display: block; height: auto; border: 0; width: 100%;' width='57'></div>
+                                                                                        </div>
                                                                                     </td>
                                                                                 </tr>
                                                                             </table>
@@ -607,6 +616,7 @@ class InfluencerController extends BaseController
                                                     </tr>
                                                 </tbody>
                                             </table>
+                                            
                                         </td>
                                     </tr>
                                 </tbody>
@@ -614,12 +624,12 @@ class InfluencerController extends BaseController
                         </body>
                         
                         </html>";
-                        $asunto="Valida tu correo y activa tu cuenta";
+                        $asunto="Buscoinfluencers | Activa tu cuenta 👏";
                         $this->_enviarCorreo($correo,$cuerpo,$asunto);
                         
-                        session()->set('idinfluencer',$id);
-
-                        return redirect()->to('/')->with('mensaje', 'Tu cuenta se creo con exito, antes de ingresar debes validarla desde tu correo electrónico');
+                        //session()->set('idinfluencer',$id);
+                        return redirect()->to('registro-exitoso');
+                        //return redirect()->to('/')->with('mensaje', 'Tu cuenta se creo con exito, antes de ingresar debes validarla desde tu correo electrónico');
                 }else{
                     return redirect()->back()->withinput()->with('mensaje','Ocurrio un error al crear su cuenta');
 
@@ -646,7 +656,7 @@ class InfluencerController extends BaseController
                     return redirect()->to("/")->with('mensaje', 'Correo validado');
         
           }else{
-            return redirect()->to("/")->with('mensaje', 'Tokens invalido');
+            return redirect()->to("/")->with('mensaje', 'Token invalido');
         
           }
     }
@@ -708,7 +718,7 @@ public function enviarMensajeContactanos(){
             return redirect()->to("/")->with('mensaje', 'Su mensaje se envió correctamente');
         }
 
-        return redirect()->back()->withinput()->with('mensaje',"Ocurrio un error inesperado,No se pudo enviar su mensaje.");
+        return redirect()->back()->withinput()->with('mensaje',"Ocurrio un error inesperado, No se pudo enviar su mensaje.");
 
     }
  
@@ -828,14 +838,14 @@ public function enviarMensajeContactanos(){
             $this->_guardarPago($id);
 
 
-        return redirect()->to("/perfil/$id")->with('mensaje', 'Tu cuenta se creo con exito');
+        return redirect()->to("/perfil/$id")->with('mensaje', 'Tu cuenta se creo con éxito');
 
     
        
         
 
     }
-
+    
     public function edit($id = null){
 
         $influencer = new InfluencerModel();
@@ -853,9 +863,10 @@ public function enviarMensajeContactanos(){
         $influredes=new InfluencersRedesModel();
         $influidioma=new IdiomaInfluencerModel();
 
-        if ($influencer->find($id) != null)
+        if ($influencer->where('alias', $id)->findAll() != null)
         {
-            $inf=$influencer->find($id);
+            $inf=$influencer->where('alias', $id)->first();
+            $id=$inf['idinfluencer'];
             
             $ciu=$ciudad->find($inf['idciudad']);
             $pai=$pais->find($ciu['idpais']);
@@ -867,11 +878,12 @@ public function enviarMensajeContactanos(){
             $ididioma= $influidioma->where('idinfluencer', $id)->findAll();
 
              //ACATUALIZAR REDES SOCIALES
+            /*
             $misInfluRedes=$influredes->where("idinfluencer",$id);
             foreach ($misInfluRedes as $key => $m) {
                 $this->_actualizarRedesSociales($id,$m['idredes']);
             }
-
+            */
             $misCategorias=[];
             $categoriasNoUso= $categoria->findAll();
             //var_dump($categoriasNoUso);
@@ -880,8 +892,6 @@ public function enviarMensajeContactanos(){
                 unset($categoriasNoUso[$m['idcategoria']-1]);
             }
             //var_dump($misCategorias);
-
-            
 
             $misPagos=[];
             $misPagosNoUsados=$pago->findAll();
@@ -911,8 +921,6 @@ public function enviarMensajeContactanos(){
                 
             }
 
-            
-
             $misIdiomas=[];
             $misIdiomasNoUsados= $idioma->findAll();
             foreach ($ididioma as $key => $m) {
@@ -920,7 +928,6 @@ public function enviarMensajeContactanos(){
                 unset($misIdiomasNoUsados[$m['ididioma']-1]);
             }
            
-
            $migaleria= $galeria->where('idinfluencer', $id)->findAll();
 
             //var_dump($misCategorias);
@@ -948,7 +955,7 @@ public function enviarMensajeContactanos(){
 
             $dataHeader=['titulo'=>'Crear influencer','mensaje'=>""];
     
-            
+            session()->set('foto', $inf['foto_perfil']);
             $this->_loadDefaultView($dataHeader,$datos,'edit');
 
             
@@ -976,7 +983,7 @@ public function enviarMensajeContactanos(){
 
         $influencerModel->delete($id);
           // echo $id;
-             return redirect()->to('/influencer')->with('mensaje', 'Tu cuanta se elimino correctamente');
+             return redirect()->to('/influencer')->with('mensaje', 'Tu cuenta se elimino correctamente');
     }
 
 
@@ -985,7 +992,7 @@ public function enviarMensajeContactanos(){
 
         
 
-        return redirect()->to('/influencer')->with('mensaje', 'Tu cuanta se actualizó correctamente');
+        return redirect()->to('/influencer')->with('mensaje', 'Tu cuenta se actualizó correctamente');
 
     
         
@@ -1153,7 +1160,45 @@ public function enviarMensajeContactanos(){
          
     }
 
+    public function cambiarFoto() {
+        
+        if(isset($_POST["image"]))
+        {
+            $data = $_POST["image"];
+            $id = $_POST["id"];
+
+            //Procesamos la imagen y la guardamos
+            $image_array_1 = explode(";", $data);
+            $image_array_2 = explode(",", $image_array_1[1]);
+
+            $data = base64_decode($image_array_2[1]);
+            $imageName = "perfil_".time() . $id;
+
+            $imagePath = ROOTPATH.'public/uploads/' . $imageName . '.png';
+            file_put_contents($imagePath, $data);
+
+            
+            $influencer=new InfluencerModel();
+
+            // borramos la foto anterior de perfil en el directorio de uploads
+            $user=$influencer->find($id);
+            if($user['foto_perfil']!="default.png"){
+                unlink(ROOTPATH.'public/uploads/'.$user['foto_perfil']);
+            }
+            // actualizamos la bd con el nombre de la nueva foto de perfil
+            $influencer->update($id,['foto_perfil'=>$imageName.'.png']);
+            
+            
+            echo base_url('uploads')."/".$imageName.'.png';      
+
+        }
+       
+        
+    }
+
+    /*
     public function cambiarFoto(){
+        
         
         var_dump("LLEGUE ");
         $influencer=new InfluencerModel();
@@ -1168,6 +1213,10 @@ public function enviarMensajeContactanos(){
                
                     $newName = $imagefile->getRandomName();
                     $imagefile->move(ROOTPATH.'public/uploads', $newName);
+
+                    $user=$influencer->find($id);
+                    unlink(ROOTPATH.'public/uploads/'.$user['foto_perfil']);
+
                     $influencer->update($id,['foto_perfil'=>$newName]);
                     return redirect()->to("/influencer/edit/$id")->with('mensaje', 'Tu foto se actualizó con exito');
 
@@ -1181,7 +1230,7 @@ public function enviarMensajeContactanos(){
 
         
     }
-
+    */
    
 
     public function agregarCantidadSeguidores($cant, $redsocial){
@@ -1199,16 +1248,18 @@ public function enviarMensajeContactanos(){
 
         $redinfluencer=new InfluencersRedesModel();
         $ide=$this->request->getPost('redeseliminar');
-        
+        $influencer = new InfluencerModel();
         $id=$this->request->getPost('influencerid2');
+        $miInflue=$influencer->find($id);        
 
         if($redinfluencer->where('id', $ide)->delete()!=null){
-            return redirect()->to("/influencer/edit/$id")->with('mensaje', 'Tus Red se elimino con exito con exito');
-            
-        }
-    
-        return redirect()->to("/influencer/edit/$id")->with('mensaje', 'ocurrió un error al eliminiar tu red social');
 
+            return redirect()->to("/influencer/edit/".$miInflue['alias'])->with('mensaje', 'Tus red se elimino con éxito con exito');
+            
+        }else{
+            return redirect()->to("/influencer/edit/".$miInflue['alias'])->with('mensaje', 'Ocurrió un error al eliminiar tu red social');
+
+        }
            
     }
 
@@ -1220,45 +1271,53 @@ public function enviarMensajeContactanos(){
         $usuario=$this->request->getPost('usuarioedit');
         
         $id=$this->request->getPost('influencerid3');
+        $miInflue=$influencer->find($id);
+
         $data=[
             'nombreinflu'=>$nombre,
-            'alias'=>$alias,
+            //'alias'=>$alias,
             'usuario'=>$usuario
         ];
-
+        
         if($influencer->update($id,$data)!=null){
 
-            return redirect()->to("/influencer/edit/$id")->with('mensaje', 'Tus datos se actualizaron con exito');
+            return redirect()->to("/influencer/edit/".$miInflue['alias'])->with('mensaje', 'Tus datos se actualizaron con éxito');
             
         }
     
-        return redirect()->to("/influencer/edit/$id")->with('mensaje', 'ocurrió un error al actualizar tus datos');
+        return redirect()->to("/influencer/edit/".$miInflue['alias'])->with('mensaje', 'Ocurrió un error al actualizar tus datos');
 
            
     }
 
     public function elminarCategoria(){
 
+        $influencer=new InfluencerModel();
         $categoriaInfluencer=new InfluencerCategoriaModel();
         $ide=$this->request->getPost('categoriaeliminar');
         
         $id=$this->request->getPost('influencerid3');
+        $miInflue=$influencer->find($id);
+        //echo $ide;
+        //echo $id;
 
         if($categoriaInfluencer->where('id', $ide)->delete()!=null){
-            return redirect()->to("/influencer/edit/$id")->with('mensaje', 'Tu Categoria se elimino con exito con exito');
+           return redirect()->to("/influencer/edit/".$miInflue['alias'])->with('mensaje', 'Tu categoria se elimino con éxito con éxito');
             
         }
     
-        return redirect()->to("/influencer/edit/$id")->with('mensaje', 'ocurrió un error al eliminiar tu categoria');
-
-           
+        return redirect()->to("/influencer/edit/".$miInflue['alias'])->with('mensaje', 'Ocurrió un error al eliminiar tu categoria');
+          
     }
     
     public function adicionarCategoria(){
 
         $categoriaInfluencer=new InfluencerCategoriaModel();
+        $influencer = new InfluencerModel();
         
         $id= $this->request->getPost('influencerid4');
+        $miInflue=$influencer->find($id);
+
 
         $idcatagoria= $this->request->getPost('categorianew');
 
@@ -1266,29 +1325,30 @@ public function enviarMensajeContactanos(){
         
             if($categoriaInfluencer->insert(['idinfluencer'=>$id,'idcategoria'=>$idcatagoria])!=null){
 
-                return redirect()->to("/influencer/edit/$id")->with('mensaje', 'Tu Categoria se actualizó con exito');
+                return redirect()->to("/influencer/edit/".$miInflue['alias'])->with('mensaje', 'Tu categoria se actualizó con éxito');
     
             }
         }
     
-        return redirect()->to("/influencer/edit/$id")->with('mensaje', 'ocurrió un error al actualizar tu categoria');
+        return redirect()->to("/influencer/edit/".$miInflue['alias'])->with('mensaje', 'Ocurrió un error al actualizar tu categoria');
     }
 
     public function eliminarLenguaje(){
 
-
+        $influencer = new InfluencerModel();
         $lenguajeInfluencer=new IdiomaInfluencerModel();
 
         $ide=$this->request->getPost('idiomaeliminar');
         
         $id=$this->request->getPost('influencerid5');
+        $miInflue=$influencer->find($id);
 
         if($lenguajeInfluencer->where('id', $ide)->delete()!=null){
-            return redirect()->to("/influencer/edit/$id")->with('mensaje', 'Tu Idioma se elimino con exito con exito');
+            return redirect()->to("/influencer/edit/".$miInflue['alias'])->with('mensaje', 'Tu idioma se eliminó con éxito');
             
         }
     
-        return redirect()->to("/influencer/edit/$id")->with('mensaje', 'ocurrió un error al eliminiar tu Idioma');
+        return redirect()->to("/influencer/edit/".$miInflue['alias'])->with('mensaje', 'Ocurrió un error al eliminiar tu idioma');
 
            
     }
@@ -1296,82 +1356,87 @@ public function enviarMensajeContactanos(){
     public function adicionarIdioma(){
 
         $idiomaInfluencer=new IdiomaInfluencerModel();
+        $influencer = new InfluencerModel();
         
         $id= $this->request->getPost('influencerid6');
+        $miInflue=$influencer->find($id);
+
 
         $ididioma= $this->request->getPost('idiomanew');
-        
-        if($idiomaInfluencer->insert(['idinfluencer'=>$id,'ididioma'=>$ididioma])!=null){
 
-            return redirect()->to("/influencer/edit/$id")->with('mensaje', 'Tu Idioma se actualizó con exito');
-  
+        if($ididioma!=null){
+        
+            if($idiomaInfluencer->insert(['idinfluencer'=>$id,'ididioma'=>$ididioma])!=null){
+
+                return redirect()->to("/influencer/edit/".$miInflue['alias'])->with('mensaje', 'Tu idioma se actualizó con éxito');
+    
+            }
         }
     
-        return redirect()->to("/influencer/edit/$id")->with('mensaje', 'ocurrió un error al actualizar tu idioma');
+        return redirect()->to("/influencer/edit/".$miInflue['alias'])->with('mensaje', 'Ocurrió un error al actualizar tu idioma');
     }
 
     public function eliminarVideo(){
 
         $influencer=new InfluencerModel();
         $id= $this->request->getPost('influencerid7');
-        
+        $miInflue=$influencer->find($id);
+        /*
+        $user=$influencer->find($id);
+        unlink(ROOTPATH.'public/uploads/'.$user['video']);
+        */
 
-        
         if($influencer->update($id,['video'=>null])!=null){
-            
-        
-            return redirect()->to("/influencer/edit/$id")->with('mensaje', 'Tu video se elimino con exito');
-
-
-            
+            return redirect()->to("/influencer/edit/".$miInflue['alias'])->with('mensaje', 'Tu video se eliminó con éxito');
         }else{
-            
-            return redirect()->to("/influencer/edit/$id")->with('mensaje', 'ocurrió un error al eliminat tu video');
-
+            return redirect()->to("/influencer/edit/".$miInflue['alias'])->with('mensaje', 'Ocurrió un error al eliminar tu video');
         }
-
-        
+    
     }
 
     public function cambiarVideo(){
 
         $influencer=new InfluencerModel();
         $id= $this->request->getPost('influencer9');
-        
+        $miInflue=$influencer->find($id);
 
-        
+
         if($imagefile = $this->request->getFile('newvideo')){
             
             if ($imagefile->isValid() && ! $imagefile->hasMoved())
             {
-               
-                    $newName = $imagefile->getRandomName();
-                    $imagefile->move(ROOTPATH.'public/video', $newName);
-                    $influencer->update($id,['video'=>$newName]);
-                    return redirect()->to("/influencer/edit/$id")->with('mensaje', 'Tu video se actualizó con exito');
-
-
+                $newName = $imagefile->getRandomName();
+                $imagefile->move(ROOTPATH.'public/video', $newName);
+                $influencer->update($id,['video'=>$newName]);
+                return redirect()->to("/influencer/edit/".$miInflue['alias'])->with('mensaje', 'Tu video se actualizó con éxito');
             }
         }else{
             
-            return redirect()->to("/influencer/edit/$id")->with('mensaje', 'ocurrió un error al actualizar tu video');
+            return redirect()->to("/influencer/edit/".$miInflue['alias'])->with('mensaje', 'Ocurrió un error al actualizar tu video');
 
         }
-
-        
+     
     }
 
+    
     public function eliminarFotoGaleria(){
 
         $galeria=new GaleriaModel();
+        $influencer=new InfluencerModel();
         $id= $this->request->getPost('influencerid10');
         $idgaleria= $this->request->getPost('fotoGaeliminar');
+        $miInflue=$influencer->find($id);
+
+
+        $galName=$galeria->find($idgaleria);
+        unlink(ROOTPATH.'public/uploads/'.$galName['url']);
+        
 
         if($galeria->where('idfoto', $idgaleria)->delete()!=null){
-            return redirect()->to("/influencer/edit/$id")->with('mensaje', 'Tu foto se elimino con exito');
+            return redirect()->to("/influencer/edit/".$miInflue['alias'])->with('mensaje', 'Tu foto se elimino con éxito');
         }else{
             
-            return redirect()->to("/influencer/edit/$id")->with('mensaje', 'ocurrió un error al eliminar tu foto');
+            return redirect()->to("/influencer/edit/".$miInflue['alias'])->with('mensaje', 'Ocurrió un error al eliminar tu foto');
 
         }
 
@@ -1381,14 +1446,21 @@ public function enviarMensajeContactanos(){
     public function agregarFotoGaleria(){
 
         $galeria=new GaleriaModel();
+        $influencer = new InfluencerModel();
 
         $id= $this->request->getPost('influencer11');
+        $miInflue=$influencer->find($id);
 
         $fotos=$galeria->where('idinfluencer',$id)->findAll();
         $cantidadFotos=count($fotos);
         $contador=0;
+
+        $imagefile = $this->request->getFiles();
+
         
-        if ($imagefile = $this->request->getFiles()) {
+        
+        if (($imagefile = $this->request->getFiles()) && (count($imagefile['newfotoGaleria'])<=5)) {
+            
             
                 foreach ($imagefile['newfotoGaleria'] as $img) {
                     if ($cantidadFotos < 5) {
@@ -1402,16 +1474,19 @@ public function enviarMensajeContactanos(){
                         if ($img->isValid() && ! $img->hasMoved()) {
                             $newName = $img->getRandomName();
                             $img->move(ROOTPATH.'public/uploads', $newName);
+                            unlink(ROOTPATH.'public/uploads/'.$fotos[$contador]['url']);
                             //var_dump($fotos[$contador]['idfoto']);
                             $galeria->update($fotos[$contador]['idfoto'],['url'=>$newName]);
                             $contador++;
                         }
                     }
                 } 
-                return redirect()->to("/influencer/edit/$id")->with('mensaje', 'Tu fotos se agregaron con exito');
+               
+                return redirect()->to("/influencer/edit/".$miInflue['alias'])->with('mensaje', 'Tu fotos se agregaron con exito');
+
         }else{
             
-            return redirect()->to("/influencer/edit/$id")->with('mensaje', 'ocurrió un error al agregar sus fotos');
+            return redirect()->to("/influencer/edit/".$miInflue['alias'])->with('mensaje', 'Solo se permite subir máximo 5 imagenes');
 
         }
 
@@ -1423,6 +1498,8 @@ public function enviarMensajeContactanos(){
         $influencer=new InfluencerModel();
         $resenia=$this->request->getPost('reseniaInfluencer');
         $id=$this->request->getPost('influencerid12');
+        $miInflue=$influencer->find($id);
+
 
         $data=[
             'resenia'=>$resenia
@@ -1430,87 +1507,95 @@ public function enviarMensajeContactanos(){
 
         if($influencer->update($id,$data)!=null){
 
-            return redirect()->to("/influencer/edit/$id")->with('mensaje', 'Tus reseña se actualizó con exito');
+            return redirect()->to("/influencer/edit/".$miInflue['alias'])->with('mensaje', 'Tus reseña se actualizó con éxito');
             
         }
     
-        return redirect()->to("/influencer/edit/$id")->with('mensaje', 'ocurrió un error al actualizar tu reseña');
+        return redirect()->to("/influencer/edit/".$miInflue['alias'])->with('mensaje', 'Ocurrió un error al actualizar tu reseña');
     }
 
     public function eliminarMarcas(){
 
-
         $marca=new MarcaModel();
+        $influencer=new InfluencerModel();
 
         $ide=$this->request->getPost('marcaeliminada');
         
         $id=$this->request->getPost('influencerid13');
+        $miInflue=$influencer->find($id);
+
 
         if($marca->where('idmarca', $ide)->delete()!=null){
-            return redirect()->to("/influencer/edit/$id")->with('mensaje', 'Tu Marca se elimino con exito con exito');
+            return redirect()->to("/influencer/edit/".$miInflue['alias'])->with('mensaje', 'Tu marca se eliminó con exito');
             
         }
     
-        return redirect()->to("/influencer/edit/$id")->with('mensaje', 'ocurrió un error al eliminiar tu Marca');
+        return redirect()->to("/influencer/edit/".$miInflue['alias'])->with('mensaje', 'Ocurrió un error al eliminiar tu marca');
 
            
     }
 
     public function eliminarPagos(){
 
-
+        $influencer=new InfluencerModel();
         $pagoInfluencer=new InfluencerPagoModel();
 
         $ide=$this->request->getPost('pagoeliminada');
         
         $id=$this->request->getPost('influencerid15');
+        $miInflue=$influencer->find($id);
+
 
         if($pagoInfluencer->where('id', $ide)->delete()!=null){
-            return redirect()->to("/influencer/edit/$id")->with('mensaje', 'Tu PAgo se elimino con exito con exito');
+            return redirect()->to("/influencer/edit/".$miInflue['alias'])->with('mensaje', 'Tu método de pago se eliminó con exito');
             
         }
     
-        return redirect()->to("/influencer/edit/$id")->with('mensaje', 'ocurrió un error al eliminiar tu Pago');
-
-           
+        return redirect()->to("/influencer/edit/".$miInflue['alias'])->with('mensaje', 'Ocurrió un error al eliminiar tu método de pago');
+   
     }
 
     public function adicionarEmpresa(){
 
-        
+        $influencer=new InfluencerModel();
         $marca=new MarcaModel();
         
         $id= $this->request->getPost('influencerid16');
         $tipo= $this->request->getPost('tipoempres');
         $marcaText= $this->request->getPost('empresanewtxt');
+        $miInflue=$influencer->find($id);
 
+        
         if(!($marcaText==null || $marcaText=="")){
+            
             $marca->insert(['nombre'=>$marcaText,'idinfluencer'=>$id, 'tipo'=>$tipo]);
-            return redirect()->to("/influencer/edit/$id")->with('mensaje', 'Tu marca se actualizó con exito');
-      
+            return redirect()->to("/influencer/edit/".$miInflue['alias'])->with('mensaje', 'Tu marca / empresa se actualizó con éxito');
+    
             
         }
-        
-        
     
-        return redirect()->to("/influencer/$id/edit")->with('mensaje', 'ocurrió un error al actualizar tu idioma');
-    }
+    return redirect()->to("/influencer/edit/".$miInflue['alias'])->with('mensaje', 'Ocurrió un error al actualizar tu marca / empresa');
+}
 
     public function adicionarPago(){
 
+        $influencer=new InfluencerModel();
         $pagosInfluencer=new InfluencerPagoModel();
         
         $id= $this->request->getPost('influencerid17');
+        $miInflue=$influencer->find($id);
 
         $idpago= $this->request->getPost('pagonew');
-        
-        if($pagosInfluencer->insert(['idinfluencer'=>$id,'idpago'=>$idpago])!=null){
 
-            return redirect()->to("/influencer/edit/$id")->with('mensaje', 'Tu Pago se actualizó con exito');
-  
-        }
+        if($idpago!=null){
+        
+            if($pagosInfluencer->insert(['idinfluencer'=>$id,'idpago'=>$idpago])!=null){
+
+                return redirect()->to("/influencer/edit/".$miInflue['alias'])->with('mensaje', 'Tu método de pago se actualizó con éxito');
     
-        return redirect()->to("/influencer/edit/$id")->with('mensaje', 'ocurrió un error al actualizar tu pago');
+            }
+        }
+        return redirect()->to("/influencer/edit/".$miInflue['alias'])->with('mensaje', 'ocurrió un error al actualizar tu método de pago');
     }
 
     public function editarOferta(){
@@ -1519,6 +1604,7 @@ public function enviarMensajeContactanos(){
 
         $oferta=$this->request->getPost('promocion');
         $id=$this->request->getPost('influencerid19');
+        $miInflue=$influencer->find($id);
 
         $data=[
             'oferta'=>$oferta
@@ -1526,12 +1612,40 @@ public function enviarMensajeContactanos(){
 
         if($influencer->update($id,$data)!=null){
 
-            return redirect()->to("/influencer/edit/$id")->with('mensaje', 'Tus oferta se actualizó con exito');
+            return redirect()->to("/influencer/edit/".$miInflue['alias'])->with('mensaje', 'Tus oferta se actualizó con éxito');
             
         }
     
-        return redirect()->to("/influencer/edit/$id")->with('mensaje', 'ocurrió un error al actualizar tu oferta');
+        return redirect()->to("/influencer/edit/".$miInflue['alias'])->with('mensaje', 'Ocurrió un error al actualizar tu oferta');
     }
+
+
+
+    public function eliminarMiCuenta()
+    {
+        session()->destroy();
+        
+        $idInfluencer= $this->request->getPost('eliminarinfluencermodal');
+        
+        $miInflu=new InfluencerModel();
+
+        $miInflu->delete($idInfluencer);
+        
+        return redirect()->to("/cuenta-eliminada")->with('mensaje', 'Se ha eliminado tu cuenta !');
+        
+    }
+
+
+    function cuenta_eliminada() {
+        $dataHeader =['titulo' => 'Cuenta eliminada',
+                'mensaje'=>"",];
+
+        echo view("influencer/templates/header",$dataHeader);
+        echo view("influencer/influencers/cuenta-eliminada");
+        echo view("influencer/templates/footerindex");
+    }
+
+
 
     function _validar_clave($clave,&$error_clave){
         if(strlen($clave) < 6){
@@ -1565,7 +1679,7 @@ public function enviarMensajeContactanos(){
         $correos=new MensajeCorreoModel();
                  
         $miInfluencer=$influencer->find($id);
-        $misCorreos=$correos->where(['idinfluencer'=>$id])->OrderBy('created_at','DESC')->findAll();
+        $misCorreos=$correos->where(['idinfluencer'=>$id])->where(['eliminado'=>1])->OrderBy('created_at','DESC')->findAll();
         //var_dump($misCorreos);
         
         session();
@@ -1590,8 +1704,9 @@ public function enviarMensajeContactanos(){
         $influencer=new InfluencerModel();
         $correos=new MensajeCorreoModel();
         $miInfluencer=$influencer->find($idinfluencer);
-        $correos->delete($id);
-        $misCorreos=$correos->where(['idinfluencer'=>$idinfluencer])->OrderBy('created_at','DESC')->findAll();
+        $correos->update($id,['eliminado'=>0]);
+        //$correos->delete($id);
+        $misCorreos=$correos->where(['idinfluencer'=>$idinfluencer])->where(['eliminado'=>1])->OrderBy('created_at','DESC')->findAll();
         //var_dump($misCorreos);
         
         session();
@@ -1643,446 +1758,395 @@ public function enviarMensajeContactanos(){
             $paso=$influencer->update($id,$data);
 
             $cuerpo = "<!DOCTYPE html>
-<html xmlns:v='urn:schemas-microsoft-com:vml' xmlns:o='urn:schemas-microsoft-com:office:office' lang='en'>
+            <html xmlns:v='urn:schemas-microsoft-com:vml' xmlns:o='urn:schemas-microsoft-com:office:office' lang='en'>
+            
+            <head>
+                <title></title>
+                <meta http-equiv='Content-Type' content='text/html; charset=utf-8'>
+                <meta name='viewport' content='width=device-width, initial-scale=1.0'><!--[if mso]><xml><o:OfficeDocumentSettings><o:PixelsPerInch>96</o:PixelsPerInch><o:AllowPNG/></o:OfficeDocumentSettings></xml><![endif]--><!--[if !mso]><!-->
+                <link href='https://fonts.googleapis.com/css2?family=Montserrat:wght@100;200;300;400;500;600;700;800;900' rel='stylesheet' type='text/css'><!--<![endif]-->
+                <style>
+                    * {
+                        box-sizing: border-box;
+                    }
+            
+                    body {
+                        margin: 0;
+                        padding: 0;
+                    }
+            
+                    a[x-apple-data-detectors] {
+                        color: inherit !important;
+                        text-decoration: inherit !important;
+                    }
+            
+                    #MessageViewBody a {
+                        color: inherit;
+                        text-decoration: none;
+                    }
+            
+                    p {
+                        line-height: inherit
+                    }
+            
+                    .desktop_hide,
+                    .desktop_hide table {
+                        mso-hide: all;
+                        display: none;
+                        max-height: 0px;
+                        overflow: hidden;
+                    }
+            
+                    .image_block img+div {
+                        display: none;
+                    }
+            
+                    @media (max-width:768px) {
+                        .desktop_hide table.icons-inner {
+                            display: inline-block !important;
+                        }
 
-<head>
-	<title></title>
-	<meta http-equiv='Content-Type' content='text/html; charset=utf-8'>
-	<meta name='viewport' content='width=device-width, initial-scale=1.0'>
-	<!--[if mso]><xml><o:OfficeDocumentSettings><o:PixelsPerInch>96</o:PixelsPerInch><o:AllowPNG/></o:OfficeDocumentSettings></xml><![endif]-->
-	<!--[if !mso]><!-->
-	<link href='https://fonts.googleapis.com/css?family=Montserrat' rel='stylesheet' type='text/css'>
-	<!--<![endif]-->
-	<style>
-		* {
-			box-sizing: border-box;
-		}
-
-		body {
-			margin: 0;
-			padding: 0;
-		}
-
-		a[x-apple-data-detectors] {
-			color: inherit !important;
-			text-decoration: inherit !important;
-		}
-
-		#MessageViewBody a {
-			color: inherit;
-			text-decoration: none;
-		}
-
-		p {
-			line-height: inherit
-		}
-
-		.desktop_hide,
-		.desktop_hide table {
-			mso-hide: all;
-			display: none;
-			max-height: 0px;
-			overflow: hidden;
-		}
-
-        .font_mont {
-			font-family: 'Montserrat';
-		}
-
-		@media (max-width:820px) {
-			.social_block.desktop_hide .social-table {
-				display: inline-block !important;
-			}
-
-			.row-content {
-				width: 100% !important;
-			}
-
-			.mobile_hide {
-				display: none;
-			}
-
-			.stack .column {
-				width: 100%;
-				display: block;
-			}
-
-			.mobile_hide {
-				min-height: 0;
-				max-height: 0;
-				max-width: 0;
-				overflow: hidden;
-				font-size: 0px;
-			}
-
-			.desktop_hide,
-			.desktop_hide table {
-				display: table !important;
-				max-height: none !important;
-			}
-		}
-
-		@media (max-width:768px) {
-
-			.row-3 .column-1 .block-2.paragraph_block td.pad>div,
-			.row-3 .column-1 .block-5.paragraph_block td.pad>div,
-			.row-3 .column-1 .block-8.paragraph_block td.pad>div {
-				text-align: justify !important;
-				font-size: 16px !important;
-			}
-
-			.row-3 .column-1 .block-2.paragraph_block td.pad,
-			.row-3 .column-1 .block-5.paragraph_block td.pad,
-			.row-3 .column-1 .block-8.paragraph_block td.pad,
-			.row-5 .column-1 .block-1.social_block td.pad {
-				padding: 0 30px !important;
-			}
-
-			.row-3 .column-1 .block-1.paragraph_block td.pad>div {
-				text-align: center !important;
-				font-size: 20px !important;
-			}
-
-			.row-3 .column-1 .block-1.paragraph_block td.pad {
-				padding: 0 30px 10px !important;
-			}
-
-			.row-2 .column-1 .block-4.heading_block td.pad {
-				padding: 10px 30px !important;
-			}
-
-			.row-2 .column-1 .block-4.heading_block h1 {
-				font-size: 22px !important;
-			}
-
-			.row-1 .column-1 .block-1.image_block td.pad {
-				padding: 15px 0 0 !important;
-			}
-
-			.row-1 .column-1 .block-1.image_block img,
-			.row-6 .column-1 .block-2.button_block .alignment div,
-			.row-6 .column-2 .block-2.button_block .alignment div {
-				display: inline-block !important;
-			}
-
-			.row-1 .column-1 .block-1.image_block .alignment,
-			.row-6 .column-1 .block-2.button_block .alignment,
-			.row-6 .column-2 .block-2.button_block .alignment {
-				text-align: center !important;
-			}
-
-			.row-6 .column-1 .block-2.button_block a span,
-			.row-6 .column-1 .block-2.button_block div,
-			.row-6 .column-1 .block-2.button_block div span,
-			.row-6 .column-2 .block-2.button_block a span,
-			.row-6 .column-2 .block-2.button_block div,
-			.row-6 .column-2 .block-2.button_block div span {
-				line-height: 2 !important;
-			}
-		}
-	</style>
-</head>
-
-<body style='background-color: transparent; margin: 0; padding: 0; -webkit-text-size-adjust: none; text-size-adjust: none;'>
-	<table class='nl-container' width='100%' border='0' cellpadding='0' cellspacing='0' role='presentation' style='mso-table-lspace: 0pt; mso-table-rspace: 0pt; background-color: transparent;'>
-		<tbody>
-			<tr>
-				<td>
-					<table class='row row-1' align='center' width='100%' border='0' cellpadding='0' cellspacing='0' role='presentation' style='mso-table-lspace: 0pt; mso-table-rspace: 0pt; background-color: #e8e5ec;'>
-						<tbody>
-							<tr>
-								<td>
-									<table class='row-content stack' align='center' border='0' cellpadding='0' cellspacing='0' role='presentation' style='mso-table-lspace: 0pt; mso-table-rspace: 0pt; background-color: #ffffff; border-radius: 0; color: #000000; width: 800px;' width='800'>
-										<tbody>
-											<tr>
-												<td class='column column-1' width='100%' style='mso-table-lspace: 0pt; mso-table-rspace: 0pt; font-weight: 400; text-align: left; vertical-align: top; padding-top: 0px; padding-bottom: 0px; border-top: 0px; border-right: 0px; border-bottom: 0px; border-left: 0px;'>
-													<table class='image_block block-1' width='100%' border='0' cellpadding='0' cellspacing='0' role='presentation' style='mso-table-lspace: 0pt; mso-table-rspace: 0pt;'>
-														<tr>
-															<td class='pad' style='padding-left:60px;padding-top:20px;width:100%;padding-right:0px;'>
-																<div class='alignment' align='left' style='line-height:10px'><img src='".base_url()."/public/img/verificacion/logo-binf.png' style='display: block; height: auto; border: 0; width: 160px; max-width: 100%;' width='160' alt='Logo Binf' title='Logo Binf'></div>
-															</td>
-														</tr>
-													</table>
-												</td>
-											</tr>
-										</tbody>
-									</table>
-								</td>
-							</tr>
-						</tbody>
-					</table>
-					<table class='row row-2' align='center' width='100%' border='0' cellpadding='0' cellspacing='0' role='presentation' style='mso-table-lspace: 0pt; mso-table-rspace: 0pt; background-color: #e8e5ec;'>
-						<tbody>
-							<tr>
-								<td>
-									<table class='row-content stack' align='center' border='0' cellpadding='0' cellspacing='0' role='presentation' style='mso-table-lspace: 0pt; mso-table-rspace: 0pt; background-color: #ffffff; color: #000000; width: 800px;' width='800'>
-										<tbody>
-											<tr>
-												<td class='column column-1' width='100%' style='mso-table-lspace: 0pt; mso-table-rspace: 0pt; font-weight: 400; text-align: left; vertical-align: top; padding-bottom: 5px; border-top: 0px; border-right: 0px; border-bottom: 0px; border-left: 0px;'>
-													<div class='spacer_block' style='height:5px;line-height:5px;font-size:1px;'>&#8202;</div>
-													<div class='spacer_block mobile_hide' style='height:25px;line-height:25px;font-size:1px;'>&#8202;</div>
-													<div class='spacer_block desktop_hide' style='mso-hide: all; display: none; max-height: 0; overflow: hidden; height: 25px; line-height: 25px; font-size: 1px;'>&#8202;</div>
-													<table class='heading_block block-4' width='100%' border='0' cellpadding='0' cellspacing='0' role='presentation' style='mso-table-lspace: 0pt; mso-table-rspace: 0pt;'>
-														<tr>
-															<td class='pad font_mont' style='padding-bottom:10px;padding-top:10px;text-align:center;width:100%;'>
-																<h1 style='margin: 0; color: #1d1d1b; direction: ltr; font-size: 32px; font-weight: 700; letter-spacing: normal; line-height: 120%; text-align: center; margin-top: 0; margin-bottom: 0;'><span class='tinyMce-placeholder'>Restablece tu contraseña</span></h1>
-															</td>
-														</tr>
-													</table>
-													<table class='divider_block block-5' width='100%' border='0' cellpadding='10' cellspacing='0' role='presentation' style='mso-table-lspace: 0pt; mso-table-rspace: 0pt;'>
-														<tr>
-															<td class='pad'>
-																<div class='alignment' align='center'>
-																	<table border='0' cellpadding='0' cellspacing='0' role='presentation' width='70%' style='mso-table-lspace: 0pt; mso-table-rspace: 0pt;'>
-																		<tr>
-																			<td class='divider_inner' style='font-size: 1px; line-height: 1px; border-top: 7px solid #1D1D1B;'><span>&#8202;</span></td>
-																		</tr>
-																	</table>
-																</div>
-															</td>
-														</tr>
-													</table>
-												</td>
-											</tr>
-										</tbody>
-									</table>
-								</td>
-							</tr>
-						</tbody>
-					</table>
-					<table class='row row-3' align='center' width='100%' border='0' cellpadding='0' cellspacing='0' role='presentation' style='mso-table-lspace: 0pt; mso-table-rspace: 0pt; background-color: #e8e5ec;'>
-						<tbody>
-							<tr>
-								<td>
-									<table class='row-content stack' align='center' border='0' cellpadding='0' cellspacing='0' role='presentation' style='mso-table-lspace: 0pt; mso-table-rspace: 0pt; background-color: #ffffff; color: #000000; width: 800px;' width='800'>
-										<tbody>
-											<tr>
-												<td class='column column-1' width='100%' style='mso-table-lspace: 0pt; mso-table-rspace: 0pt; font-weight: 400; text-align: left; vertical-align: top; padding-top: 5px; padding-bottom: 5px; border-top: 0px; border-right: 0px; border-bottom: 0px; border-left: 0px;'>
-													
-                                                    <table class='paragraph_block block-1' width='100%' border='0' cellpadding='0' cellspacing='0' role='presentation' style='mso-table-lspace: 0pt; mso-table-rspace: 0pt; word-break: break-word;'>
-														<tr>
-															<td class='pad' style='padding-bottom:15px;padding-left:60px;padding-right:60px;'>
-																<div style='color:#000000;direction:ltr;font-family:Arial, Helvetica Neue, Helvetica, sans-serif;font-size:24px;font-weight:700;letter-spacing:0px;line-height:180%;text-align:center;mso-line-height-alt:43.2px;'>
-																	<p style='margin: 0;'>Hola ".$influ["nombreinflu"]."</p>
-																</div>
-															</td>
-														</tr>
-													</table>
-                                                    
-													<table class='paragraph_block block-2' width='100%' border='0' cellpadding='0' cellspacing='0' role='presentation' style='mso-table-lspace: 0pt; mso-table-rspace: 0pt; word-break: break-word;'>
-														<tr>
-															<td class='pad' style='padding-left:60px;padding-right:60px;'>
-																<div style='color:#726f70;direction:ltr;font-family:Arial, Helvetica Neue, Helvetica, sans-serif;font-size:16px;font-weight:400;letter-spacing:0px;line-height:180%;text-align:center;mso-line-height-alt:28.8px;'>
-																	<p style='margin: 0;'>
-																		<br>Hemos recibido una solicitud para restablecer tu contraseña. Para continuar haz clic en el siguiente botón para restablecer tu contraseña<br>
-																	</p>
-
-																</div>
-															</td>
-														</tr>
-													</table>
-
-
-													
-
-													<div class='spacer_block desktop_hide' style='mso-hide: all; display: none; max-height: 0; overflow: hidden; height: 40px; line-height: 40px; font-size: 1px;'>&#8202;</div>
-													<div class='spacer_block mobile_hide' style='height:40px;line-height:40px;font-size:1px;'>&#8202;</div>
-
-													<table class='paragraph_block block-8' width='100%' border='0' cellpadding='0' cellspacing='0' role='presentation' style='mso-table-lspace: 0pt; mso-table-rspace: 0pt; word-break: break-word;'>
-														<tr>
-                                                            <td class='column column-1' style='mso-table-lspace: 0pt; mso-table-rspace: 0pt; font-weight: 400; text-align: left; padding-bottom: 5px; padding-top: 5px; vertical-align: top; border-top: 0px; border-right: 0px; border-bottom: 0px; border-left: 0px;' width='100%'>
-                                                            <table border='0' cellpadding='10' cellspacing='0' class='button_block block-1' role='presentation' style='mso-table-lspace: 0pt; mso-table-rspace: 0pt;' width='100%'>
-                                                            <tr>
-                                                            <td class='pad'>
-                                                            	<a href='".base_url()."/respassword/".$tokens."/".$influ["idinfluencer"]."'>
-                                                            <div align='center' class='alignment'><!--[if mso]><v:roundrect xmlns:v='urn:schemas-microsoft-com:vml' xmlns:w='urn:schemas-microsoft-com:office:word' style='height:50px;width:188px;v-text-anchor:middle;' arcsize='8%' stroke='false' fillcolor='#000000'><w:anchorlock/><v:textbox inset='0px,0px,0px,0px'><center style='color:#ffffff; font-family:Arial, sans-serif; font-size:20px'><![endif]-->
-                                                            <div style='text-decoration:none;display:inline-block;color:#ffffff;background-color:#000000;border-radius:4px;width:auto;border-top:0px solid transparent;font-weight:700;border-right:0px solid transparent;border-bottom:0px solid transparent;border-left:0px solid transparent;padding-top:5px;padding-bottom:5px;font-family:Arial, Helvetica, sans-serif;font-size:20px;text-align:center;mso-border-alt:none;word-break:keep-all;'><span style='padding-left:20px;padding-right:20px;font-size:20px;display:inline-block;letter-spacing:normal;'><span dir='ltr' style='word-break: break-word; line-height: 40px;'>Restablecer contraseña</span></span></div><!--[if mso]></center></v:textbox></v:roundrect><![endif]-->
-                                                            </div>
+                        u + #body a {
+                            color: inherit !important;
+                            text-decoration: none !important;
+                            font-size: inherit !important;
+                            font-family: inherit !important;
+                            font-weight: inherit !important;
+                            line-height: inherit !important;
+                            }
+            
+                        .icons-inner {
+                            text-align: center;
+                        }
+            
+                        .icons-inner td {
+                            margin: 0 auto;
+                        }
+            
+                        .mobile_hide {
+                            display: none;
+                        }
+            
+                        .row-content {
+                            width: 100% !important;
+                        }
+            
+                        .stack .column {
+                            width: 100%;
+                            display: block;
+                        }
+            
+                        .mobile_hide {
+                            min-height: 0;
+                            max-height: 0;
+                            max-width: 0;
+                            overflow: hidden;
+                            font-size: 0px;
+                        }
+            
+                        .desktop_hide,
+                        .desktop_hide table {
+                            display: table !important;
+                            max-height: none !important;
+                        }
+            
+                        .row-2 .column-1 .block-1.heading_block h1,
+                        .row-5 .column-1 .block-1.paragraph_block td.pad>div,
+                        .row-5 .column-2 .block-1.paragraph_block td.pad>div {
+                            text-align: center !important;
+                        }
+            
+                        .row-2 .column-1 .block-1.heading_block h1 {
+                            font-size: 22px !important;
+                        }
+            
+                        .row-2 .column-1 .block-3.heading_block h2 {
+                            font-size: 19px !important;
+                        }
+            
+                        .row-2 .column-1 .block-4.paragraph_block td.pad>div,
+                        .row-2 .column-1 .block-8.paragraph_block td.pad>div {
+                            text-align: left !important;
+                            font-size: 15px !important;
+                        }
+            
+                        .row-2 .column-1 {
+                            padding: 20px 5px 15px !important;
+                        }
+            
+                        .row-4 .column-1 {
+                            padding: 0 5px !important;
+                        }
+                    }
+                </style>
+            </head>
+            
+            <body id='body' style='background-color: #f9f9f9; margin: 0; padding: 0; -webkit-text-size-adjust: none; text-size-adjust: none;'>
+                <table class='nl-container' width='100%' border='0' cellpadding='0' cellspacing='0' role='presentation' style='mso-table-lspace: 0pt; mso-table-rspace: 0pt; background-color: #f9f9f9;'>
+                    <tbody>
+                        <tr>
+                            <td>
+                                <table class='row row-1' align='center' width='100%' border='0' cellpadding='0' cellspacing='0' role='presentation' style='mso-table-lspace: 0pt; mso-table-rspace: 0pt;'>
+                                    <tbody>
+                                        <tr>
+                                            <td>
+                                                <table class='row-content stack' align='center' border='0' cellpadding='0' cellspacing='0' role='presentation' style='mso-table-lspace: 0pt; mso-table-rspace: 0pt; color: #000000; width: 800.00px; margin: 0 auto;' width='800.00'>
+                                                    <tbody>
+                                                        <tr>
+                                                            <td class='column column-1' width='100%' style='mso-table-lspace: 0pt; mso-table-rspace: 0pt; font-weight: 400; text-align: left; background-color: #ffffff; padding-top: 25px; vertical-align: top; border-top: 0px; border-right: 0px; border-bottom: 0px; border-left: 0px;'>
+                                                                <table class='image_block block-1' width='100%' border='0' cellpadding='0' cellspacing='0' role='presentation' style='mso-table-lspace: 0pt; mso-table-rspace: 0pt;'>
+                                                                    <tr>
+                                                                        <td class='pad' style='width:100%;padding-right:0px;padding-left:0px;'>
+                                                                            <div class='alignment' align='center' style='line-height:10px'>
+                                                                                <div style='max-width: 140px;'><a href='https://buscoinfluencers.com/' target='_blank' style='outline:none' tabindex='-1'><img src='".base_url()."/public/img/verificacion/logo-binf.png' style='display: block; height: auto; border: 0; width: 100%;' width='140' alt='Logo Binf' title='Logo Binf'></a></div>
+                                                                            </div>
+                                                                        </td>
+                                                                    </tr>
+                                                                </table>
                                                             </td>
-                                                            </a>
-                                                            </tr>
-                                                            </table>
+                                                        </tr>
+                                                    </tbody>
+                                                </table>
+                                            </td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                                <table class='row row-2' align='center' width='100%' border='0' cellpadding='0' cellspacing='0' role='presentation' style='mso-table-lspace: 0pt; mso-table-rspace: 0pt;'>
+                                    <tbody>
+                                        <tr>
+                                            <td>
+                                                <table class='row-content stack' align='center' border='0' cellpadding='0' cellspacing='0' role='presentation' style='mso-table-lspace: 0pt; mso-table-rspace: 0pt; border-radius: 0; color: #000000; width: 800.00px; margin: 0 auto;' width='800.00'>
+                                                    <tbody>
+                                                        <tr>
+                                                            <td class='column column-1' width='100%' style='mso-table-lspace: 0pt; mso-table-rspace: 0pt; font-weight: 400; text-align: left; background-color: #ffffff; padding-bottom: 15px; padding-left: 60px; padding-right: 60px; padding-top: 20px; vertical-align: top; border-top: 0px; border-right: 0px; border-bottom: 0px; border-left: 0px;'>
+                                                                <table class='heading_block block-1' width='100%' border='0' cellpadding='10' cellspacing='0' role='presentation' style='mso-table-lspace: 0pt; mso-table-rspace: 0pt;'>
+                                                                    <tr>
+                                                                        <td class='pad'>
+                                                                            <h1 style='margin: 0; color: #000000; direction: ltr; font-family: Montserrat, Trebuchet MS, Lucida Grande, Lucida Sans Unicode, Lucida Sans, Tahoma, sans-serif; font-size: 38px; font-weight: 900; letter-spacing: normal; line-height: 120%; text-align: center; margin-top: 0; margin-bottom: 0; mso-line-height-alt: 45.6px;'><em><span class='tinyMce-placeholder'>Restablece tu contraseña</span></em></h1>
+                                                                        </td>
+                                                                    </tr>
+                                                                </table>
+                                                                <table class='divider_block block-2' width='100%' border='0' cellpadding='10' cellspacing='0' role='presentation' style='mso-table-lspace: 0pt; mso-table-rspace: 0pt;'>
+                                                                    <tr>
+                                                                        <td class='pad'>
+                                                                            <div class='alignment' align='center'>
+                                                                                <table border='0' cellpadding='0' cellspacing='0' role='presentation' width='80%' style='mso-table-lspace: 0pt; mso-table-rspace: 0pt;'>
+                                                                                    <tr>
+                                                                                        <td class='divider_inner' style='font-size: 1px; line-height: 1px; border-top: 5px solid #000000;'><span>&#8202;</span></td>
+                                                                                    </tr>
+                                                                                </table>
+                                                                            </div>
+                                                                        </td>
+                                                                    </tr>
+                                                                </table>
+                                                                <table class='heading_block block-3' width='100%' border='0' cellpadding='0' cellspacing='0' role='presentation' style='mso-table-lspace: 0pt; mso-table-rspace: 0pt;'>
+                                                                    <tr>
+                                                                        <td class='pad' style='padding-bottom:15px;padding-left:10px;padding-right:10px;padding-top:10px;text-align:center;width:100%;'>
+                                                                            <h2 style='margin: 0; color: #000000; direction: ltr; font-family: Montserrat, Trebuchet MS, Lucida Grande, Lucida Sans Unicode, Lucida Sans, Tahoma, sans-serif; font-size: 24px; font-weight: 800; letter-spacing: normal; line-height: 120%; text-align: center; margin-top: 0; margin-bottom: 0; mso-line-height-alt: 28.799999999999997px;'><span class='tinyMce-placeholder'>Hola ".$influ["nombreinflu"]."</span></h2>
+                                                                        </td>
+                                                                    </tr>
+                                                                </table>
+                                                                <table class='paragraph_block block-4' width='100%' border='0' cellpadding='10' cellspacing='0' role='presentation' style='mso-table-lspace: 0pt; mso-table-rspace: 0pt; word-break: break-word;'>
+                                                                    <tr>
+                                                                        <td class='pad'>
+                                                                            <div style='color:#726f70;direction:ltr;font-family:Arial, Helvetica Neue, Helvetica, sans-serif;font-size:16px;font-weight:400;letter-spacing:0px;line-height:180%;text-align:center;mso-line-height-alt:28.8px;'>
+                                                                                <p style='margin: 0;'>Hemos recibido una solicitud para restablecer tu contraseña. Para continuar haz clic en el siguiente botón para restablecer tu contraseña:</p>
+                                                                            </div>
+                                                                        </td>
+                                                                    </tr>
+                                                                </table>
+                                                                <div class='spacer_block block-5' style='height:25px;line-height:25px;font-size:1px;'>&#8202;</div>
+                                                                <table class='image_block block-6' width='100%' border='0' cellpadding='0' cellspacing='0' role='presentation' style='mso-table-lspace: 0pt; mso-table-rspace: 0pt;'>
+                                                                    <tr>
+                                                                        <td class='pad' style='width:100%;'>
+                                                                            <div class='alignment' align='center' style='line-height:10px'>
+                                                                                <div style='max-width: 282px;'><a href='".base_url()."/respassword/".$tokens."/".$influ["idinfluencer"]."' target='_blank' style='outline:none' tabindex='-1'><img src='".base_url()."/public/img/verificacion/btn-restablecer-clave.png' style='display: block; height: auto; border: 0; width: 100%;' width='282' alt='Restablece tu contraseña' title='Restablece tu contraseña'></a></div>
+                                                                            </div>
+                                                                        </td>
+                                                                    </tr>
+                                                                </table>
+                                                                <div class='spacer_block block-7' style='height:45px;line-height:45px;font-size:1px;'>&#8202;</div>
+                                                                <table class='paragraph_block block-8' width='100%' border='0' cellpadding='10' cellspacing='0' role='presentation' style='mso-table-lspace: 0pt; mso-table-rspace: 0pt; word-break: break-word;'>
+                                                                    <tr>
+                                                                        <td class='pad'>
+                                                                            <div style='color:#726f70;direction:ltr;font-family:Arial, Helvetica Neue, Helvetica, sans-serif;font-size:16px;font-weight:400;letter-spacing:0px;line-height:180%;text-align:center;mso-line-height-alt:28.8px;'>
+                                                                                <p style='margin: 0;'>Si no realizaste esta solicitud, no se requiere realizar ninguna otra acción.<br>En caso que necesites asistencia, escríbenos en nuestras redes sociales o contáctanos directamente.</p>
+                                                                            </div>
+                                                                        </td>
+                                                                    </tr>
+                                                                </table>
                                                             </td>
-                                                            </tr>
-													</table>
-
-													<div class='spacer_block desktop_hide' style='mso-hide: all; display: none; max-height: 0; overflow: hidden; height: 40px; line-height: 40px; font-size: 1px;'>&#8202;</div>
-													<div class='spacer_block mobile_hide' style='height:40px;line-height:40px;font-size:1px;'>&#8202;</div>
-
-													<table class='paragraph_block block-5' width='100%' border='0' cellpadding='0' cellspacing='0' role='presentation' style='mso-table-lspace: 0pt; mso-table-rspace: 0pt; word-break: break-word;'>
-														<tr>
-															<td class='pad' style='padding-left:60px;padding-right:60px;'>
-																<div style='color:#726f70;direction:ltr;font-family:Arial, Helvetica Neue, Helvetica, sans-serif;font-size:16px;font-weight:400;letter-spacing:0px;line-height:180%;text-align:center;mso-line-height-alt:28.8px;'>
-																	<p style='margin: 0;'>Si no realizaste esta solicitud, no se requiere realizar ninguna otra acción. <br>En caso que necesites asistencia, escribenos en nuestras redes sociales o contactanos directamente.</p>
-																</div>
-															</td>
-														</tr>
-													</table>
-													
-													
-												</td>
-											</tr>
-										</tbody>
-									</table>
-								</td>
-							</tr>
-						</tbody>
-					</table>
-					<table class='row row-4' align='center' width='100%' border='0' cellpadding='0' cellspacing='0' role='presentation' style='mso-table-lspace: 0pt; mso-table-rspace: 0pt; background-color: #e8e5ec;'>
-						<tbody>
-							<tr>
-								<td>
-									<table class='row-content stack' align='center' border='0' cellpadding='0' cellspacing='0' role='presentation' style='mso-table-lspace: 0pt; mso-table-rspace: 0pt; background-color: #ffffff; color: #000000; width: 800px;' width='800'>
-										<tbody>
-											<tr>
-												<td class='column column-1' width='100%' style='mso-table-lspace: 0pt; mso-table-rspace: 0pt; font-weight: 400; text-align: left; vertical-align: top; border-top: 0px; border-right: 0px; border-bottom: 0px; border-left: 0px;'>
-													<div class='spacer_block' style='height:5px;line-height:5px;font-size:1px;'>&#8202;</div>
-													<div class='spacer_block desktop_hide' style='mso-hide: all; display: none; max-height: 0; overflow: hidden; height: 50px; line-height: 50px; font-size: 1px;'>&#8202;</div>
-													<div class='spacer_block mobile_hide' style='height:100px;line-height:100px;font-size:1px;'>&#8202;</div>
-													<div class='spacer_block' style='height:5px;line-height:5px;font-size:1px;'>&#8202;</div>
-												</td>
-											</tr>
-										</tbody>
-									</table>
-								</td>
-							</tr>
-						</tbody>
-					</table>
-					<table class='row row-5' align='center' width='100%' border='0' cellpadding='0' cellspacing='0' role='presentation' style='mso-table-lspace: 0pt; mso-table-rspace: 0pt; background-color: #e8e5ec;'>
-						<tbody>
-							<tr>
-								<td>
-									<table class='row-content stack' align='center' border='0' cellpadding='0' cellspacing='0' role='presentation' style='mso-table-lspace: 0pt; mso-table-rspace: 0pt; background-color: #ffffff; color: #000000; width: 800px;' width='800'>
-										<tbody>
-											<tr>
-												<td class='column column-1' width='100%' style='mso-table-lspace: 0pt; mso-table-rspace: 0pt; font-weight: 400; text-align: left; vertical-align: top; padding-top: 5px; padding-bottom: 5px; border-top: 0px; border-right: 0px; border-bottom: 0px; border-left: 0px;'>
-													<table class='social_block block-1' width='100%' border='0' cellpadding='0' cellspacing='0' role='presentation' style='mso-table-lspace: 0pt; mso-table-rspace: 0pt;'>
-														<tr>
-															<td class='pad' style='text-align:center;padding-right:0px;padding-left:0px;'>
-																<div class='alignment' align='center'>
-																	<table class='social-table' width='137.98228128460687px' border='0' cellpadding='0' cellspacing='0' role='presentation' style='mso-table-lspace: 0pt; mso-table-rspace: 0pt; display: inline-block;'>
-																		<tr>
-																			<td style='padding:0 7px 0 7px;'><a href='https://www.instagram.com/buscoinfluencers/' target='_blank'><img src='".base_url()."/public/img/verificacion/instagram.png' width='31.238095238095237' height='32' alt='Instagram' title='Instagram' style='display: block; height: auto; border: 0;'></a></td>
-																			<td style='padding:0 7px 0 7px;'><a href='https://wa.link/d17wli' target='_blank'><img src='".base_url()."/public/img/verificacion/whatsapp.png' width='32.74418604651163' height='32' alt='Whatsapp' title='Whats app' style='display: block; height: auto; border: 0;'></a></td>
-																			<td style='padding:0 7px 0 7px;'><a href='https://wa.link/d17wli' target='_blank'><img src='".base_url()."/public/img/verificacion/tiktok.png' width='32' height='32' alt='Tiktok' title='Tiktok' style='display: block; height: auto; border: 0;'></a></td>
-																		</tr>
-																	</table>
-																</div>
-															</td>
-														</tr>
-													</table>
-													<table class='paragraph_block block-2' width='100%' border='0' cellpadding='0' cellspacing='0' role='presentation' style='mso-table-lspace: 0pt; mso-table-rspace: 0pt; word-break: break-word;'>
-														<tr>
-															<td class='pad' style='padding-left:60px;padding-right:60px;padding-top:15px;'>
-																<div style='color:#979ca2;direction:ltr;font-family:Arial, Helvetica Neue, Helvetica, sans-serif;font-size:14px;font-weight:400;letter-spacing:0px;line-height:180%;text-align:center;mso-line-height-alt:25.2px;'>
-																	<p style='margin: 0;'>Este correo electrónico fue enviado por:<br>WD Studios Corporation SAS. Cra 101 # 12A bis-70, Cali, Colombia.<br>Teléfonos: (2) 405 9935 &nbsp;/ &nbsp;Móvil: 316 7627511</p>
-																</div>
-															</td>
-														</tr>
-													</table>
-													<table class='paragraph_block block-4' width='100%' border='0' cellpadding='0' cellspacing='0' role='presentation' style='mso-table-lspace: 0pt; mso-table-rspace: 0pt; word-break: break-word;'>
-														<tr>
-															<td class='pad' style='padding-left:60px;padding-right:60px;padding-top:25px;'>
-																<div style='color:#979ca2;direction:ltr;font-family:Arial, Helvetica Neue, Helvetica, sans-serif;font-size:14px;font-weight:400;letter-spacing:0px;line-height:150%;text-align:center;mso-line-height-alt:21px;'>
-																	<p style='margin: 0;'>Este mensaje ha sido verificado con herramientas de eliminación de virus y contenido malicioso. Si tiene algún&nbsp;inconveniente con la información recibida comuníquese con nosotros vía telefónica o respondamos este mismo correo. Recomendamos agregarnos a sus contactos para mantener una comunicación más efectiva.</p>
-																</div>
-															</td>
-														</tr>
-													</table>
-													<table class='divider_block block-5' width='100%' border='0' cellpadding='10' cellspacing='0' role='presentation' style='mso-table-lspace: 0pt; mso-table-rspace: 0pt;'>
-														<tr>
-															<td class='pad'>
-																<div class='alignment' align='center'>
-																	<table border='0' cellpadding='0' cellspacing='0' role='presentation' width='70%' style='mso-table-lspace: 0pt; mso-table-rspace: 0pt;'>
-																		<tr>
-																			<td class='divider_inner' style='font-size: 1px; line-height: 1px; border-top: 2px solid #979CA2;'><span>&#8202;</span></td>
-																		</tr>
-																	</table>
-																</div>
-															</td>
-														</tr>
-													</table>
-												</td>
-											</tr>
-										</tbody>
-									</table>
-								</td>
-							</tr>
-						</tbody>
-					</table>
-					<table class='row row-6' align='center' width='100%' border='0' cellpadding='0' cellspacing='0' role='presentation' style='mso-table-lspace: 0pt; mso-table-rspace: 0pt; background-color: #e8e5ec;'>
-						<tbody>
-							<tr>
-								<td>
-									<table class='row-content stack' align='center' border='0' cellpadding='0' cellspacing='0' role='presentation' style='mso-table-lspace: 0pt; mso-table-rspace: 0pt; background-color: #ffffff; border-radius: 0; color: #000000; width: 800px;' width='800'>
-										<tbody>
-											<tr>
-												<td class='column column-1' width='50%' style='mso-table-lspace: 0pt; mso-table-rspace: 0pt; font-weight: 400; text-align: left; vertical-align: middle; border-top: 0px; border-right: 0px; border-bottom: 0px; border-left: 0px;'>
-													<table class='button_block block-2' width='100%' border='0' cellpadding='0' cellspacing='0' role='presentation' style='mso-table-lspace: 0pt; mso-table-rspace: 0pt;'>
-														<tr>
-															<td class='pad' style='text-align:right;padding-top:5px;padding-bottom:5px;'>
-																<div class='alignment' align='right'>
-																	<!--[if mso]><v:roundrect xmlns:v='urn:schemas-microsoft-com:vml' xmlns:w='urn:schemas-microsoft-com:office:word' href='https://www.buscoinfluencers.com/aviso-de-privacidad-2/' style='height:38px;width:173px;v-text-anchor:middle;' arcsize='11%' stroke='false' fill='false'><w:anchorlock/><v:textbox inset='0px,0px,0px,0px'><center style='color:#979ca2; font-family:Arial, sans-serif; font-size:14px'><![endif]--><a href='https://www.buscoinfluencers.com/aviso-de-privacidad-2/' target='_blank' style='text-decoration:none;display:inline-block;color:#979ca2;background-color:transparent;border-radius:4px;width:auto;border-top:0px solid transparent;font-weight:400;border-right:0px solid transparent;border-bottom:0px solid transparent;border-left:0px solid transparent;padding-top:5px;padding-bottom:5px;font-family:Arial, Helvetica Neue, Helvetica, sans-serif;font-size:14px;text-align:center;mso-border-alt:none;word-break:keep-all;'><span style='padding-left:20px;padding-right:20px;font-size:14px;display:inline-block;letter-spacing:normal;'><span dir='ltr' style='word-break: break-word; line-height: 28px;'>Política de privacidad</span></span></a>
-																	<!--[if mso]></center></v:textbox></v:roundrect><![endif]-->
-																</div>
-															</td>
-														</tr>
-													</table>
-												</td>
-												<td class='column column-2' width='50%' style='mso-table-lspace: 0pt; mso-table-rspace: 0pt; font-weight: 400; text-align: left; vertical-align: middle; border-top: 0px; border-right: 0px; border-bottom: 0px; border-left: 0px;'>
-													<table class='button_block block-2' width='100%' border='0' cellpadding='0' cellspacing='0' role='presentation' style='mso-table-lspace: 0pt; mso-table-rspace: 0pt;'>
-														<tr>
-															<td class='pad' style='text-align:left;padding-top:5px;padding-bottom:5px;'>
-																<div class='alignment' align='left'>
-																	<!--[if mso]><v:roundrect xmlns:v='urn:schemas-microsoft-com:vml' xmlns:w='urn:schemas-microsoft-com:office:word' href='https://www.buscoinfluencers.com/terminos-y-condiciones-2/' style='height:38px;width:187px;v-text-anchor:middle;' arcsize='11%' stroke='false' fill='false'><w:anchorlock/><v:textbox inset='0px,0px,0px,0px'><center style='color:#979ca2; font-family:Arial, sans-serif; font-size:14px'><![endif]--><a href='https://www.buscoinfluencers.com/terminos-y-condiciones-2/' target='_blank' style='text-decoration:none;display:inline-block;color:#979ca2;background-color:transparent;border-radius:4px;width:auto;border-top:0px solid transparent;font-weight:400;border-right:0px solid transparent;border-bottom:0px solid transparent;border-left:0px solid transparent;padding-top:5px;padding-bottom:5px;font-family:Arial, Helvetica Neue, Helvetica, sans-serif;font-size:14px;text-align:center;mso-border-alt:none;word-break:keep-all;'><span style='padding-left:20px;padding-right:20px;font-size:14px;display:inline-block;letter-spacing:normal;'><span dir='ltr' style='word-break: break-word; line-height: 28px;'>Términos y condiciones</span></span></a>
-																	<!--[if mso]></center></v:textbox></v:roundrect><![endif]-->
-																</div>
-															</td>
-														</tr>
-													</table>
-												</td>
-											</tr>
-										</tbody>
-									</table>
-								</td>
-							</tr>
-						</tbody>
-					</table>
-					<table class='row row-7' align='center' width='100%' border='0' cellpadding='0' cellspacing='0' role='presentation' style='mso-table-lspace: 0pt; mso-table-rspace: 0pt; background-color: #e8e5ec;'>
-						<tbody>
-							<tr>
-								<td>
-									<table class='row-content stack' align='center' border='0' cellpadding='0' cellspacing='0' role='presentation' style='mso-table-lspace: 0pt; mso-table-rspace: 0pt; background-color: #ffffff; border-radius: 0; color: #000000; width: 800px;' width='800'>
-										<tbody>
-											<tr>
-												<td class='column column-1' width='100%' style='mso-table-lspace: 0pt; mso-table-rspace: 0pt; font-weight: 400; text-align: left; vertical-align: middle; padding-top: 5px; padding-bottom: 5px; border-top: 0px; border-right: 0px; border-bottom: 0px; border-left: 0px;'>
-													<table class='icons_block block-1' width='100%' border='0' cellpadding='0' cellspacing='0' role='presentation' style='mso-table-lspace: 0pt; mso-table-rspace: 0pt;'>
-														<tr>
-															<td class='pad' style='vertical-align: middle; color: #000000; font-family: inherit; font-size: 14px; text-align: center; padding-bottom: 25px;'>
-																<table class='alignment' cellpadding='0' cellspacing='0' role='presentation' align='center' style='mso-table-lspace: 0pt; mso-table-rspace: 0pt;'>
-																	<tr>
-																		<td style='vertical-align: middle; text-align: center; padding-top: 5px; padding-bottom: 5px; padding-left: 5px; padding-right: 5px;'><img class='icon' src='".base_url()."/public/img/verificacion/wd-studios.png' alt='WD STUDIOS' height='32' width='62' align='center' style='display: block; height: auto; margin: 0 auto; border: 0;'></td>
-																	</tr>
-																</table>
-															</td>
-														</tr>
-													</table>
-												</td>
-											</tr>
-										</tbody>
-									</table>
-								</td>
-							</tr>
-						</tbody>
-					</table>
-				</td>
-			</tr>
-		</tbody>
-	</table><!-- End -->
-</body>
-
-</html>";
-            $asunto="Restablecimiento de Contraseña";
+                                                        </tr>
+                                                    </tbody>
+                                                </table>
+                                            </td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                                <table class='row row-3' align='center' width='100%' border='0' cellpadding='0' cellspacing='0' role='presentation' style='mso-table-lspace: 0pt; mso-table-rspace: 0pt;'>
+                                    <tbody>
+                                        <tr>
+                                            <td>
+                                                <table class='row-content' align='center' border='0' cellpadding='0' cellspacing='0' role='presentation' style='mso-table-lspace: 0pt; mso-table-rspace: 0pt; border-radius: 0; color: #000000; width: 800.00px; margin: 0 auto;' width='800.00'>
+                                                    <tbody>
+                                                        <tr>
+                                                            <td class='column column-1' width='46%' style='mso-table-lspace: 0pt; mso-table-rspace: 0pt; font-weight: 400; text-align: left; background-color: #ffffff; vertical-align: top; border-top: 0px; border-right: 0px; border-bottom: 0px; border-left: 0px;'>
+                                                                <table class='image_block block-1' width='100%' border='0' cellpadding='0' cellspacing='0' role='presentation' style='mso-table-lspace: 0pt; mso-table-rspace: 0pt;'>
+                                                                    <tr>
+                                                                        <td class='pad' style='padding-right:10px;width:100%;'>
+                                                                            <div class='alignment' align='right' style='line-height:10px'>
+                                                                                <div style='max-width: 27px;'><a href='https://www.instagram.com/buscoinfluencers/' target='_blank' style='outline:none' tabindex='-1'><img src='".base_url()."/public/img/verificacion/binf-ig.png' style='display: block; height: auto; border: 0; width: 100%;' width='27' alt='Binf - Instagram' title='Binf - Instagram'></a></div>
+                                                                            </div>
+                                                                        </td>
+                                                                    </tr>
+                                                                </table>
+                                                            </td>
+                                                            <td class='column column-1' width='8%' style='mso-table-lspace: 0pt; mso-table-rspace: 0pt; font-weight: 400; text-align: left; background-color: #ffffff; vertical-align: top; border-top: 0px; border-right: 0px; border-bottom: 0px; border-left: 0px;'>
+                                                                <table class='image_block block-1' width='100%' border='0' cellpadding='0' cellspacing='0' role='presentation' style='mso-table-lspace: 0pt; mso-table-rspace: 0pt;'>
+                                                                    <tr>
+                                                                        <td class='pad' style='width:100%;'>
+                                                                            <div class='alignment' align='center' style='line-height:10px'>
+                                                                                <div style='max-width: 27px;'><a href='https://wa.link/ipree3' target='_blank' style='outline:none' tabindex='-1'><img src='<?=base_url('public/img/verificacion/binf-wpp.png')?>' style='display: block; height: auto; border: 0; width: 100%;' width='27' alt='Binf - WhatsApp' title='Binf - WhatsApp'></a></div>
+                                                                            </div>
+                                                                        </td>
+                                                                    </tr>
+                                                                </table>
+                                                            </td>
+                                                            <td class='column column-2' width='46%' style='mso-table-lspace: 0pt; mso-table-rspace: 0pt; font-weight: 400; text-align: left; background-color: #ffffff; vertical-align: top; border-top: 0px; border-right: 0px; border-bottom: 0px; border-left: 0px;'>
+                                                                <table class='image_block block-1' width='100%' border='0' cellpadding='0' cellspacing='0' role='presentation' style='mso-table-lspace: 0pt; mso-table-rspace: 0pt;'>
+                                                                    <tr>
+                                                                        <td class='pad' style='padding-left:10px;width:100%;'>
+                                                                            <div class='alignment' align='left' style='line-height:10px'>
+                                                                                <div style='max-width: 27px;'><a href='https://www.tiktok.com/@binfluencers' target='_blank' style='outline:none' tabindex='-1'><img src='".base_url()."/public/img/verificacion/binf-tik-tok.png' style='display: block; height: auto; border: 0; width: 100%;' width='27' alt='Binf - TikTok' title='Binf - TikTok'></a></div>
+                                                                            </div>
+                                                                        </td>
+                                                                    </tr>
+                                                                </table>
+                                                            </td>
+                                                        </tr>
+                                                    </tbody>
+                                                </table>
+                                            </td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                                <table class='row row-4' align='center' width='100%' border='0' cellpadding='0' cellspacing='0' role='presentation' style='mso-table-lspace: 0pt; mso-table-rspace: 0pt;'>
+                                    <tbody>
+                                        <tr>
+                                            <td>
+                                                <table class='row-content stack' align='center' border='0' cellpadding='0' cellspacing='0' role='presentation' style='mso-table-lspace: 0pt; mso-table-rspace: 0pt; border-radius: 0; color: #000000; width: 800.00px; margin: 0 auto;' width='800.00'>
+                                                    <tbody>
+                                                        <tr>
+                                                            <td class='column column-1' width='100%' style='mso-table-lspace: 0pt; mso-table-rspace: 0pt; font-weight: 400; text-align: left; background-color: #ffffff; padding-left: 60px; padding-right: 60px; vertical-align: top; border-top: 0px; border-right: 0px; border-bottom: 0px; border-left: 0px;'>
+                                                                <table class='paragraph_block block-1' width='100%' border='0' cellpadding='0' cellspacing='0' role='presentation' style='mso-table-lspace: 0pt; mso-table-rspace: 0pt; word-break: break-word;'>
+                                                                    <tr>
+                                                                        <td class='pad' style='padding-bottom:10px;padding-left:10px;padding-right:10px;padding-top:15px;'>
+                                                                            <div style='color:#726f70;direction:ltr;font-family:Arial, Helvetica Neue, Helvetica, sans-serif;font-size:14px;font-weight:400;letter-spacing:0px;line-height:180%;text-align:center;mso-line-height-alt:25.2px;'>
+                                                                                <p style='margin: 0;'>Este correo electrónico fue enviado por:<br>WD Studios Corporation SAS. Cra 101 # 12A bis-70, Cali, Colombia.<br>Móvil: (318) 619-7481</p>
+                                                                            </div>
+                                                                        </td>
+                                                                    </tr>
+                                                                </table>
+                                                                <table class='paragraph_block block-2' width='100%' border='0' cellpadding='10' cellspacing='0' role='presentation' style='mso-table-lspace: 0pt; mso-table-rspace: 0pt; word-break: break-word;'>
+                                                                    <tr>
+                                                                        <td class='pad'>
+                                                                            <div style='color:#726f70;direction:ltr;font-family:Arial, Helvetica Neue, Helvetica, sans-serif;font-size:14px;font-weight:400;letter-spacing:0px;line-height:150%;text-align:center;mso-line-height-alt:21px;'>
+                                                                                <p style='margin: 0;'>Este mensaje ha sido verificado con herramientas de eliminación de virus y contenido malicioso. Si tiene algún&nbsp;inconveniente con la información recibida comuníquese con nosotros vía telefónica o respondamos este mismo correo. Recomendamos agregarnos a sus contactos para mantener una comunicación más efectiva.</p>
+                                                                            </div>
+                                                                        </td>
+                                                                    </tr>
+                                                                </table>
+                                                                <table class='divider_block block-3' width='100%' border='0' cellpadding='10' cellspacing='0' role='presentation' style='mso-table-lspace: 0pt; mso-table-rspace: 0pt;'>
+                                                                    <tr>
+                                                                        <td class='pad'>
+                                                                            <div class='alignment' align='center'>
+                                                                                <table border='0' cellpadding='0' cellspacing='0' role='presentation' width='85%' style='mso-table-lspace: 0pt; mso-table-rspace: 0pt;'>
+                                                                                    <tr>
+                                                                                        <td class='divider_inner' style='font-size: 1px; line-height: 1px; border-top: 2px solid #979CA2;'><span>&#8202;</span></td>
+                                                                                    </tr>
+                                                                                </table>
+                                                                            </div>
+                                                                        </td>
+                                                                    </tr>
+                                                                </table>
+                                                            </td>
+                                                        </tr>
+                                                    </tbody>
+                                                </table>
+                                            </td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                                <table class='row row-5' align='center' width='100%' border='0' cellpadding='0' cellspacing='0' role='presentation' style='mso-table-lspace: 0pt; mso-table-rspace: 0pt;'>
+                                    <tbody>
+                                        <tr>
+                                            <td>
+                                                <table class='row-content stack' align='center' border='0' cellpadding='0' cellspacing='0' role='presentation' style='mso-table-lspace: 0pt; mso-table-rspace: 0pt; border-radius: 0; color: #000000; width: 800.00px; margin: 0 auto;' width='800.00'>
+                                                    <tbody>
+                                                        <tr>
+                                                            <td class='column column-1' width='50%' style='mso-table-lspace: 0pt; mso-table-rspace: 0pt; font-weight: 400; text-align: left; background-color: #ffffff; padding-top: 10px; vertical-align: top; border-top: 0px; border-right: 0px; border-bottom: 0px; border-left: 0px;'>
+                                                                <table class='paragraph_block block-1' width='100%' border='0' cellpadding='0' cellspacing='0' role='presentation' style='mso-table-lspace: 0pt; mso-table-rspace: 0pt; word-break: break-word;'>
+                                                                    <tr>
+                                                                        <td class='pad' style='padding-bottom:10px;padding-left:10px;padding-right:15px;padding-top:10px;'>
+                                                                            <div style='color:#726f70;direction:ltr;font-family:Arial, Helvetica Neue, Helvetica, sans-serif;font-size:14px;font-weight:400;letter-spacing:0px;line-height:150%;text-align:right;mso-line-height-alt:21px;'>
+                                                                                <p style='margin: 0;'><a href='https://www.buscoinfluencers.com/aviso-de-privacidad-2/' target='_blank' style='text-decoration: none; color: #726f70;' rel='noopener'>Política de privacidad.</a></p>
+                                                                            </div>
+                                                                        </td>
+                                                                    </tr>
+                                                                </table>
+                                                            </td>
+                                                            <td class='column column-2' width='50%' style='mso-table-lspace: 0pt; mso-table-rspace: 0pt; font-weight: 400; text-align: left; background-color: #ffffff; padding-top: 10px; vertical-align: top; border-top: 0px; border-right: 0px; border-bottom: 0px; border-left: 0px;'>
+                                                                <table class='paragraph_block block-1' width='100%' border='0' cellpadding='0' cellspacing='0' role='presentation' style='mso-table-lspace: 0pt; mso-table-rspace: 0pt; word-break: break-word;'>
+                                                                    <tr>
+                                                                        <td class='pad' style='padding-bottom:10px;padding-left:15px;padding-right:10px;padding-top:10px;'>
+                                                                            <div style='color:#726f70;direction:ltr;font-family:Arial, Helvetica Neue, Helvetica, sans-serif;font-size:14px;font-weight:400;letter-spacing:0px;line-height:150%;text-align:left;mso-line-height-alt:21px;'>
+                                                                                <p style='margin: 0;'><a href='https://www.buscoinfluencers.com/terminos-y-condiciones-2/' target='_blank' style='text-decoration: none; color: #726f70;' rel='noopener'>Términos y condiciones.</a></p>
+                                                                            </div>
+                                                                        </td>
+                                                                    </tr>
+                                                                </table>
+                                                            </td>
+                                                        </tr>
+                                                    </tbody>
+                                                </table>
+                                            </td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                                <table class='row row-6' align='center' width='100%' border='0' cellpadding='0' cellspacing='0' role='presentation' style='mso-table-lspace: 0pt; mso-table-rspace: 0pt;'>
+                                    <tbody>
+                                        <tr>
+                                            <td>
+                                                <table class='row-content stack' align='center' border='0' cellpadding='0' cellspacing='0' role='presentation' style='mso-table-lspace: 0pt; mso-table-rspace: 0pt; border-radius: 0; color: #000000; width: 800.00px; margin: 0 auto;' width='800.00'>
+                                                    <tbody>
+                                                        <tr>
+                                                            <td class='column column-1' width='100%' style='mso-table-lspace: 0pt; mso-table-rspace: 0pt; font-weight: 400; text-align: left; background-color: #ffffff; padding-bottom: 40px; padding-top: 15px; vertical-align: top; border-top: 0px; border-right: 0px; border-bottom: 0px; border-left: 0px;'>
+                                                                <table class='image_block block-1' width='100%' border='0' cellpadding='0' cellspacing='0' role='presentation' style='mso-table-lspace: 0pt; mso-table-rspace: 0pt;'>
+                                                                    <tr>
+                                                                        <td class='pad' style='width:100%;'>
+                                                                            <div class='alignment' align='center' style='line-height:10px'>
+                                                                                <div style='max-width: 57px;'><img src='".base_url()."/public/img/verificacion/wd-studios.png' style='display: block; height: auto; border: 0; width: 100%;' width='57'></div>
+                                                                            </div>
+                                                                        </td>
+                                                                    </tr>
+                                                                </table>
+                                                            </td>
+                                                        </tr>
+                                                    </tbody>
+                                                </table>
+                                            </td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                                
+                            </td>
+                        </tr>
+                    </tbody>
+                </table><!-- End -->
+            </body>
+            
+            </html>";
+            $asunto="Buscoinfluencers | Nunca pierdas tu cuenta 😉";
             $this->_enviarCorreo($influ['correo'],$cuerpo,$asunto);
             
             return redirect()->to("/")->with('mensaje', 'Revisa la bandeja de entrada de tu correo.');
@@ -2099,31 +2163,31 @@ public function enviarMensajeContactanos(){
 
    private function _enviarCorreo($correo,$cuerp,$asunto){
     
-   $cuerpo=$cuerp;
+        $cuerpo=$cuerp;
 
-    $email = \Config\Services::email();
+        $email = \Config\Services::email();
 
-    $email->setFrom("noreply@buscoinfluencers.com", 'Busco Influencers');
-    $email->setTo($correo);
+        $email->setFrom("noreply@buscoinfluencers.com", 'Busco Influencers');
+        $email->setTo($correo);
     
 
-    $email->setSubject($asunto);
-    
-    $email->setMessage($cuerpo);
+        $email->setSubject($asunto);
+        
+        $email->setMessage($cuerpo);
 
-    if ($email->send())
-	{
-	    var_dump('Email enviado correctamente');
-		
-	}
-	else
-	{
-	    var_dump('Email No enviado<br />'. $email->printDebugger(['headers']));
-		
-	}
+        if ($email->send())
+        {
+            var_dump('Email enviado correctamente');
+            
+        }
+        else
+        {
+            var_dump('Email No enviado<br />'. $email->printDebugger(['headers']));
+            
+        }
    
     
-}
+    }
 
     public function restablecerClave($token=null,$id=null){
       
@@ -2180,8 +2244,11 @@ public function enviarMensajeContactanos(){
    public function agregarRedSocial(){
 
         $redinfluencer=new InfluencersRedesModel();
+        $influencer = new InfluencerModel();
         
         $id= $this->request->getPost('influencerid1');
+        $miInflue=$influencer->find($id);
+
         $redsocial= $this->request->getPost('redessocialesagregar');
         $usuarioredsocial= $this->request->getPost('textousuariored');
 
@@ -2189,22 +2256,31 @@ public function enviarMensajeContactanos(){
         $buscar=$redinfluencer->where($array)->findAll();
 
         if(!($usuarioredsocial==null || $usuarioredsocial=="")){
-            $r=$this->buscarSeguidoresAPI($redsocial,$usuarioredsocial);
+
+            $first_character = substr($usuarioredsocial, 0, 1);
+            
+            if ($first_character != "@") {
+               
+                $r=$this->buscarSeguidoresAPI($redsocial,$usuarioredsocial);
+
                 if($r!=0){
                     if($buscar==null){
-                        $redinfluencer->insert(['idinfluencer'=>$id,'idredes'=>$redsocial,'user'=>$usuarioredsocial,'cant_seguidores'=>$r]);
-                        return redirect()->to("/influencer/edit/$id")->with('mensaje', 'Tus red social se creo con exito');
+                        $redinfluencer->insert(['idinfluencer'=>$id,'idredes'=>$redsocial,'user'=>$usuarioredsocial,'cant_seguidores'=>$r,'last_update'=>date('Y-m-d H:i:s')]);
+                        return redirect()->to("/influencer/edit/".$miInflue['alias'])->with('mensaje', 'Tus red social se creo con éxito');
                     } else{
-                        $redinfluencer->update($buscar[0]['id'],['cant_seguidores'=>$r]);
-                        return redirect()->to("/influencer/edit/$id")->with('mensaje', 'Tus red se actualizó con exito');
+                        $redinfluencer->update($buscar[0]['id'],['cant_seguidores'=>$r, 'last_update'=>date('Y-m-d H:i:s')]);
+                        return redirect()->to("/influencer/edit/".$miInflue['alias'])->with('mensaje', 'Tus red se actualizó con éxito');
                     }
                 }else{
-                    return redirect()->to("/influencer/edit/$id")->with('mensaje', 'No se encontro el usuario de la red social');
-                    
+                        return redirect()->to("/influencer/edit/".$miInflue['alias'])->with('mensaje', 'No se encontro el usuario de la red social');
+                        
                 }
-                
+
+            } else {
+                return redirect()->to("/influencer/edit/".$miInflue['alias'])->with('mensaje', 'Debes escribir el usuario sin incluir el @');
+            }    
         }    
-        return redirect()->to("/influencer/edit/$id")->with('mensaje', 'Debes escribir un usuario para poder actualizar tu red social');
+        return redirect()->to("/influencer/edit/".$miInflue['alias'])->with('mensaje', 'Debes escribir un usuario para poder actualizar tu red social');
     }
 
 
@@ -2257,10 +2333,10 @@ public function enviarMensajeContactanos(){
             
             if($r!=0){
                 if($obj==null){
-                    $influencerredesmodel->insert(['idinfluencer'=>$id,'idredes'=>$m['idredes'],'user'=>$nombre,'cant_seguidores'=>$r]);
+                    $influencerredesmodel->insert(['idinfluencer'=>$id,'idredes'=>$m['idredes'],'user'=>$nombre,'cant_seguidores'=>$r,'last_update'=>date('Y-m-d H:i:s')]);
                     return "Su red social se agrego correctamente";
                 } else{
-                    $influencerredesmodel->update($obj[0]['id'],['cant_seguidores'=>$r]);
+                    $influencerredesmodel->update($obj[0]['id'],['cant_seguidores'=>$r, 'last_update'=>date('Y-m-d H:i:s')]);
                     return "Su red social se actualizó correctamente";
                 }
             }else{
@@ -2287,6 +2363,7 @@ private function _actualizarRedesSociales($id,$idRedes){
     $redesSociales= $redesmodel->where('activa',1)->findAll();
     $cont=0;    
     foreach ($redesSociales as $key => $m) {
+        
         
         $nombre= $idRedes;
         
@@ -2326,7 +2403,7 @@ private function _actualizarRedesSociales($id,$idRedes){
 
 
    public function buscarSeguidoresAPI($idredes,$nombre){
-
+        
         
         $misRedes= new RedesModel();
         $red=$misRedes->find($idredes);
@@ -2352,7 +2429,10 @@ private function _actualizarRedesSociales($id,$idRedes){
             $cantSeguidores=$this->twitch($nombre);
             return $cantSeguidores;
         }
-
+        if($red['nombre']=="Telegram"){
+            $cantSeguidores=$this->telegram($nombre);
+            return $cantSeguidores;
+        }
 
    }
 
@@ -2465,42 +2545,41 @@ private function _actualizarRedesSociales($id,$idRedes){
    }
 
    public function tiktok($tiktok){
-   
+
+
     $curl = curl_init();
 
     curl_setopt_array($curl, [
-        CURLOPT_URL => "https://tiktok-scraper2.p.rapidapi.com/user/info?user_id=107955&user_name=".$tiktok,
-        CURLOPT_RETURNTRANSFER => true,
-        CURLOPT_FOLLOWLOCATION => true,
-        CURLOPT_ENCODING => "",
-        CURLOPT_MAXREDIRS => 10,
-        CURLOPT_TIMEOUT => 30,
-        CURLOPT_HTTP_VERSION => CURL_HTTP_VERSION_1_1,
-        CURLOPT_CUSTOMREQUEST => "GET",
-        CURLOPT_HTTPHEADER => [
-            "X-RapidAPI-Host: tiktok-scraper2.p.rapidapi.com",
-            "X-RapidAPI-Key: c7c42e5e34msh4d68a181971610dp1e8e34jsn435b150476f6"
-        ],
+    CURLOPT_URL => "https://tiktok-video-feature-summary.p.rapidapi.com/user/info?unique_id=".$tiktok,
+    CURLOPT_RETURNTRANSFER => true,
+	CURLOPT_ENCODING => "",
+	CURLOPT_MAXREDIRS => 10,
+	CURLOPT_TIMEOUT => 30,
+	CURLOPT_HTTP_VERSION => CURL_HTTP_VERSION_1_1,
+	CURLOPT_CUSTOMREQUEST => "GET",
+	CURLOPT_HTTPHEADER => [
+		"X-RapidAPI-Host: tiktok-video-feature-summary.p.rapidapi.com",
+		"X-RapidAPI-Key: c7c42e5e34msh4d68a181971610dp1e8e34jsn435b150476f6"
+	],
     ]);
 
     $result = curl_exec($curl);
     $r= (array)json_decode($result,true);
-    //var_dump($r['userInfo']['stats']['followerCount']);
+    //var_dump($r['data']['stats']['followerCount']);
     $err = curl_error($curl);
 
     curl_close($curl);
 
+
     $retorno=0;
-    try{
-        $retorno=$r['userInfo']['stats']['followerCount'];
-    }catch(\Exception $e){
-        var_dump($e->getMessage());
-    }
-    
-    return $retorno;
+        try{
+            $retorno=$r['data']['stats']['followerCount'];
+        }catch(\Exception $e){
+            var_dump($e->getMessage());
+        }
+        
+        return $retorno;
 
-
-    
 
         
    }
@@ -2542,6 +2621,43 @@ private function _actualizarRedesSociales($id,$idRedes){
     return $retorno;
     
 
+        
+   }
+
+
+   public function telegram($telegram){
+
+    $curl = curl_init();
+
+    curl_setopt_array($curl, [
+        CURLOPT_URL => "https://telegram92.p.rapidapi.com/api/info/channel?channel=".$telegram,
+        CURLOPT_RETURNTRANSFER => true,
+        CURLOPT_ENCODING => "",
+        CURLOPT_MAXREDIRS => 10,
+        CURLOPT_TIMEOUT => 30,
+        CURLOPT_HTTP_VERSION => CURL_HTTP_VERSION_1_1,
+        CURLOPT_CUSTOMREQUEST => "GET",
+        CURLOPT_HTTPHEADER => [
+            "X-RapidAPI-Host: telegram92.p.rapidapi.com",
+            "X-RapidAPI-Key: c7c42e5e34msh4d68a181971610dp1e8e34jsn435b150476f6"
+        ],
+    ]);
+
+    $result = curl_exec($curl);
+    $r= (array)json_decode($result,true);
+    // var_dump($r);
+    $err = curl_error($curl);
+
+    curl_close($curl);
+
+    $retorno=0;
+    try{
+        $retorno=$r['subscribers'];
+    }catch(\Exception $e){
+        var_dump($e->getMessage());
+    }
+
+    return $retorno; 
         
    }
 

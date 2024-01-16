@@ -15,7 +15,7 @@ class MensajesModel extends Model
     //protected $returnType     = 'array';
     //protected $useSoftDeletes = true;
 
-    protected $allowedFields = ['nombre','empresa','cuerpo','idinfluencer','valoracion'];
+    protected $allowedFields = ['nombre','empresa','cuerpo','idinfluencer','valoracion','aprobado'];
 
     //protected $useTimestamps = false;
     //protected $createdField  = 'created_at';

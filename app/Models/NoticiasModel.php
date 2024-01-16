@@ -15,7 +15,7 @@ class NoticiasModel extends Model
     //protected $returnType     = 'array';
     //protected $useSoftDeletes = true;
 
-    protected $allowedFields = ['titulo','cuerpo','url_foto','favorito','created_at'];
+    protected $allowedFields = ['titulo','descripcion','cuerpo','url_foto','favorito','created_at'];
 
     protected $useTimestamps = true;
     protected $createdField  = 'created_at';

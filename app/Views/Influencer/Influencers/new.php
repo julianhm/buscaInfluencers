@@ -26,15 +26,36 @@
                         <div class="form-group">
                             <img class="icon-input" src=<?php echo base_url('img/icon-user.png')?> for="nombre">
 
-                            <input class="input-modify" type="text" name="nombre" id="nombre" maxlength = "20" placeholder="Tu nombre (si lo crees necesario)" value='<?= old('nombre') ?>'>
+                            <input class="input-modify" type="text" name="nombre" id="nombre" maxlength = "18" placeholder="Tu nombre" value='<?= old('nombre') ?>'>
                             <p style="color:red"><?=session("errors.nombre")?></p>
                         </div>
+
+                        <script>
+                            /* Not Allow Paste */
+                            window.onload = () => {
+                            const myInput = document.getElementById('alias');
+                            myInput.onpaste = e => e.preventDefault();
+                            }
+                            /* Not Allow Space */
+                            function AvoidSpace(event) {
+                                var k = event ? event.which : window.event.keyCode;
+                                if (k == 32) return false;
+                            }
+
+                            /* Remove Blank Space Automatically Before, After & middle of String */
+
+                            function removeSpaces(string) {
+                            return string.split(' ').join('');
+                            }
+                        </script>
+                        
                         <div class="form-group">
                             <img class="icon-input" src=<?php echo base_url('img/icon-alias.png')?> for="alias" >
 
-                            <input class="input-modify" type="text" name="alias" id="alias" maxlength = "20" placeholder="Alias (solo si usas)" value='<?= old('alias') ?>'>
+                            <input class="input-modify" type="text" name="alias" id="alias" onkeypress="return AvoidSpace(event);" onblur="this.value=removeSpaces(this.value);" maxlength = "18" placeholder="Alias" value='<?= old('alias') ?>'>
                             <p style="color:red"><?=session("errors.alias")?></p>
                         </div>
+                                                
                         <div class="form-group">
                             <img class="icon-input" src=<?php echo base_url('img/icon-pass.png')?> for="password">
 
@@ -63,56 +84,205 @@
                             </select>
                             <p style="color:red"><?=session("errors.pais")?></p>
                         </div>
-                        <?php 
-                        $ciudadesarray=[];
-                        $ciudadesarrayid=[];
-                        for ($i=0; $i < count($ciudades[1]) ; $i++) { 
-                            array_push($ciudadesarray,$ciudades[1][$i]['nombre']);
-                            array_push($ciudadesarrayid,$ciudades[1][$i]['idciudad']);
-                        }
-
-                        $ciudadesarray2=[];
-                        $ciudadesarrayid2=[];
-                        for ($i=0; $i < count($ciudades[2]) ; $i++) { 
-                            array_push($ciudadesarray2,$ciudades[2][$i]['nombre']);
-                            array_push($ciudadesarrayid2,$ciudades[2][$i]['idciudad']);
-                        }
-
-                        $ciudadesarray3=[];
-                        $ciudadesarrayid3=[];
-                        for ($i=0; $i < count($ciudades[3]) ; $i++) { 
-                            array_push($ciudadesarray3,$ciudades[3][$i]['nombre']);
-                            array_push($ciudadesarrayid3,$ciudades[3][$i]['idciudad']);
-                        }
-
-                        $ciudadesarray4=[];
-                        $ciudadesarrayid4=[];
-                        for ($i=0; $i < count($ciudades[4]) ; $i++) { 
-                            array_push($ciudadesarray4,$ciudades[4][$i]['nombre']);
-                            array_push($ciudadesarrayid4,$ciudades[4][$i]['idciudad']);
-                        }
-
-                        $ciudadesarray5=[];
-                        $ciudadesarrayid5=[];
-                        for ($i=0; $i < count($ciudades[5]) ; $i++) { 
-                            array_push($ciudadesarray5,$ciudades[5][$i]['nombre']);
-                            array_push($ciudadesarrayid5,$ciudades[5][$i]['idciudad']);
-                        }
                         
+                        <?php 
+                            //Asigna el nombre de la ciudad y su id
+                            $ciudadesarray=[];
+                            $ciudadesarrayid=[];
+                            for ($i=0; $i < count($ciudades[1]) ; $i++) { 
+                                array_push($ciudadesarray,$ciudades[1][$i]['nombre']);
+                                //echo "sale " . $ciudades[1][$i]['nombre'];
+                                array_push($ciudadesarrayid,$ciudades[1][$i]['idciudad']);
+                                //echo "con " . $ciudades[1][$i]['idciudad'];
+                            }
+
+                            $ciudadesarray2=[];
+                            $ciudadesarrayid2=[];
+                            for ($i=0; $i < count($ciudades[2]) ; $i++) { 
+                                array_push($ciudadesarray2,$ciudades[2][$i]['nombre']);
+                                array_push($ciudadesarrayid2,$ciudades[2][$i]['idciudad']);
+                            }
+
+                            $ciudadesarray3=[];
+                            $ciudadesarrayid3=[];
+                            for ($i=0; $i < count($ciudades[3]) ; $i++) { 
+                                array_push($ciudadesarray3,$ciudades[3][$i]['nombre']);
+                                array_push($ciudadesarrayid3,$ciudades[3][$i]['idciudad']);
+                            }
+
+                            $ciudadesarray4=[];
+                            $ciudadesarrayid4=[];
+                            for ($i=0; $i < count($ciudades[4]) ; $i++) { 
+                                array_push($ciudadesarray4,$ciudades[4][$i]['nombre']);
+                                array_push($ciudadesarrayid4,$ciudades[4][$i]['idciudad']);
+                            }
+
+                            $ciudadesarray5=[];
+                            $ciudadesarrayid5=[];
+                            for ($i=0; $i < count($ciudades[5]) ; $i++) { 
+                                array_push($ciudadesarray5,$ciudades[5][$i]['nombre']);
+                                array_push($ciudadesarrayid5,$ciudades[5][$i]['idciudad']);
+                            }
+                            
+                            $ciudadesarray6=[];
+                            $ciudadesarrayid6=[];
+                            for ($i=0; $i < count($ciudades[6]) ; $i++) { 
+                                array_push($ciudadesarray6,$ciudades[6][$i]['nombre']);
+                                array_push($ciudadesarrayid6,$ciudades[6][$i]['idciudad']);
+                            }
+
+                            $ciudadesarray7=[];
+                            $ciudadesarrayid7=[];
+                            for ($i=0; $i < count($ciudades[7]) ; $i++) { 
+                                array_push($ciudadesarray7,$ciudades[7][$i]['nombre']);
+                                array_push($ciudadesarrayid7,$ciudades[7][$i]['idciudad']);
+                            }
+
+                            $ciudadesarray8=[];
+                            $ciudadesarrayid8=[];
+                            for ($i=0; $i < count($ciudades[8]) ; $i++) { 
+                                array_push($ciudadesarray8,$ciudades[8][$i]['nombre']);
+                                array_push($ciudadesarrayid8,$ciudades[8][$i]['idciudad']);
+                            }
+
+                            $ciudadesarray9=[];
+                            $ciudadesarrayid9=[];
+                            for ($i=0; $i < count($ciudades[9]) ; $i++) { 
+                                array_push($ciudadesarray9,$ciudades[9][$i]['nombre']);
+                                array_push($ciudadesarrayid9,$ciudades[9][$i]['idciudad']);
+                            }
+
+                            $ciudadesarray10=[];
+                            $ciudadesarrayid10=[];
+                            for ($i=0; $i < count($ciudades[10]) ; $i++) { 
+                                array_push($ciudadesarray10,$ciudades[10][$i]['nombre']);
+                                array_push($ciudadesarrayid10,$ciudades[10][$i]['idciudad']);
+                            }
+
+                            $ciudadesarray11=[];
+                            $ciudadesarrayid11=[];
+                            for ($i=0; $i < count($ciudades[11]) ; $i++) { 
+                                array_push($ciudadesarray11,$ciudades[11][$i]['nombre']);
+                                array_push($ciudadesarrayid11,$ciudades[11][$i]['idciudad']);
+                            }
+
+                            $ciudadesarray12=[];
+                            $ciudadesarrayid12=[];
+                            for ($i=0; $i < count($ciudades[12]) ; $i++) { 
+                                array_push($ciudadesarray12,$ciudades[12][$i]['nombre']);
+                                array_push($ciudadesarrayid12,$ciudades[12][$i]['idciudad']);
+                            }
+
+                            $ciudadesarray13=[];
+                            $ciudadesarrayid13=[];
+                            for ($i=0; $i < count($ciudades[13]) ; $i++) { 
+                                array_push($ciudadesarray13,$ciudades[13][$i]['nombre']);
+                                array_push($ciudadesarrayid13,$ciudades[13][$i]['idciudad']);
+                            }
+
+                            $ciudadesarray14=[];
+                            $ciudadesarrayid14=[];
+                            for ($i=0; $i < count($ciudades[14]) ; $i++) { 
+                                array_push($ciudadesarray14,$ciudades[14][$i]['nombre']);
+                                array_push($ciudadesarrayid14,$ciudades[14][$i]['idciudad']);
+                            }
+
+                            $ciudadesarray15=[];
+                            $ciudadesarrayid15=[];
+                            for ($i=0; $i < count($ciudades[15]) ; $i++) { 
+                                array_push($ciudadesarray15,$ciudades[15][$i]['nombre']);
+                                array_push($ciudadesarrayid15,$ciudades[15][$i]['idciudad']);
+                            }
+
+                            $ciudadesarray16=[];
+                            $ciudadesarrayid16=[];
+                            for ($i=0; $i < count($ciudades[16]) ; $i++) { 
+                                array_push($ciudadesarray16,$ciudades[16][$i]['nombre']);
+                                array_push($ciudadesarrayid16,$ciudades[16][$i]['idciudad']);
+                            }
+
+                            $ciudadesarray17=[];
+                            $ciudadesarrayid17=[];
+                            for ($i=0; $i < count($ciudades[17]) ; $i++) { 
+                                array_push($ciudadesarray17,$ciudades[17][$i]['nombre']);
+                                array_push($ciudadesarrayid17,$ciudades[17][$i]['idciudad']);
+                            }
+
+                            $ciudadesarray18=[];
+                            $ciudadesarrayid18=[];
+                            for ($i=0; $i < count($ciudades[18]) ; $i++) { 
+                                array_push($ciudadesarray18,$ciudades[18][$i]['nombre']);
+                                array_push($ciudadesarrayid18,$ciudades[18][$i]['idciudad']);
+                            }
+
+                            $ciudadesarray19=[];
+                            $ciudadesarrayid19=[];
+                            for ($i=0; $i < count($ciudades[19]) ; $i++) { 
+                                array_push($ciudadesarray19,$ciudades[19][$i]['nombre']);
+                                array_push($ciudadesarrayid19,$ciudades[19][$i]['idciudad']);
+                            }
+
+                            $ciudadesarray20=[];
+                            $ciudadesarrayid20=[];
+                            for ($i=0; $i < count($ciudades[20]) ; $i++) { 
+                                array_push($ciudadesarray20,$ciudades[20][$i]['nombre']);
+                                array_push($ciudadesarrayid20,$ciudades[20][$i]['idciudad']);
+                            }
+
+                            $ciudadesarray21=[];
+                            $ciudadesarrayid21=[];
+                            for ($i=0; $i < count($ciudades[21]) ; $i++) { 
+                                array_push($ciudadesarray21,$ciudades[21][$i]['nombre']);
+                                array_push($ciudadesarrayid21,$ciudades[21][$i]['idciudad']);
+                            }
+
                         ?>
+
                         <script type="text/javascript">
                             //creamos variableas array para cada departamento
                             
-                                var pais_1 = <?php echo json_encode($ciudadesarray);?>;
-                               var pais_1_id = <?php echo json_encode($ciudadesarrayid);?>;
-                               var pais_2 = <?php echo json_encode($ciudadesarray2);?>;
-                               var pais_2_id = <?php echo json_encode($ciudadesarrayid2);?>; 
-                               var pais_3 = <?php echo json_encode($ciudadesarray3);?>;
-                               var pais_3_id = <?php echo json_encode($ciudadesarrayid3);?>;
-                               var pais_4 = <?php echo json_encode($ciudadesarray4);?>;
-                               var pais_4_id = <?php echo json_encode($ciudadesarrayid4);?>;
-                               var pais_5 = <?php echo json_encode($ciudadesarray5);?>;
-                               var pais_5_id = <?php echo json_encode($ciudadesarrayid5);?>;
+                            var pais_1 = <?php echo json_encode($ciudadesarray);?>;
+                            var pais_1_id = <?php echo json_encode($ciudadesarrayid);?>;
+                            var pais_2 = <?php echo json_encode($ciudadesarray2);?>;
+                            var pais_2_id = <?php echo json_encode($ciudadesarrayid2);?>; 
+                            var pais_3 = <?php echo json_encode($ciudadesarray3);?>;
+                            var pais_3_id = <?php echo json_encode($ciudadesarrayid3);?>;
+                            var pais_4 = <?php echo json_encode($ciudadesarray4);?>;
+                            var pais_4_id = <?php echo json_encode($ciudadesarrayid4);?>;
+                            var pais_5 = <?php echo json_encode($ciudadesarray5);?>;
+                            var pais_5_id = <?php echo json_encode($ciudadesarrayid5);?>;
+                            var pais_6 = <?php echo json_encode($ciudadesarray6);?>;
+                            var pais_6_id = <?php echo json_encode($ciudadesarrayid6);?>;
+                            var pais_7 = <?php echo json_encode($ciudadesarray7);?>;
+                            var pais_7_id = <?php echo json_encode($ciudadesarrayid7);?>;
+                            var pais_8 = <?php echo json_encode($ciudadesarray8);?>;
+                            var pais_8_id = <?php echo json_encode($ciudadesarrayid8);?>;
+                            var pais_9 = <?php echo json_encode($ciudadesarray9);?>;
+                            var pais_9_id = <?php echo json_encode($ciudadesarrayid9);?>;
+                            var pais_10 = <?php echo json_encode($ciudadesarray10);?>;
+                            var pais_10_id = <?php echo json_encode($ciudadesarrayid10);?>;
+                            var pais_11 = <?php echo json_encode($ciudadesarray11);?>;
+                            var pais_11_id = <?php echo json_encode($ciudadesarrayid11);?>;
+                            var pais_12 = <?php echo json_encode($ciudadesarray12);?>;
+                            var pais_12_id = <?php echo json_encode($ciudadesarrayid12);?>;
+                            var pais_13 = <?php echo json_encode($ciudadesarray13);?>;
+                            var pais_13_id = <?php echo json_encode($ciudadesarrayid13);?>;
+                            var pais_14 = <?php echo json_encode($ciudadesarray14);?>;
+                            var pais_14_id = <?php echo json_encode($ciudadesarrayid14);?>;
+                            var pais_15 = <?php echo json_encode($ciudadesarray15);?>;
+                            var pais_15_id = <?php echo json_encode($ciudadesarrayid15);?>;
+                            var pais_16 = <?php echo json_encode($ciudadesarray16);?>;
+                            var pais_16_id = <?php echo json_encode($ciudadesarrayid16);?>;
+                            var pais_17 = <?php echo json_encode($ciudadesarray17);?>;
+                            var pais_17_id = <?php echo json_encode($ciudadesarrayid17);?>;
+                            var pais_18 = <?php echo json_encode($ciudadesarray18);?>;
+                            var pais_18_id = <?php echo json_encode($ciudadesarrayid18);?>;
+                            var pais_19 = <?php echo json_encode($ciudadesarray19);?>;
+                            var pais_19_id = <?php echo json_encode($ciudadesarrayid19);?>;
+                            var pais_20 = <?php echo json_encode($ciudadesarray20);?>;
+                            var pais_20_id = <?php echo json_encode($ciudadesarrayid20);?>;
+                            var pais_21 = <?php echo json_encode($ciudadesarray21);?>;
+                            var pais_21_id = <?php echo json_encode($ciudadesarrayid21);?>;
 
                         </script>
 
@@ -148,7 +318,7 @@
                         </div>
                         <p style="color:red"><?=session("errors.resenia")?></p>
 
-                        
+                        <!--
                         <div class="d-flex justify-content-center mb-4">
                             <div class="section-title">
                                 Subir foto de perfil
@@ -158,24 +328,27 @@
                        
                         <div class="col-lg-12 d-flex align-items-center my-4 btn-media">
                         
-                               <!-- Da click sobre la imagen para modificarla-->
+                               Da click sobre la imagen para modificarla
                                
                         
                             
                                 <input type="file" name="fotoperfil"  class="open-send btn btn-gray-normal btn-lg" style="border-radius: 0.7rem;" value='<?= old('fotoperfil') ?>'  accept="image/*" /> 
                        
                             
-                            <!-- data-bs-toggle="modal" data-bs-target="#modal-upload-image" onclick="cleanUpload(); showInfoProfile();" data-id="btn-profile"-->
-                        </div>
+                             data-bs-toggle="modal" data-bs-target="#modal-upload-image" onclick="cleanUpload(); showInfoProfile();" data-id="btn-profile"-->
+                        <!--
+                            </div>
+
+
                         <div class="text-center user-decription-black" style="">
                                     Te recomendamos que el tamaño de tu foto sea 600px por 600px.
                                 </div>
 <!--
                         <label class="label" data-toggle="tooltip" title="Cambia tu foto de Perfil">
-                            <img class="rounded" id="avatar" src="<?php echo base_url("/uploads")."/perfil.png"?>" alt="avatar">
+                            <img class="rounded" id="avatar" src="<?php //echo base_url("/uploads")."/perfil.png"?>" alt="avatar">
                             <input type="file" class="sr-only" id="fotoperfil" name="fotoperfil" accept="image/*">
                         </label>
-                    -->
+                        -->
 
                         <div class="alert" role="alert"></div>
 
@@ -240,6 +413,7 @@
     </div>
     <!-- Content Register End -->
 
+   
 
     <!-- ============================================================== -->
                             <!-- MODALES -->

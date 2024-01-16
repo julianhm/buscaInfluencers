@@ -24,9 +24,7 @@
         <div class="user-decription-black filter_searched" style="border-bottom: 1px solid #000;">
             <a href="<?php echo base_url("influencer")."/mensajes/".$influencer['idinfluencer']?>"><b>Mensajes</b></a>
         </div>
-            
-        <div class="user-decription-black filter_searched" style="border-bottom: 1px solid #000;"><a href="<?php echo base_url("logout")?>"><b>Cerrar sesión</b></a>
-        </div>
+         
     </div>
     
 </div>

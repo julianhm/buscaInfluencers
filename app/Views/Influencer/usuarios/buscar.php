@@ -46,8 +46,8 @@
                         <div class="mt-4 user-decription-black followers-width" >
                             <div class="row">
                                 <div>
-                                
-                                 <input type="range" min="0" value="6" max="12" step="1" class="slider" id="input">
+                                <!-- value 6 coloca el rango en la mitad del slider -->
+                                 <input type="range" min="0" value="0" max="12" step="1" class="slider" id="input">
                                  <div class="row" style="font-size: 10px;">
                                      <div class="col" style="text-align: left;">
                                          <p>0</p>
@@ -97,7 +97,6 @@
                                         <option value="<?=$m['ididioma']?>"><?=$m['nombre']?></option>
                                     <?php } ?>
                                     
-                                    <option value="lang_8">Portugues</option>
                                 </select>
                             </div>
                             

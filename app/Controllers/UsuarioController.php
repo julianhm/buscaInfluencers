@@ -20,6 +20,7 @@ class UsuarioController extends BaseController
         $idiomas = new IdiomaModel();
         $pagos = new PagoModel();
         $paises = new PaisModel();
+        session();
         
         $misPaises= $paises->findAll();
         $ciudades=$this->_cargarCiudades($misPaises);
@@ -74,6 +75,8 @@ class UsuarioController extends BaseController
 
      //BUSCAR INFLUENCERS
      public function buscarInfluencers(){
+
+        session();
 
         $idcategoria= $this->request->getPost('categoriaselect');
         $idredsocial= $this->request->getPost('redsocialselect');
@@ -255,6 +258,7 @@ class UsuarioController extends BaseController
         $dataHeader=['titulo'=>'Buscar Influencer','mensaje'=>""];
         
         $this-> _loadDefaultView($dataHeader,$data,'resultados');
+
         
     }
 
@@ -506,7 +510,7 @@ class UsuarioController extends BaseController
      //BUSCAR INFLUENCERS OTRA BUSQUEDA
      public function busquedaPorCategoria($idcategoria=null){
 
-       
+        session();
 
         $categorias = new CategoriasModel();
         $redes = new RedesModel();

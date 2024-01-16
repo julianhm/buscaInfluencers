@@ -14,10 +14,6 @@
 
         },3000);
 
-    
-
-        
-
     });
 
 </script>
@@ -60,29 +56,67 @@
 
 </div>
 
+
  <!--MENSAJES FLASH-->
 
- <?php if(session('mensaje')!=""){  ?>
+<?php if(session('mensaje')!=""){  ?>
+ 
+    <style>
+        .alert {
+            padding: 20px;
+            background-color: #fff;
+            color: #000;
+            opacity: 1;
+            transition: opacity 0.6s;
+            margin-bottom: 15px;
+            box-shadow: -4px 1px 11px -2px #888888;
 
-    <div class="alert alert-success d-flex align-items-center" role="alert">
+            position: absolute;
+            z-index: 2;
+            right: 10px;
+            top: 10px;
+        }
 
+        .alert.info {
+            background-color: #fff;
+        }
 
+        .closebtn {
+            margin-left: 15px;
+            color: #000;
+            font-weight: bold;
+            float: right;
+            font-size: 22px;
+            line-height: 20px;
+            cursor: pointer;
+            transition: 0.3s;
+        }
 
-        <svg class="bi flex-shrink-0 me-2" width="24" height="24" role="img" aria-label="Success:"><use xlink:href="#check-circle-fill"/></svg>
+        .closebtn:hover {
+            color: black;
+        }
+    </style>
 
-        <div>
+    <script>
+        var close = document.getElementsByClassName("closebtn");
+        var i;
 
-        <?php echo session('mensaje'); ?>
+        for (i = 0; i < close.length; i++) {
+            close[i].onclick = function(){
+            var div = this.parentElement;
+            div.style.opacity = "0";
+            setTimeout(function(){ div.style.display = "none"; }, 600);
+            }
+        }
+    </script>
 
-        
+    <div class="alert info user-decription-black" style="font-size: 17px;" role="alert">
+        <span class="closebtn">&times;</span>  
+        <i class="fa fa-info-circle" ></i> <?php echo session('mensaje'); ?>
+    </div>
 
-        </div>
+<?php } ?>
 
-
-
-        </div>
-
-    <?php } ?>
 
 
 
@@ -146,48 +180,58 @@
 
             <div class="col bg-main-inf" >
 
-                <div class="text-center type-user">
+            
+                <?php
+                    if(!isset($_SESSION['idinfluencer'])){?>
 
-                    SOY
+                <div >
+                    <div class="text-center type-user">
+                        SOY
+                    </div>
 
-                </div>
+                    <div class="text-center user-decription">
+                        Si eres influencer y quieres darte a conocer <br>
+                        fácilmente, comienza aquí.
+                    </div>
 
-                
+                    <div class="text-center pt-5" >
 
-                <div class="text-center user-decription">
-
-                    Si eres influencer y quieres darte a conocer <br>
-
-                    fácilmente, comienza aquí.
-
-                </div>
-
-                <div class="text-center pt-5" >
-
-                    <a href="influencer/new">
-
+                        <a href="influencer/new">
                         <button type="button" class="btn btn-light btn-sm" style="width: 180px; font-weight: 100;">REGISTRARME</button>
+                        </a>
+                    </div>
 
-                    </a>
+                    <div class="text-center pt-3" >
+                        <button type="button" class="btn btn-sm btn-login" style="width: 180px; font-weight: 100;" data-bs-toggle="modal" data-bs-target="#exampleModal">
+                            INICIAR SESIÓN
+                        </button>
+                    </div>
 
+                </div>
+
+                <?php } else { ?>
+    
+                <div>
                     
+                    <div style="text-align: center;">
+                        <img src="<?php echo base_url("/uploads")."/".$_SESSION['foto'] ?>" alt="Avatar" style="aspect-ratio: 1 / 1;width:100px;border-radius: 50%;border: 1px solid #fff">
+                    </div>
 
+                    <div class="text-center pt-4" >
+                        <a href="<?php echo base_url("/influencer/edit/")."/".$_SESSION['alias'] ?>">
+                            <button type="button" class="btn btn-light btn-sm" style="width: 180px; font-weight: 100;">Mi perfil</button>
+                        </a>
+                    </div>
+
+                    <div class="text-center pt-3" >
+                        <a href="<?php echo base_url("logout")?>">
+                            <button type="button" class="btn btn-light btn-sm" style="width: 180px; font-weight: 100;">Cerrar sesión</button>
+                        </a>
+                    </div>
                 </div>
 
-                <div class="text-center pt-3" >
-
-
-
-                    <button type="button" class="btn btn-sm btn-login" style="width: 180px; font-weight: 100;" data-bs-toggle="modal" data-bs-target="#exampleModal">
-
-                      INICIAR SESIÓN
-
-                    </button>
-
-                      
-
-                </div>
-
+                <?php } ?>
+                
             </div>
 
             
@@ -266,15 +310,15 @@
 
                         <div class="product-item position-relative d-flex flex-column text-center">
 
-                            <img class="img-fluid mb-4" style="height: 130px" src=<?php echo base_url('uploads')."/".$m['foto_perfil']?> alt="" >
+                            <a href="<?php echo base_url('perfil')."/".$m['alias']?>">
+                                <img class='img-fluid mb-4' style='aspect-ratio: 1 / 1; border: 1px solid #000; margin-left: auto; margin-right: auto;' src=" <?= base_url('uploads')."/".$m['foto_perfil'] ?>" alt='' >
+                            </a>
 
                             <h6 class="user-decription-black"><?=$m['nombreinflu']?> <br> <?=$m['alias']?> <br> <?=$m['nombrecat']?> </h6>
 
                             <div class="container-fluid">
 
-                                <a href="<?php echo base_url('perfil')."/".$m['idinfluencer']?>"><button type="button" class="btn btn-ver-perfil btn-sm btn-on-white">Ver perfil</button></a>
-
-                                
+                                <a href="<?php echo base_url('perfil')."/".$m['alias']?>"><button type="button" class="btn btn-ver-perfil btn-sm btn-on-white">Ver perfil</button></a>
 
                             </div>
 
@@ -318,7 +362,7 @@
 
     <!-- Mundo influencer Start -->
 
-    <div class="container-fluid py-5">
+    <div id="noticias" class="container-fluid py-5">
 
         <div class="container-fluid">
 
@@ -468,8 +512,10 @@
 
                         </div>
 
-                        <img class="img-fluid-el-mas mb-2" style="" src="<?=base_url('uploads')."/".$m['foto_perfil']?>" >
-
+                        <a href="<?php echo base_url('perfil')."/".$m['alias']?>">
+                            <img class="img-fluid-el-mas mb-2" style="" src="<?=base_url('uploads')."/".$m['foto_perfil']?>" >
+                        </a>
+                        
                         <h6 class="user-decription-black"><?=$m['nombreinflu']?> <br> <?=$m['alias']?></h6>
 
                         <div class="container-fluid">
@@ -478,9 +524,9 @@
 
                                 <div class="col-lg-3">
 
-                                    <div style="width: 40px" >
+                                    <div style="width: 40px; margin: auto" >
 
-                                        <img class="img-sm-main" style="object-fit: cover;" src="<?=base_url('img')."/iconos/".$m['icono']?>" >
+                                        <img class="img-sm-main" style="object-fit: cover; margin: auto" src="<?=base_url('img')."/iconos/".$m['icono']?>" >
 
                                     </div>
 
@@ -502,7 +548,7 @@
 
                             </div>
 
-                            <a href="<?php echo base_url('perfil')."/".$m['idinfluencer']?>"><button type="button" class="btn btn-ver-perfil btn-sm btn-on-white">Ver perfil</button></a>
+                            <a href="<?php echo base_url('perfil')."/".$m['alias']?>"><button type="button" class="btn btn-ver-perfil btn-sm btn-on-white">Ver perfil</button></a>
 
                         </div>
 
@@ -556,7 +602,7 @@
 
             <div class="col-4" >
 
-                <img class="img-donar" src="img/donar.png" >
+                <a href="https://www.paypal.com/paypalme/LGWDS" target="_blank"> <img class="img-donar" src="img/donar.png" ></a>
 
             </div>
 
@@ -602,32 +648,81 @@
 
                 </div>
 
-                <div class="modal-body ">
+                <div class="modal-body " style="padding-top">
 
                     <form class="user-decription-black" action="login" method="POST">
 
                         <div class="mb-3">
 
-                            <label for="exampleInputEmail1" class="text-center user-decription-black" style="font-weight: bold; display: block;">CORREO</label>
+                            <label for="exampleInputEmail1" class="text-center user-decription-black mb-2" style="font-weight: bold; display: block;">CORREO</label>
 
-                            <input type="email" class="input-redes" id="emaillogin" name="emaillogin" aria-describedby="emailHelp" placeholder="correo electrónico">
-
+                            <div class="input-container">
+                                <input type="email" class="input-redes" style="margin-bottom: 0px;border-right: none;" id="emaillogin" name="emaillogin" aria-describedby="emailHelp" placeholder="correo electrónico">
+                                <i class="fa fa-envelope icon"></i>
+                            </div>
                     
 
                         </div>
 
                         <div class="mb-3">
 
-                            <label for="exampleInputPassword1" class="text-center user-decription-black" style="font-weight: bold; display: block;">CONTRASEÑA</label>
+                            <label for="exampleInputPassword1" class="text-center user-decription-black mb-2" style="font-weight: bold; display: block;">CONTRASEÑA</label>
 
-                            <input type="password" class="input-redes" id="passwordlogin" name="passwordlogin" placeholder="Contraseña">
+                            <div class="input-container">
+                                <input type="password" class="input-redes" style="margin-bottom: 0px;border-right: none;" id="passwordlogin" name="passwordlogin" placeholder="Contraseña">
+                                <i class="fa fa-eye  icon" id="togglePassword"></i>
+                            </div>
+
+
+                            <style>
+
+                                input:focus, textarea:focus {
+                                border-color: #000000;
+                                outline: none;
+                                box-shadow: none;
+                                }
+                                .input-container {
+                                display: -ms-flexbox; /* IE10 */
+                                display: flex;
+                                width: 100%;
+                                margin-bottom: 15px;
+                                }
+
+                                .icon {
+                                padding: 10px 10px 0px 10px;
+                                cursor: pointer;
+                                color: #000;
+                                min-width: 40px;
+                                text-align: center;
+                                border-top: 1px solid;
+                                border-right: 1px solid;
+                                border-bottom: 1px solid;
+                                }
+
+                                .input-field {
+                                width: 100%;
+                                padding: 10px;
+                                outline: none;
+                                }
+                            </style>
+
+                            <script>
+                                const togglePassword = document.querySelector('#togglePassword');
+                                const password = document.querySelector('#passwordlogin');
+
+                                togglePassword.addEventListener('click', function (e) {
+                                    // toggle the type attribute
+                                    const type = password.getAttribute('type') === 'password' ? 'text' : 'password';
+                                    password.setAttribute('type', type);
+                                    // toggle the eye slash icon
+                                    this.classList.toggle('fa-eye-slash');
+                                });
+                            </script>
 
                         </div>
 
 
-
-                        <input type="submit" class="btn btn-ingresar user-decription btn-lg" style="border-radius: 50px; width: 100%;"></input>
-
+                        <button type="submit" class="btn btn-ingresar user-decription btn-lg mt-3" style="border-radius: 50px; width: 100%;" >Iniciar sesión</button>
 
 
                     </form>

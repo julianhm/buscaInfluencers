@@ -63,10 +63,10 @@
                                     <input type="text" class="form-control" id="titulonewnoticia" name="titulonewnoticia" value='<?=old('titulonewnoticia')?>'>
                                 </div>
 
-                               <!-- <div class="mb-3">
-                                    <label class="user-decription-black">Descripción</label>
-                                    <textarea class="form-control" rows="5" id="descripcionnewnoticia" name="descripcionnewnoticia"></textarea>
-                                </div>-->
+                               <div class="mb-3">
+                                    <label class="user-decription-black">Descripcion</label>
+                                    <textarea class="form-control" rows="5" id="descripcionNoticia" name="descripcionNoticia"></textarea>
+                                </div>
 
                                 <div class="mb-3">
                                     <label for="formFile" class="form-label user-decription-black">Subir imagen</label>

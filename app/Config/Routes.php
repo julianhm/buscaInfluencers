@@ -46,7 +46,17 @@ $routes->setDefaultMethod('index');
 
 $routes->setTranslateURIDashes(false);
 
-$routes->set404Override();
+//$routes->set404Override(); //Pagina 404 por defecto
+
+$routes->set404Override(function() {
+
+    $dataHeader =['titulo' => 'Oops',
+                'mensaje'=>"",];
+
+        echo view("influencer/templates/header",$dataHeader);
+        echo view('errors/html/404'); 
+        echo view("influencer/templates/footerindex");
+});
 
 // The Auto Routing (Legacy) is very dangerous. It is easy to create vulnerable apps
 
@@ -126,13 +136,13 @@ $routes->group('influencer', static function ($routes) {
 
     $routes->post('create', 'InfluencerController::create');
 
+
     $routes->get('edit/(:any)', 'InfluencerController::edit/$1');
 
+    
+    $routes->match(['get', 'post'], 'cambiarFoto', 'InfluencerController::cambiarFoto');
 
-
-
-
-    $routes->post('cambiarFoto', 'InfluencerController::cambiarFoto');
+    //$routes->post('cambiarFoto', 'InfluencerController::cambiarFoto');
 
     $routes->post('agregarRedSocial', 'InfluencerController::agregarRedSocial');
 
@@ -168,6 +178,8 @@ $routes->group('influencer', static function ($routes) {
 
     $routes->post('editarOferta', 'InfluencerController::editarOferta');
 
+    $routes->post('eliminarMiCuenta', 'InfluencerController::eliminarMiCuenta');
+
     //$routes->get('new2/(:any)', 'InfluencerController::registro/$1');
 
     $routes->post('guardarRedesSociales', 'InfluencerController::guardarRedesSociales');
@@ -193,6 +205,10 @@ $routes->group('influencer', static function ($routes) {
 
 
 $routes->get('privacidad', 'InfluencerController::privacidad');
+
+$routes->get('registro-exitoso', 'InfluencerController::registroExitoso');
+
+$routes->get('cuenta-eliminada', 'InfluencerController::cuenta_eliminada');
 
 $routes->get('olvido', 'InfluencerController::olvidoClave');
 
@@ -267,6 +283,11 @@ $routes->group('dashboard', static function ($routes) {
     $routes->post('actualizarNoticia', 'dashboard\DashboardController::actualizarNoticia',['as'=>'actualizardash']);
     $routes->post('eliminarNoticia', 'dashboard\DashboardController::eliminarNoticia',['as'=>'eliminarNotidash']);
     $routes->post('eliminarInfluencer', 'dashboard\DashboardController::eliminarInfluencer',['as'=>'eliminarInfludash']);
+    $routes->post('enviarActivacionInfluencer', 'dashboard\DashboardController::enviarActivacionInfluencer',['as'=>'enviarActiInfludash']);
+    $routes->post('enviarEstado_0', 'dashboard\DashboardController::enviarEstado_0',['as'=>'enviarEstado_0_dash']);
+    $routes->post('enviarEstado_50', 'dashboard\DashboardController::enviarEstado_50',['as'=>'enviarEstado_50_dash']);
+    $routes->post('enviarEstado_100', 'dashboard\DashboardController::enviarEstado_100',['as'=>'enviarEstado_100_dash']);
+    $routes->get('enviarTodos/(:any)', 'dashboard\DashboardController::enviarTodos/$1');
     $routes->post('eliminarMensaje', 'dashboard\DashboardController::eliminarMensaje',['as'=>'eliminarMensajedash']);
     $routes->post('editarFoto', 'dashboard\DashboardController::cambiarFotoAdmin',['as'=>'cambiarFotoAdmindash']);
     $routes->post('editarNombre', 'dashboard\DashboardController::cambiarNombreCorreo',['as'=>'cambiarNombreAdmindash']);
@@ -279,9 +300,14 @@ $routes->group('dashboard', static function ($routes) {
     
     $routes->get('influencers', 'dashboard\DashboardController::influencers',['as'=>'influencerdash']);
 
+    $routes->get('estadisticas', 'dashboard\DashboardController::estadisticas',['as'=>'estadisticasdash']);
     $routes->get('mensajes', 'dashboard\DashboardController::mensajes',['as'=>'mensajesdash']);
 
     $routes->get('noticias', 'dashboard\DashboardController::noticias',['as'=>'noticiasdash']);
+    $routes->get('comentarios', 'dashboard\DashboardController::comentarios',['as'=>'comentariosdash']);
+    $routes->post('editarcomentarios', 'dashboard\DashboardController::editarComentarios',['as'=>'editarComentariosdash']);
+    $routes->get('aprobarcomentarios/(:any)', 'dashboard\DashboardController::aprobarComentarios/$1');
+    $routes->post('eliminarcomentarios', 'dashboard\DashboardController::eliminarComentarios',['as'=>'eliminarComentariosdash']);
     
 
     $routes->get('nuevanoticia', 'dashboard\DashboardController::nuevaNoticia',['as'=>'nuevanoticiadash']);

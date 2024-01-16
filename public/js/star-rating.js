@@ -19,7 +19,7 @@ function onload(event) {
     max: 5,
      // Text to show when hover over stars.
     ratingText: '{rating}/{maxRating}',
-    starSize:32, 
+    starSize:25, 
     step:0.5,  
     element:document.querySelector("#rater"), 
     rateCallback:function rateCallback(rating, done) {

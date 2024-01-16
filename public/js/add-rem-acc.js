@@ -240,24 +240,7 @@ function onload(event) {
         /*document.getElementById("footer").style.left = "8%";
         document.getElementById("footer").style.right = "8%";*/
     }
-    //Disable all options in the "smSelect", which are already in use
-    for (var i = 0; i < 20; i++) {
-        if (document.getElementById("sm_"+i)) {
-            document.getElementById("smSelect").options[i].disabled = true;
-        } 
-    }
-    //Disable all options in the "topicSelect", which are already in use
-    for (var i = 0; i < 33; i++) {
-        if (document.getElementById("t_"+i)) {
-            document.getElementById("topicSelect").options[i].disabled = true;
-        } 
-    }
-    //Disable all options in the "langSelect", which are already in use
-    for (var i = 0; i < 33; i++) {
-        if (document.getElementById("lang_"+i)) {
-            document.getElementById("langSelect").options[i].disabled = true;
-        } 
-    }
+    
     /*
     let num = Math.floor(Math.random() * 10) + 1;
     $('div#tagcloud a').attr("rel",num);*/

@@ -72,8 +72,8 @@
 <script src='lib/owlcarousel/owl.carousel.js'></script>
 <script src='lib/owlcarousel/owl.carousel.min.js'></script>
 
-<script  src="js/control-carousel.js"></script>
-<script  src="js/control-carousel-one.js"></script>
+<script  src="js/control-carousel.js?n=0"></script>
+
 
     <!-- JavaScript Libraries -->
     <script src="js/bootstrap.bundle.min.js"></script>

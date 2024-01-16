@@ -1,279 +1,413 @@
+<style>
+    .dashed-2 {
+  border: none;
+  height: 2px;
+  background: #000;
+  opacity: 1;
+  background: repeating-linear-gradient(90deg,#000,#000 10px,transparent 6px,transparent 15px);
+}
 
-   
-    <!-- Content Profile Start -->
-    <div class="container">
-        <div class="row">
-            <div class="text-center user-decription-black my-3" style="font-size: 25px;" >
-                <p><?php echo $influencer['nombreinflu']?> <br> <?php echo $influencer['alias']?></p>
-            </div>
-        </div>
+.form-control:focus {
 
-        <div class="row text-center" style="padding: 0 10%;">
-       
-        <?php  for ($i=0; $i < count($redes) ; $i++) { 
-            if($arregloredes[$i]['activa']!=0){
-            ?>
-
-        
-            <div class="col">
-                <div class="row">
-                    <a class="profile-sm-logo" style="cursor:pointer" href="<?php if($arregloredes[$i]['url']!=null){echo $arregloredes[$i]['url'].$redes[$i]['user'];}else{echo "#";}?>" target="_blank" ><img src=<?php echo base_url('img/iconos')."/".$arregloredes[$i]['icono'] ?>></a>
-                </div>
-                <div class="row mt-2">
-                    <h3 class="profile-followers"><?php echo $redes[$i]['cant_seguidores'] ?></h3>
-                </div>
-                <div class="row">
-                    <p class="user-decription-black">Seguidores</p>
-                </div>
-            </div>
-
-            <?php } 
-        }?>
-
-           
-        </div>
-        <?php $puntaje=0;
-        $porcentaje=0;
-        $promedio=0;
-        $cont=0;
-        foreach ($mensajes as $key => $m) {
-            $puntaje=$puntaje+$m['valoracion'];
-            $cont++;
-        }
-        if($cont!=0){
-            $promedio=$puntaje/$cont;
-            $porcentaje=($promedio)/5*100;
-            
-        }
-            
-        
-        ?>
-        <div class="d-flex justify-content-center align-items-center">
-            <div class="card p-3">
-                <div class="d-flex justify-content-between align-items-center">
-                    <h5 class="review-count">Reputación</h5>
-                    <div class="star-rating" style="width: 160px; height: 32px; background-size: 32px;" data-rating="<?php echo $retVal = ($porcentaje==0) ? 5 : $promedio ; ?>" title="<?php echo $promedio."/5" ?>">
-                        <div class="star-value rating-comment" style="background-size: 32px; width: <?=$porcentaje?>%;">
-                            
-                        </div>
-                    </div>
-                </div>
-                <h3 class="user-decription-black" style="color: #606060"><?=count($mensajes)?> valoraciones</h3>
-            </div>
-        </div>
-        <!-- 
-        <hr style="background-color: #000; opacity: 1">
-        -->
-        <?php if($influencer['video']!=""){ ?>
-        <div class="d-flex justify-content-center align-items-center video-width mt-4" >
-            <!-- video size width="800" height="400" -->
-            <video width="100%" height="400" controls>
-                  <source src="<?php echo base_url('video').'/'.$influencer['video']?>" type="video/mp4">
-                  <source src="movie.ogg" type="video/ogg">
-                  Su video no es soportado
-            </video>
-        </div>
-        <?php } ?>
-        <div class="text-center my-4" style="padding: 0 20%;">
-            <p><?=$influencer['resenia'];?></p>
-        </div>
+    box-shadow: 0 0 0 0.25rem rgb(117 118 118 / 25%) !important;
+}
+</style>
 
 
-
-
-        <div class="d-flex justify-content-center flex-wrap">
-            
-            <?php foreach ($misfotos as $key => $m) {?>
-                <a class="gallery-profile-show-margin" href="<?php echo base_url('uploads')."/".$m['url']?>" data-lightbox="photos">
-                <div class="gallery-profile-show">
-                    <img class="upload-gal-img" src="<?php echo base_url('uploads')."/".$m['url']?>">
-                </div>
-            </a>
-            <?php } ?>
-
-        </div>
-
-
-            <?php if($influencer['oferta']!=null ||$influencer['oferta']!=""){?>
-        <div class="text-center my-4" style="padding-left: 20%; padding-right: 20%;">
-            <h2 class="section-title profile-section-title">OFERTA POR TRABAJAR CONMIGO</h2>
-                         
-        </div>
-        <div class="text-center" style="padding-left: 20%; padding-right: 20%;">
-            <p><?php echo $influencer['oferta']; ?></p>
-
-        </div>
-        <?php } ?>
-        <div class="text-center my-4" style="padding-left: 20%; padding-right: 20%;">
-            <h2 class="section-title profile-section-title">Idioma(s)</h2>
-                         
-        </div>
-        <div class="text-center user-decription-black" style="padding-left: 20%; padding-right: 20%;">
-            <p><?php foreach ($misidiomas as $key => $m) {
-                echo " - ".$m['nombre']." - ";
-            } ?></p>
-        </div>
-        <div class="text-center my-4" style="padding-left: 20%; padding-right: 20%;">
-            <h2 class="section-title profile-section-title">Modalidades de pago</h2>
-                         
-        </div>
-        <div class="text-center" style="padding-left: 20%; padding-right: 20%;">
-            <p><?php foreach ($pagos as $key => $m) {
-                echo " - ".$m['nombre']." - ";
-            } ?></p>
-        </div>
-
-
-
-        <div class="text-center mt-4" style="padding-left: 20%; padding-right: 20%; margin-bottom: -25px; position: relative;">
-            <h2 class="section-title profile-section-title">Marcas con las que ha trabajado</h2>
-                         
-        </div>
-
-   
-        <div class="row justify-content-center text-center" style=" border: 1px solid #000; border-radius: 10px; padding-top: 30px;">
-            <div class="containTag">
-                <div id="tagcloud" class="user-decription-black" style="text-align: center;">
-                    
-                    <h2 class="user-decription-black" style="font-size: 30px;"><?php 
-                        $array_num = count($marcas);
-                        for ($i = 0; $i < $array_num; ++$i){
-                            
-                            if ( ($i+1) !== $array_num) {
-                                // print with star separator
-                                echo $marcas[$i]['nombre']."<i class='bi bi-star-fill' style='padding-left: 15px; padding-right: 15px;'></i>";
-
-                            } else {
-                                // print without star separator
-                                echo $marcas[$i]['nombre'];
-                            }
-                                
-                        } ?>             
-                    </h2>
-                     
-                </div>
-            </div>
-        </div>
-
-
-
-        <?php if (count($mensajes)>0) {?>
-            <div class="text-center my-5" style="padding-left: 20%; padding-right: 20%; position: relative;">
-                <h2 class="section-title profile-section-title">Comentarios de clientes</h2>
-                            
-            </div>  
-
-            <!-- Client's Comments Start -->
+<div class="container" >
     
-            <div class="owl-five owl-carousel owl-theme" style="padding-left: 4%">
+    <div style="padding: 0 25px 50px">
+
+        <div class="row">
+            <!-- Profile Photo -->
+            <div class="col-lg-3 text-center " style="background-color: #FF9933; ">
+                <img id="img-profile" class="my-profile-photo mb-3" style="border-radius: 15%;" src="<?php echo base_url("/uploads")."/".$influencer['foto_perfil']?>" >
+            </div>
+            <!-- Info User -->
+            <div class="col-lg-9 " style="font-family: 'Bemio Italic'; font-weight: 400; color: #000; background-color: #a9fff6">
+                <div class="row align-items-end" style="height: 180px; ">
+                    <div class="row">
+                        <p style="margin-bottom: 8px; font-size: 30px; line-height: 30px;"><?php echo $influencer['nombreinflu']?></p>
+                        <p style="margin-bottom: 8px; font-size: 26px; line-height: 30px;"><?php echo $influencer['alias']?></p>
+                        <p style="margin-bottom: 8px; font-size: 26px; line-height: 30px;">Colombia / Cali</p>
+                    </div>       
+                </div>
+
+                <hr class="dashed-2">
             
-            <?php foreach ($mensajes as $key => $m) {?>
-                <div class="card card-comments">               
-                    <div class="card-body user-decription-black text-center" style="color: #696969">
-                        <div>
-                            <h6 class="mb-2 card-title-comment"><?=$m['nombre']?><br><?=$m['empresa']?></h6>
-                        </div>
-                        <div class="card-comment-body-text">
-                                <p class="card-text"><?=$m['cuerpo']?></p>
-                        </div>
-                        <div class="star-rating" style="width: 100px; height: 20px; background-size: 20px;" data-rating="<?=$m['valoracion'] ?>" title="<?=$m['valoracion']."/5" ?>">
-                        <?php $por=$m['valoracion']/5*100; ?>    
-                        <div class="star-value rating-comment" style="background-size: 20px; width: <?php echo $por."%" ?>;">
-                                
+            </div>
+        </div>
+
+        <div class="row" style="padding-top: 25px;">
+            <!-- Stars ratio / comments -->
+            <div class="col-lg-3" style="background-color: #FF9933; text-align: end;">
+                <?php 
+                    $puntaje=0;
+                    $porcentaje=0;
+                    $promedio=0;
+                    $cont=0;
+                    
+                    foreach ($mensajes as $key => $m) {
+                        $puntaje=$puntaje+$m['valoracion'];
+                        $cont++;
+                    }
+                    if($cont!=0){
+                        $promedio=$puntaje/$cont;
+                        $porcentaje=($promedio)/5*100;   
+                    }
+                ?>
+                
+                <div class="d-flex justify-content-center align-items-center">
+                    <div class="card p-3 text-center" style="background-color: transparent;">
+                        <div class="d-flex justify-content-between align-items-center">
+                            <div class="star-rating" style="width: 160px; height: 32px; background-size: 32px;" data-rating="<?php echo $retVal = ($porcentaje==0) ? 5 : $promedio ; ?>" title="<?php echo $promedio."/5" ?>">
+                                <div class="star-value rating-comment" style="background-size: 32px; width: <?=$porcentaje?>%;">
+                            
+                                </div>
                             </div>
                         </div>
-                        
+                        <h3 class="user-decription-black" style="color: #606060"><?=count($mensajes)?> valoraciones</h3>
+                    </div>
+                </div>
+
+            </div>
+
+            <!-- User's Social Media info -->
+            <div class="col-lg-9 " style="background-color: #a9fff6">
+                <div class="row align-items-center" >
+                    <div class="flex-container">
+                        <?php 
+                            for ($i=0; $i < count($redes) ; $i++) { 
+                                if($arregloredes[$i]['activa']!=0) {
+                        ?>
+                            <div>
+                                <div>
+                                    <a class="profile-sm-logo" style="cursor:pointer" href="<?php if($arregloredes[$i]['url']!=null){echo $arregloredes[$i]['url'].$redes[$i]['user'];}else{echo "#";}?>" target="_blank" ><img src=<?php echo base_url('img/iconos')."/".$arregloredes[$i]['icono'] ?>></a>
+                                </div>
+
+                                <div>
+                                    <h3 class="profile-followers" style="margin-top: 10px;"><?php echo $redes[$i]['cant_seguidores'] ?></h3>
+                                </div>
+                                
+                                <div>
+                                    <p class="profile-decription-black">Seguidores</p>
+                                </div>
+                            </div>
+                        <?php
+                                } 
+                            }
+                        ?>
+                    </div>       
+                </div>
+            </div>
+        </div>
+
+        
+        <div class="row" style="padding-top: 25px;">
+            <!-- Video -->
+            <div class="col-lg-3 " style="background-color: #FF9933;">
+
+                <?php if($influencer['video']!=""){ ?>
+                    
+                    <div id="video" class="d-flex justify-content-center align-items-center mt-4" >
+                        <!-- video size width="800" height="400" -->
+                        <video controlsList="nodownload" oncontextmenu="return false;" height="auto" style="max-height: 480px; max-width:100%; background-color: #000;border-radius: 12px;" controls>
+                            <source src="<?php echo base_url('video').'/'.$influencer['video']?>" type="video/mp4">
+                            <source src="movie.ogg" type="video/ogg">
+                            Su video no es soportado
+                        </video>
                     </div>
 
-                    
+                <?php } ?>
+
+                <script>
+                    $("video").on("contextmenu",function(e){
+                        return false;
+                    });
+                </script>
+
+            </div>
+            
+            <!-- Gallery -->
+            <div class="col-lg-9" style="background-color: #a9fff6">
+
+                <div class="text-left my-4 profile-decription-black">
+                    <p><?=$influencer['resenia'];?></p>
                 </div>
-        <?php }?>
-       
-                                                    
+                
+                <div style="align-self: flex-end;">
+                <div class="d-flex justify-content-left flex-wrap">
+                               
+                    <?php foreach ($misfotos as $key => $m) {?>
+                        <a class="gallery-profile-show-margin" href="<?php echo base_url('uploads')."/".$m['url']?>" data-lightbox="photos">
+                            <div class="gallery-profile-show">
+                                <img class="perfil-gal-img" src="<?php echo base_url('uploads')."/".$m['url']?>">
+                            </div>
+                        </a>
+                    <?php } ?>
+
+                </div>
+                </div>
+            </div>
+
         </div>
-        <?php } ?>
+        
+        <div class="row" style="padding-top: 25px; ">
+            
+            <!-- Promo -->
+            <div class="col-lg-4 d-flex justify-content-start" style="background-color: #9d81d1; color: #fff">
+                <div class="card" style="height:240px; width: 250px; border-radius: 15px; background-color: #5554ed; background-image: linear-gradient(to bottom right, #5554ed, #be4bd6);" >
+                    <div class="card-body">
+                        <h5 class="card-title" style="font-family: 'Bemio Italic'; font-weight: 400; color: #fff; letter-spacing: 1px;">Promo</h5>
+                        <p class="card-text text-center"><?php echo $influencer['oferta']; ?></p>
+                    </div>
+                </div>
+            </div>
+            <!-- Idiomas -->
+            <div class="col-lg-4 d-flex justify-content-center" style="background-color: #9d81d1; color: #fff">
+                <div class="card" style="height:240px; width: 250px; border-radius: 15px; background-color: #e05fbf; background-image: linear-gradient(to bottom right, #e05fbf, #f6a984);" >
+                    <div class="card-body">
+                        <h5 class="card-title" style="font-family: 'Bemio Italic'; font-weight: 400; color: #fff; letter-spacing: 1px;">Idioma</h5>
+                        <p class="card-text text-center">
+                            <?php foreach ($misidiomas as $key => $m) {
+                                echo $m['nombre']."<br>"; 
+                            } ?></p>
+                    </div>
+                </div>
+            </div>
+            <!-- Pagos -->
+            <div class="col-lg-4 d-flex justify-content-end" style="background-color: #9d81d1; color: #fff">
+                <div class="card" style="height:240px; width: 250px; border-radius: 15px; background-color: #e05ebf; background-image: linear-gradient(to bottom right, #e05ebf, #f6a983);" >
+                    <div class="card-body">
+                        <h5 class="card-title" style="font-family: 'Bemio Italic'; font-weight: 400; color: #fff; letter-spacing: 1px;">Pagos</h5>
+                        <p class="card-text text-center">
+                            <?php foreach ($pagos as $key => $m) {
+                                echo $m['nombre']."<br>";
+                            } ?>
+                        </p>
+                    </div>
+                </div>
+            </div>
+ 
+        </div>
 
-        <!-- Client's Comments End -->
+        <!-- Experiencias con marcas -->
+        <div class="row d-flex justify-content-center" style="padding-top: 12px;">
+            <div class="col-lg-12">
+                <div class="text-center mt-4" style="padding-left: 20%; padding-right: 20%; margin-bottom: 0px; position: relative;">
+                    <h2 class="section-title profile-section-title" style="font-family: 'Bemio Italic'; font-weight: 400; color: #fff; letter-spacing: 1px; width: fit-content; margin: auto; padding-left: 15px; padding-right: 15px;">Experiencias con marcas</h2>
+                                
+                </div>
+        
+                <div class="justify-content-center text-center" style=" border: 1px dashed #000; border-radius: 15px; padding-top: 30px;">
+                    <div class="containTag">
+                        <div id="tagcloud" class="user-decription-black" style="text-align: center;">
+                            
+                            <h2 class="user-decription-black" style="font-size: 20px;"><?php 
+                                $array_num = count($marcas);
+                                for ($i = 0; $i < $array_num; ++$i){
+                                    
+                                    if ( ($i+1) !== $array_num) {
+                                        // print with star separator
+                                        echo $marcas[$i]['nombre']."<i class='bi bi-star-fill' style='padding-left: 15px; font-size: 15px; padding-right: 15px;'></i>";
+
+                                    } else {
+                                        // print without star separator
+                                        echo $marcas[$i]['nombre'];
+                                    }
+                                        
+                                } ?>             
+                            </h2>
+                            
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </div>
 
 
-        <?php
-        if(!isset($_SESSION['idinfluencer'])){?>
+             
+ 
+
+        <!-- Comentarios de clientes --> 
+        <?php if (count($mensajes)>0) { ?>
+
+            <div class="text-center" style="padding-left: 20%; padding-right: 20%; padding-top: 25px; margin-bottom: 0px; position: relative;">
+                <h2 class="section-title profile-section-title" style="font-family: 'Bemio Italic'; font-weight: 400; color: #fff; letter-spacing: 1px; width: fit-content; margin: auto; padding-left: 15px; padding-right: 15px;">Reseñas</h2>           
+            </div>
+
+            <!-- Solo si hay un solo comentario -->   
+            <?php if (count($mensajes)==1) {  ?>
+
+                <div class="row justify-content-center" style="padding-top: 12px; ">
+                    <div class="card card-comments" style="margin: auto; color: #000";>               
+                        <div class="card-body" >
+                            <h5 class="card-title user-decription-black" style="font-size: 20px"><?=$mensajes[0]['nombre']?><br><?=$mensajes[0]['empresa']?></h5>
+            
+                            <div class="star-rating mb-3" style="width: 100px; height: 20px; background-size: 20px;" data-rating="<?=$mensajes[0]['valoracion'] ?>" title="<?=$mensajes[0]['valoracion']."/5" ?>">
+                                <?php $por=$mensajes[0]['valoracion']/5*100; ?>  
+                                <div class="star-value rating-comment" style="background-size: 20px; width: <?php echo $por."%" ?>;"></div>
+                            </div> 
+                            <p class="card-text user-decription-black"><?=$mensajes[0]['cuerpo']?> </p>
+                                                    
+                        </div>
+                    </div>
+                </div>    
+            
+
+            <!-- Solo si hay 2 comentarios --> 
+            <?php } if (count($mensajes)==2) { ?>
+
+                <div class="row justify-content-center" style="padding-top: 12px; ">
+                    <div class="col-4">
+                        <div class="card card-comments" style="margin: auto; color: #000";>               
+                            <div class="card-body" > 
+                                <h5 class="card-title user-decription-black" style=" font-size: 20px"><?=$mensajes[0]['nombre']?><br><?=$mensajes[0]['empresa']?></h5>
+                                
+                                <div class="star-rating mb-3" style="width: 100px; height: 20px; background-size: 20px;" data-rating="<?=$mensajes[0]['valoracion'] ?>" title="<?=$mensajes[0]['valoracion']."/5" ?>">
+                                    <?php $por=$mensajes[0]['valoracion']/5*100; ?>  
+                                    <div class="star-value rating-comment" style="background-size: 20px; width: <?php echo $por."%" ?>;"></div>
+                                </div> 
+                                <p class="card-text user-decription-black"><?=$mensajes[0]['cuerpo']?> </p> 
+                                    
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-4">
+                        <div class="card card-comments" style="margin: auto; color: #000";>  
+                            <div class="card-body"> 
+                                <h5 class="card-title user-decription-black" style="font-size: 20px"><?=$mensajes[1]['nombre']?><br><?=$mensajes[1]['empresa']?></h5>
+                                
+                                <div class="star-rating mb-3" style="width: 100px; height: 20px; background-size: 20px;" data-rating="<?=$mensajes[1]['valoracion'] ?>" title="<?=$mensajes[1]['valoracion']."/5" ?>">
+                                    <?php $por=$mensajes[1]['valoracion']/5*100; ?>  
+                                    <div class="star-value rating-comment" style="background-size: 20px; width: <?php echo $por."%" ?>;"></div>
+                                </div> 
+                                <p class="card-text user-decription-black"><?=$mensajes[1]['cuerpo']?> </p>
+                                    
+                            </div>
+                        </div>
+                    </div>
+                </div> 
+                
+                
+            <!-- Mas de 3 comentarios --> 
+            <?php }if (count($mensajes)>=3) {?>
+
+                <div class="row" style="padding-top: 12px; ">
+                    <div class="owl-five owl-carousel owl-theme" style="" >
+                        <?php foreach ($mensajes as $key => $m) {?>
+                            <div class="d-flex justify-content-center" style="background-color: #9d81d1; color: #fff">
+                                
+                                <div class="card card-comments" style="margin-bottom: 5px; color: #000">               
+                                    <div class="card-body ">
+                                        <h5 class="card-title user-decription-black" style="font-size: 20px"><?=$m['nombre']?><br><?=$m['empresa']?></h5>
+                                
+                                        <div class="star-rating mb-3" style="width: 100px; height: 20px; background-size: 20px;" data-rating="<?=$m['valoracion'] ?>" title="<?=$m['valoracion']."/5" ?>">
+                                            <?php $por=$m['valoracion']/5*100; ?>  
+                                            <div class="star-value rating-comment" style="background-size: 20px; width: <?php echo $por."%" ?>;"></div>
+                                        </div> 
+                                        <p class="card-text user-decription-black"><?=$m['cuerpo']?> </p>
+
+                                    </div>
+                                </div>
+                            </div>
+                        <?php }?>
+                    </div>
+                </div>
+            <?php } ?>
+
+        <?php } ?> 
+
+
+        <?php if(!isset($_SESSION['idinfluencer'])){?>
 
         <div class="row justify-content-center my-5">
             <button type="button" class="btn btn-contactar-influencer btn-lg shrink-on-hover" data-bs-dismiss="modal" data-bs-toggle="modal" data-bs-target="#contactar-modal">CONTACTAR ESTE INFLUENCER</button>
         </div>
+
+
         
-        
-        <div class="row mb-4 profile-container-comentario" >
+        <div class="col-lg-12" style="background-color: #e8e8e8; border-radius: 15px; ">
 
-            <div class="text-center user-decription-black my-3"  >
-                <h2 class="section-title profile-section-title" style="background-color: #ffffff00; color: #000">Déjale una reseña a este influencer</h2>
-                <span>Los campos en * son requeridos</span>
-            </div>
+            <div class="row ">
 
-           
-            <form action="create" method="POST" class="register-form pt-2" id="mensaje" name="mensaje" enctype="multipart/form-data">
-                <?= csrf_field() ?>   
-                
-                <input type="hidden" id="influencerid31" name="influencerid31" value="<?=$influencer['idinfluencer']?>">
-                
-                
-            <div class="col-lg-12 user-decription-black" style="color: #696969">
-                <div class="mb-3 row">
-                    <label for="nombre" class="col-sm-3 col-form-label" style="color: #606060;">Tu nombre *</label>
-                    <div class="col-sm-9">
-                      <input type="text" class="form-control" id="nombre" name="nombre" required>
+                <div class="col-6 align-self-center" style="font-family: 'Bemio Italic'; font-weight: 400; color: #000;">
+                    <div class="row text-center ">
+                        <p style="margin-bottom: 8px; font-size: 28px; line-height: 30px;">¿Te gustó este influencer? </p>
+                        <p style="margin-bottom: 8px; font-size: 35px; line-height: 40px;">¡Contáctalo y lleva tu <br>
+                            estrategia digital a<br>
+                            otro nivel!</p>
+                        <div class="row justify-content-center my-2">
+                            <button type="button" class="btn btn-contactar-influencer btn-lg shrink-on-hover" style="font-family: 'Bemio Italic'; font-weight: 400; padding: 4px 20px; box-shadow: 2px 3px 7px 0px #000;" data-bs-dismiss="modal" data-bs-toggle="modal" data-bs-target="#contactar-modal">Contactar</button>
+                        </div>
                     </div>
                 </div>
 
-                <div class="mb-3 row">
-                    <label for="empresa" class="col-sm-3 col-form-label" style="color: #606060;">Empresa</label>
-                    <div class="col-sm-9">
-                      <input type="text" class="form-control" id="empresa" name="empresa">
-                    </div>
-                </div>
 
-                <div class="mb-3 row">
-                    <label for="inputBusiness" class="col-sm-3 col-form-label" style="color: #606060;">Valoración *</label>
-                    <div class="col-sm-9" onClick="cambio()">
-                        <div id="rater" name="rater" ></div>
-                    </div>
-                </div>
-                
-
-                <input type="hidden" id="valoracion" name="valoracion" value=" ">
-                <script>
-                    function cambio() {
-                        document.querySelector("#valoracion").value = document.getElementById("rater").dataset.rating;
-                    }
-
+                <div class="col-6 justify-content-center" style="font-family: 'Bemio Italic'; font-weight: 400; color: #000;">
                     
+                    <div class="row text-center mt-3">
+                        <p style="margin-bottom: 8px; font-size: 24px; line-height: 30px;">Califica a este influencer </p>
                         
-                
-                </script>
+                        <div class="text-center user-decription-black"  >
+                            <span>Los campos en * son requeridos</span>
+                        </div>
 
-                <div class="mb-3 row">
-                    <label for="cuerpo" class="user-decription-black col-sm-3 col-form-label" style="color: #606060;">Comentario *</label>
-                    <div class="col-sm-9">
-                      <textarea id="cuerpo" name="cuerpo" class="form-control" rows="4" style="resize: none;" required></textarea>
+                        <form action="create" method="POST" class="register-form pt-2" id="mensaje" name="mensaje" enctype="multipart/form-data">
+                        <?= csrf_field() ?>
+                            
+                            <div class="form-group" style="margin: 4px 0px; ">
+                                <input type="text" class="form-control" style="border-radius: 10px;" id="nombre" placeholder="Nombre *" name="nombre" required>
+                            </div>
+                        
+                            <input type="hidden" id="influencerid31" name="influencerid31" value="<?=$influencer['idinfluencer']?>">
+
+                            <div class="form-group" style="margin: 4px 0px;">
+                                <input type="text" class="form-control" style="border-radius: 10px;" id="empresa" placeholder="Empresa *" name="empresa">
+                            </div>
+
+                            <div class="form-group" style="margin: 4px 0px;">
+                                <textarea id="cuerpo" name="cuerpo" class="form-control" style="border-radius: 10px;" placeholder="Comentario *" rows="4" style="resize: none;" required></textarea>
+                            </div>
+
+                            <div class="form-group row" style="margin: 4px 0px;">
+                                <label for="inputBusiness" class="col-sm-5 col-form-label" style="padding-left: 0px">Valoración *</label>
+                                <div class="col-sm-6" onClick="cambio()">
+                                    <div id="rater" name="rater" ></div>
+                                </div>
+                            </div>
+                                
+                            <input type="hidden" id="valoracion" name="valoracion" value=" ">
+                            <script>
+                                function cambio() {
+                                    document.querySelector("#valoracion").value = document.getElementById("rater").dataset.rating;
+                                }
+                            </script>
+
+                            <button type="submit" class="mt-2 mb-4 btn btn-contactar-influencer btn-lg shrink-on-hover" style="font-family: 'Bemio Italic'; font-weight: 400; padding: 4px 20px; box-shadow: 2px 3px 7px 0px #000;">Enviar</button>
+                            
+                        </form>    
                     </div>
-                </div>
 
-                <div class="mb-3 row">
-                    <div class="col-sm-3"></div>
-                    <div class="col-sm-9">
-                      <button type="submit" class="btn btn-ver-perfil btn-sm btn-on-white" style="padding: 4px 30px !important;">Enviar</button>
-
-                    </div>
-
-                  </div>
                 </div>
             </div>
-
-            </form>
         </div>
+
         <?php } ?>
     <!-- Content Profile End -->
+
+        
+
+
+
+    </div>
+</div>
+
+   
+
+
+
 
 
     
@@ -313,7 +447,7 @@
                         </div>
 
                         <div class="user-decription-black " style="font-size: 25px;" >
-                            Dato de contacto
+                            Datos de contacto
                         </div>
 
                         <div class="row">

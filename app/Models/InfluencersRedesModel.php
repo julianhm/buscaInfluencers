@@ -15,7 +15,7 @@ class InfluencersRedesModel extends Model
     //protected $returnType     = 'array';
     //protected $useSoftDeletes = true;
 
-    protected $allowedFields = ['idredes', 'idinfluencer','user','cant_seguidores'];
+    protected $allowedFields = ['idredes', 'idinfluencer','user','cant_seguidores', 'last_update'];
 
     //protected $useTimestamps = false;
     //protected $createdField  = 'created_at';

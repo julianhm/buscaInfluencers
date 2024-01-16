@@ -70,8 +70,8 @@
 <script src=<?php echo base_url('lib/owlcarousel/owl.carousel.js');?>></script>
 <script src=<?php echo base_url('lib/owlcarousel/owl.carousel.min.js');?>></script>
 
+
 <script  src=<?php echo base_url('js/control-carousel.js');?>></script>
-<script  src=<?php echo base_url('js/control-carousel-one.js');?>></script>
 
     <!-- JavaScript Libraries -->
     <script src=<?php echo base_url('js/bootstrap.bundle.min.js');?>></script>
@@ -96,8 +96,18 @@
     <!-- rating.js file -->
     <script src=<?php echo base_url("js/star-rating.js")?>></script>
     <script src=<?php echo base_url("js/star-index.js")?>></script>
+
     
+
+    <!-- crop photo -->
+    
+    <script src=<?php echo base_url("js/dropzone.js")?>></script>
     <script src=<?php echo base_url("js/cropper.js")?>></script>
+
+    
+
+    
+      
 
 </body>
 </html>

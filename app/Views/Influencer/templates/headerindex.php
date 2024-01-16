@@ -2,8 +2,23 @@
     <meta charset="utf-8">
     <title>Buscoinfluencers.com - LOS SEGUIDORES QUE TU MARCA NECESITA SIGUEN A UN INFLUENCER</title>
     <meta content="width=device-width, initial-scale=1.0" name="viewport">
-    <meta content="Free HTML Templates" name="keywords">
-    <meta content="Free HTML Templates" name="description">
+    <meta content="Influencer, Influenciador, Marketing de influencer, Twittero, Instagrammer, Youtuber, Tiktoker, Blogger, Bloggero, Seguirdor, Popular, Edutuber, Poscaster, creador de contenido" name="keywords">
+    <meta content="busconfluencers.com, pretende conectar a distintos creadores de contenido/influencers con personas o empresarios interesados en su contenido y asi entablar negociaciones " name="description">
+
+    <meta content="buscoinfluencers.com" property="og:title">
+    <meta content="https://oficial.buscoinfluencers.com/public/img/logo-blue.png" property="og:image">
+
+    <meta http-equiv='cache-control' content='no-cache'>
+
+    <meta http-equiv="Expires" content="0">
+    <meta http-equiv="Last-Modified" content="0">
+    <meta http-equiv="Cache-Control" content="no-cache, mustrevalidate">
+    <meta http-equiv="Pragma" content="no-cache">
+
+    <?php
+    header("Cache-Control: no-cache, must-revalidate"); // HTTP/1.1
+    header("Expires: Sat, 1 Jul 2000 05:00:00 GMT"); // Fecha en el pasado
+    ?>
 
     <!-- Favicon -->
     <link href="img/favicon2.ico" rel="icon">

@@ -15,7 +15,7 @@ class MensajeCorreoModel extends Model
     //protected $returnType     = 'array';
     //protected $useSoftDeletes = true;
 
-    protected $allowedFields = ['idinfluencer','nombre','empresa','correoremitente','celularremitente','cuerpo','created_at'];
+    protected $allowedFields = ['idinfluencer','nombre','empresa','correoremitente','celularremitente','cuerpo','created_at','eliminado'];
 
     protected $useTimestamps = true;
     protected $createdField  = 'created_at';

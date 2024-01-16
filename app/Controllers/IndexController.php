@@ -23,7 +23,9 @@ class IndexController extends BaseController
         $miscategorias = $categorias->findAll(); 
 
         $cat = new CategoriasModel();
-        $miscat = $cat->where('mostradas',1)->findAll(); 
+        $miscat = $cat->where('mostradas',1)->findAll();
+
+        
 
         $db      = \Config\Database::connect();
 
@@ -75,16 +77,20 @@ class IndexController extends BaseController
         $q = $builder->get();
         $informacioncate =$q->getResultArray();
 
+
         $arregloPerfiles=[];
-        
+
+
         for ($i=0; $i < count($informacioncate) ; $i++) {
             if(count($arregloPerfiles)>0) {
                 $cont=0;
                 for ($k=0; $k < count($arregloPerfiles); $k++) { 
                     if($arregloPerfiles[$k]['idinfluencer']==$informacioncate[$i]['idinfluencer']){
                         $cont++;
+                        
                     }
-                }
+
+                }      
                 if($cont==0){
                     array_push($arregloPerfiles,$informacioncate[$i]);  
                 }
@@ -95,16 +101,29 @@ class IndexController extends BaseController
         }
 
 
+        $arregloPerfilesReverse = array_reverse($arregloPerfiles);
+        $arregloPerfilesReverse12 = array_slice($arregloPerfilesReverse,0,8);
+
+
         //var_dump($informacioncate);
         $validacion = \Config\Services::validation();
         session();
 
         $noticias=new NoticiasModel();
 
-        $misNoticias=$noticias->where('favorito',1)->findAll();
-        
-        //var_dump($misNoticias);)
-        $data= ['validation'=>$validacion,'datos'=>$arregloPerfiles,
+        $misNoticiasAsc = $noticias->where('favorito',1)->findAll();
+
+        /*
+        echo '<pre>';
+        var_dump($misNoticias);
+        echo '</pre>';
+        */
+
+        shuffle($miscat);
+
+        $misNoticias = array_reverse($misNoticiasAsc);
+
+        $data= ['validation'=>$validacion,'datos'=>$arregloPerfilesReverse12,
                 'noticias'=>$misNoticias,'informacion'=>$arregloMostrarMayorPorCategoria,
                 'categorias'=>$miscat];
 
@@ -125,8 +144,10 @@ class IndexController extends BaseController
 
     }
 
+
     // FOOTER STATEMENT LINK
     public function statement(){
+        session();
         $dataHeader =['titulo' => 'Nuestro “statement”',
                 'mensaje'=>"",];
         echo view("influencer/templates/header",$dataHeader);
@@ -136,6 +157,7 @@ class IndexController extends BaseController
 
     // FOOTER STATEMENT LINK
     public function nosotros(){
+        session();
         $dataHeader =['titulo' => 'Nuestro “statement”',
                 'mensaje'=>"",];
         echo view("influencer/templates/header",$dataHeader);
@@ -145,6 +167,7 @@ class IndexController extends BaseController
 
     // FOOTER AVISO DE PRIVACIDAD LINK
     public function privacidad(){
+        session();
         $dataHeader =['titulo' => 'Aviso privacidad',
                 'mensaje'=>"",];
         echo view("influencer/templates/header",$dataHeader);
@@ -154,6 +177,7 @@ class IndexController extends BaseController
 
     // FOOTER POLITICA DE TRATAMIENTO DE DATOS LINK
     public function politica(){
+        session();
         $dataHeader =['titulo' => 'Política de tratamiento de datos',
                 'mensaje'=>"",];
         echo view("influencer/templates/header",$dataHeader);
@@ -163,6 +187,7 @@ class IndexController extends BaseController
 
     // FOOTER POLITICA DE TRATAMIENTO DE DATOS LINK
     public function terminos(){
+        session();
         $dataHeader =['titulo' => 'Términos y condiciones',
                 'mensaje'=>"",];
         echo view("influencer/templates/header",$dataHeader);
@@ -172,6 +197,7 @@ class IndexController extends BaseController
 
     // FOOTER CONTACTO
     public function contacto(){
+        session();
         $dataHeader =['titulo' => 'Contacto',
                 'mensaje'=>"",];
         echo view("influencer/templates/header",$dataHeader);
@@ -182,7 +208,7 @@ class IndexController extends BaseController
 
     public function buscarNoticia($id=null)
     {
-        
+        session();
         //var_dump($id);
         $noticias=new NoticiasModel();
         $recomendada=new NoticiasRecomendadaModel();
@@ -203,26 +229,34 @@ class IndexController extends BaseController
         'fuente'=> $misFuentes];
         
         $dataHeader =['titulo' => 'Noticias',
+                      'titulo_meta' => $misNoticias['titulo'],
+                      'descripcion' => $misNoticias['descripcion'],
+                      'url_foto' => base_url('fotosnoticias')."/".$misNoticias['url_foto'],
                 'mensaje'=>"",];
 
         //var_dump($informacioncate);
         echo view("influencer/templates/header",$dataHeader);
         echo view("influencer/usuarios/noticia",$data);
         echo view("influencer/templates/footer");
+
+        //var_dump($misNoticias['url_foto']);
+
     }
 
 
      //Realiza el login de la pagina
      public function login()
      {
-         $correo= $this->request->getPost('emaillogin');
+       
+        $correo= $this->request->getPost('emaillogin');
          $password= $this->request->getPost('passwordlogin');
  
          $miInfluencer= new InfluencerModel();
+
  
-         $inf=$miInfluencer->select('idinfluencer,correo,password,validado')->where('correo',$correo)->first();
+         $inf=$miInfluencer->select('idinfluencer,correo,alias,password,validado')->where('correo',$correo)->first();
          if($inf==null){
-            return redirect()->back()->with('mensaje','Correo y/o contraseña o-incorrecta');  
+            return redirect()->back()->with('mensaje','Correo y/o contraseña incorrecta');  
         } else{
 
             if($inf['validado']==0){
@@ -233,13 +267,16 @@ class IndexController extends BaseController
                 $pass=$inf['password'];
                 if(password_verify($password,$inf['password'])){
                     $id=$inf['idinfluencer'];
+                    $alias=$inf['alias'];
                     session()->set('idinfluencer',$id);
+                    session()->set('alias',$alias);
                     session()->set('time',time());
-                    return redirect()->to(base_url()."/influencer/edit/$id")->with('mensaje', 'Tu inicio de sesión fue correcto');
+                    return redirect()->to(base_url()."/influencer/edit/$alias")->with('mensaje', 'Tu inicio de sesión fue correcto');
                 }
             }
         }
-         return redirect()->back()->with('mensaje','Correo y/o contraseña o-incorrecta'); 
+        
+         return redirect()->back()->with('mensaje','Correo y/o contraseña incorrecta'); 
  
      }
 

@@ -63,10 +63,12 @@
                                     <input type="text" class="form-control" id="titulonewnoticia2" name="titulonewnoticia2" value='<?=$noticiaAEditar['titulo']?>'>
                                 </div>
 
-                               <!-- <div class="mb-3">
-                                    <label class="user-decription-black">Descripción</label>
-                                    <textarea class="form-control" rows="5" id="descripcionnewnoticia" name="descripcionnewnoticia"></textarea>
-                                </div>-->
+                                
+
+                                <div class="mb-3">
+                                    <label class="user-decription-black">Descripcion</label>
+                                    <textarea class="form-control" rows="5" id="descripcionNoticia" name="descripcionNoticia"><?=$noticiaAEditar['descripcion']?></textarea>
+                                </div>
 
                                 
                                 <div class="mb-3">

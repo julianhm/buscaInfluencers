@@ -17,18 +17,16 @@
         
             
         <div class="user-decription-black filter_searched" style="border-bottom: 1px solid #000;">
-                <a href="<?php echo base_url('influencer')."/edit/".$influencer['idinfluencer']?>"><b>Editar perfil</b></a>
+                <a href="<?php echo base_url('influencer')."/edit/".$influencer['alias']?>"><b>Editar perfil</b></a>
         </div>
         <div class="user-decription-black filter_searched" style="border-bottom: 1px solid #000;">
-            <a href="<?php echo base_url("/perfil")."/".$influencer['idinfluencer']?>" target="_blank"><b>Ver perfil</b></a>
+            <a href="<?php echo base_url("/perfil")."/".$influencer['alias']?>" target="_blank"><b>Ver perfil</b></a>
         </div>
 
         <div class="user-decription-black filter_searched" style="border-bottom: 1px solid #000;">
-            <a href="<?php echo base_url("influencer")."/mensajes/".$influencer['idinfluencer']?>"><b>Mensajes</b></a>
+            <a href="<?php echo base_url("influencer")."/mensajes/".$influencer['alias']?>"><b>Mensajes</b></a>
         </div>
-            
-        <div class="user-decription-black filter_searched" style="border-bottom: 1px solid #000;"><a href="<?php echo base_url("logout")?>"><b>Cerrar sesión</b></a>
-        </div>
+        
     </div>
     
 </div>
@@ -40,16 +38,225 @@
             <div class="mb-3 mt-4" style="border-top: 1px solid #000;">
                 <h2 class="mypro-section-title">Hola de nuevo <?=$influencer['nombreinflu'];?>!</h2>
             </div>
+
+
+<!-- ===================================================================== -->
+<!-- ------------------CARGAR UNA NUEVA FOTO DE PERFIL V2 AJAX--------------->
+<!-- ===================================================================== -->
+
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/2.2.0/jquery.min.js"></script>
+
+<style>
+
+.image_area {
+  position: relative;
+}
+
+.img-upload {
+    display: block;
+    max-width: 100%;
+
+    opacity: 1;
+    width: 100%;
+    transition: .5s ease;
+    backface-visibility: hidden;
+}
+
+
+.img-responsive {
+    display: block;
+    max-width: 75%;
+    height: auto;
+    aspect-ratio: 1 / 1;
+}
+
+.img-circle {
+    border-radius: 50%;
+}
+
+.preview {
+      overflow: hidden;
+      width: 160px; 
+      height: 160px;
+      margin: 10px;
+      border: 1px solid red;
+}
+
+.modal-lg{
+      max-width: 800px !important;
+}
+
+.overlay {
+    transition: .5s ease;
+  opacity: 0;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  -ms-transform: translate(-50%, -50%);
+  text-align: center;
+}
+
+.image_area:hover .img-upload {
+  opacity: 0.3;
+  cursor: pointer;
+}
+
+.image_area:hover .overlay {
+  opacity: 1;
+  cursor: pointer;
+}
+
+.text {
+  color: #000;
+  font-size: 20px;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  -webkit-transform: translate(-50%, -50%);
+  -ms-transform: translate(-50%, -50%);
+  transform: translate(-50%, -50%);
+  text-align: center;
+  width: max-content;
+}
+
+</style>
+
+
+<div class="" align="center">
+    
+	<br />
+    <div class="row">
+        <div class="col-md-4">
+            <div class="image_area">
+                <form method="post">
+                    <label for="upload_image">
+                        <img src="<?php echo base_url("/uploads")."/".$influencer['foto_perfil']?>" id="uploaded_image" class="my-profile-photo img-upload img-responsive img-circle " />
+                        <div class="overlay">
+                            <div class="text user-decription-black">Subir foto de perfil</div>
+                        </div>
+                        <input type="file" name="image" class="image" id="upload_image" style="display:none" required>
+                    </label>
+                </form>
+            </div>
+        </div>
+
+        <div class="col-md-4">
+            &nbsp;
+        </div>   
+
+        <!-- Modal MODIFICAR FOTO PERFIL -->
+        <div class="modal fade" id="modal" tabindex="-1" role="dialog" aria-labelledby="modalLabel" aria-hidden="true">
+            <div class="modal-dialog modal-lg" role="document">
+                <div class="modal-content" style="border-radius: 0rem; border: 2px solid #000;">
+                    <div class="modal-header">
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <div class="modal-body" style="padding-top: 0px;">
+                        <div class="user-decription-black text-center" style="font-size: 25px;" >
+                            <p>Recorta la imagen antes de subirla</p>
+                        </div>
+                        <div class="img-container">
+                            <div class="row">
+                                <div class="col-md-8">
+                                    <img class="img-upload" src="" id="sample_image" />
+                                </div>
+                                <div class="col-md-4">
+                                    <div class="preview"></div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="submit" class="btn btn-white-normal btn-lg" data-bs-dismiss="modal" aria-label="Close">Cancelar</button>
+                        <button type="submit" class="btn btn-white-normal btn-lg" id="crop">Subir foto</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- FINAL MODAL ACTUALIZAR FOTO PERFIL -->
+
+	</div>
+</div>
+
+<script>
+
+$(document).ready(function(){
+    	
+	var $modal = $('#modal');
+	var image = document.getElementById('sample_image');
+	var cropper;
+
+	$('#upload_image').change(function(event){
+    	var files = event.target.files;
+    	var done = function (url) {
+      		image.src = url;
+      		$modal.modal('show');
+    	};
+
+    	if (files && files.length > 0)
+    	{
+            reader = new FileReader();
+            reader.onload = function (event) {
+                done(reader.result);
+            };
+            reader.readAsDataURL(files[0]);
+    	}
+	});
+
+	$modal.on('shown.bs.modal', function() {
+    	cropper = new Cropper(image, {
+    		aspectRatio: 1,
+    		viewMode: 3,
+    		preview: '.preview'
+    	});
+	}).on('hidden.bs.modal', function() {
+   		cropper.destroy();
+   		cropper = null;
+	});
+
+	$("#crop").click(function(){
+        
+    	canvas = cropper.getCroppedCanvas({
+      		width: 400,
+      		height: 400,
+    	});
+
+    	canvas.toBlob(function(blob) {
+        	;
+        	var reader = new FileReader();
+         	reader.readAsDataURL(blob); 
+         	reader.onloadend = function() {
+            	var base64data = reader.result;  
+            	$.ajax({
+                    type : "POST",
+            		url: "<?php echo base_url('influencer/cambiarFoto'); ?>",
+                	                	
+                	data: {image: base64data, id: <?=$influencer['idinfluencer']?>},
+                	success: function(data){
+                    	//console.log(data);
+                    	$modal.modal('hide');
+                    	$('#uploaded_image').attr('src', data);
+                    
+                	}
+              	});
+         	}
+    	});
+    });
+	
+});
+</script>
+
            
             
 <!-- ============================================================== -->
 <!-- ------------------CARGAR UNA NUEVA FOTO DE PERFIL --------------->
-<!-- ============================================================== -->
+<!-- 
            
                 <div class="row g-0 mb-3">
                     <div class="col-lg-2">
                         <div>
-                            <img id="img-profile" class="my-profile-photo" src="<?php echo base_url("/uploads")."/".$influencer['foto_perfil']?>" >
+                            <img id="img-profile" class="my-profile-photo" src="" >
                         </div>
                     </div>
 
@@ -58,6 +265,7 @@
                        <button type="button" data-id="btn-profile" class="open-send btn btn-white-normal btn-lg"  data-bs-toggle="modal" data-bs-target="#modal-upload-image">Subir foto de perfil</button> 
                     </div>  
                 </div>
+ -->
            
 <!-- ============================================================== -->
 <!-- ------------------Actualizar PERFIL ----------------------------->
@@ -75,8 +283,8 @@
                 </div> 
                 <div class="col-lg-12">
                     <div>
-                        <img class="icon-input" src="<?php echo base_url("img/icon-alias.png")?>" ><span class="user-decription-black" style="margin-left: 12px; font-size: 18px;">Alias (opcional)</span>
-                        <input class="input-modify my-profile-input-line" type="text" name="aliasedit" id="aliasedit" placeholder="<?=$influencer['alias']?>" value="<?=$influencer['alias']?>">
+                        <img class="icon-input" src="<?php echo base_url("img/icon-alias.png")?>" ><span class="user-decription-black" style="margin-left: 12px; font-size: 18px;">Alias</span>
+                        <input class="input-modify my-profile-input-line" type="text" name="aliasedit" id="aliasedit" placeholder="<?=$influencer['alias']?>" value="<?=$influencer['alias']?>" disabled readonly=»readonly»>
                     </div>
                 </div> 
                 <div class="col-lg-12">
@@ -156,35 +364,38 @@
 <!-- ------------------ELIMINAR CATEGORIAS     --------------->
 <!-- ============================================================== --> 
             
-<div class="mb-3 mt-5" style="border-top: 1px solid #000;">
+            <div class="mb-3 mt-5" style="border-top: 1px solid #000;">
                 <h2 class="mypro-section-title">Tus temas y contenidos</h2>
             </div>
-<form action="/influencer/elminarCategoria" method="POST" class="register-form pt-2" id="elminarCategoria" name="elminarCategoria" enctype="multipart/form-data">
+
                   
                 <div id="topics" class="row mt-4">
 
-                    <?php 
-                    for ($i=0; $i < count($categorias); $i++) {?>
-                        <input type="hidden" id="categoriaeliminar" name="categoriaeliminar" value="<?php echo $categoriainfluencer[$i]['id']?>">
-                        <input type="hidden" id="influencerid3" name="influencerid3" value="<?=$influencer['idinfluencer']?>">
-             
-                    <div id="t_5" class="col-lg-3">
-                        <div class="row mb-3">
-                            <div class="col-md-auto my-profile-width-remove">
-                                <div>
-                                    <input style="cursor:pointer" type="image" src="<?php echo base_url("img/remove-acc.png")?>" >
+                    <?php for ($i=0; $i < count($categorias); $i++) {?>
 
+                        <form action="/influencer/elminarCategoria" method="POST" class="col-lg-3 pt-2" id="elminarCategoria" name="elminarCategoria" enctype="multipart/form-data">
+                        
+                            <input type="hidden" id="categoriaeliminar" name="categoriaeliminar" value="<?php echo $categoriainfluencer[$i]['id']?>">
+                            <input type="hidden" id="influencerid3" name="influencerid3" value="<?=$influencer['idinfluencer']?>">
+             
+                            <div id="exp_1" class="row">
+                                <div class="row mb-3">
+                                    <div class="col-md-auto my-profile-width-remove">
+                                        <div>
+                                            <input style="cursor:pointer" type="image" src="<?php echo base_url("img/remove-acc.png")?>" >
+
+                                        </div>
+                                    </div>
+                                    <div class="col-md-auto user-decription-black my-profile-align-txt-content">
+                                        <?=$categorias[$i]['nombrecat']?>
+                                    </div>
                                 </div>
                             </div>
-                            <div class="col-md-auto user-decription-black my-profile-align-txt-content">
-                            <?=$categorias[$i]['nombrecat']?>
-                            </div>
-                        </div>
-                    </div>
+                        </form>
                     <?php } ?>
                     
                 </div>
-            </form>
+            
 
             <br>
             <br>
@@ -254,7 +465,7 @@
                     <div id="video-prev" class="col-lg-8">
                     <?php if ($influencer['video']!=null) { ?>
                         <div>
-                            <video width="100%" height="400" class=" video-preview" style="background-color: #000" controls="controls"><source src="<?php echo base_url("/video")."/".$influencer['video']?>" type="video/mp4"></video>
+                            <video height="700" class=" video-preview" style="background-color: #000; max-width:600px;" controls="controls"><source src="<?php echo base_url("/video")."/".$influencer['video']?>" type="video/mp4"></video>
                         </div>
                     
                         
@@ -440,7 +651,7 @@
                 <div>
                     
                     <input class="input-modify my-profile-input-line" type="text" name="promocion" id="promocion" placeholder="Escriba su promoción" value="<?php if(!($influencer['oferta']==null||$influencer['oferta']=="")){ echo $influencer['oferta'];  }?>">
-                    <button type="submit" class="btn btn-white-normal btn-lg" >Actualizar promoción</button>
+                    <button type="submit" class="btn btn-white-normal btn-lg mt-4" >Actualizar promoción</button>
                 </div>
             </div> 
 
@@ -448,11 +659,19 @@
            
         </form>
 
-        <div class="d-flex justify-content-center text-center my-5">
-                <div class="btn-register">
-                    <button type="button" class="btn btn-login btn-lg btn-register-width user-decription-black" style="font-size: 20px; width: fit-content; padding: 12px 45px;" data-bs-dismiss="modal" data-bs-toggle="modal" data-bs-target="#confirmation-changes-modal">GUARDAR CAMBIOS</button>
-                </div>
-            </div>
+        <div class="d-flex justify-content-end text-right my-3">
+            <a data-bs-toggle="modal" data-bs-target="#exampleModalEliminarInflu" data-placement="top" title="Eliminar Influencer" onclick="recibir2(<?=$influencer['idinfluencer']?>);" >
+                <button class="btn btn-white-normal btn-lg mt-4" >Eliminar cuenta</button>
+            </a>
+
+            <script>
+                function recibir2(numero)
+                {
+                    document.getElementById("eliminarinfluencermodal").value=numero;     
+                }
+            </script>
+
+        </div>
 
         </div>
         <!-- content -->
@@ -460,11 +679,47 @@
     </div>
     <!-- Content Mi Perfil End -->
 
-    
+
+   
 
 <!-- ============================================================== -->
                     <!-- MODALES -->
 <!-- ============================================================== -->
+
+<!-- Modal eliminar cuenta -->
+<div class="modal fade" id="exampleModalEliminarInflu" tabindex="-1" aria-labelledby="exampleModalEliminarInflu" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content" style="border-radius: 0rem; border: 2px solid #000;">
+
+            <div class="modal-header">
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+
+            <div class="modal-body ">
+                <img class="img-hecho mb-3" src="<?=base_url('img/warning.png')?>" >
+                
+                <p class="user-decription-black text-center " style="font-size:17px">¿Estás seguro que quieres eliminar tu cuenta?</p>
+
+                <div class="user-decription-black text-center"  >
+                    <i class="fa fa-info-circle" style="font-size:12px"></i> Esta acción es irreversible.</p>
+                </div>
+                
+                <form action="/influencer/eliminarMiCuenta" method="POST" class="form-horizontal"  enctype="multipart/form-data">
+                    <input id="eliminarinfluencermodal" name="eliminarinfluencermodal" type="hidden" >
+
+                    <div class="text-center mt-4" style=" font-size: 18px; padding: 6px;">   
+                        <button type="submit" class="btn btn-white-normal btn-lg" >Aceptar</button>
+                    </div>
+                </form>
+            </div>
+        
+            <div class="modal-footer"></div>
+
+        </div>
+    </div>
+</div>
+
+
 
     <!-- Modal agregar RED SOCIAL -->
     <div class="modal fade" id="add-acc-modal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
@@ -475,9 +730,13 @@
                 </div>
                 <div class="modal-body " style="padding-right: 65px; padding-left: 65px; padding-top: 0px;">
 
-                    <div class="user-decription-black text-center" style="font-size: 25px;" >
+                    <div class="text-center" style="font-family: 'Bemio Italic'; color: #000000; font-size: 25px;" >
                         <p>Selecciona la red social<br>
                         y escribe tu usuario</p>
+                    </div>
+                    <div class="user-decription-black"  >
+                        <p style="padding: 5px 4px;"><i class="fa fa-info-circle" style="font-size:14px"></i> Coloca solo el nombre de usuario.<br>
+                        <i class="fa fa-info-circle" style="font-size:14px"></i> Telegram funciona con tu canal para que muestres tus suscriptores, ten en cuenta que no es tu cuenta personal.</p>
                     </div>
                     <form action="/influencer/agregarRedSocial" method="POST" class="register-form pt-2" id="agregarRedSocial" name="agregarRedSocial" enctype="multipart/form-data">
                         <input type="hidden" id="influencerid1" name="influencerid1" value="<?=$influencer['idinfluencer']?>">
@@ -498,9 +757,9 @@
                             <input class="input-redes" type="text" name="textousuariored" id="textousuariored" placeholder="Tu usuario">
                         </div>
                     
-                        <div class="text-center mt-3">
-                        
-                        <button type="submit" class="btn btn-get-info user-decription btn-lg" >Adicionar</button>
+                        <div class="text-center mt-4" style=" font-size: 18px; padding: 6px;">
+                            <input type="submit" class="btn btn-white-normal btn-lg"   value="Adicionar"/>
+                            
                         </div>
 
                         
@@ -525,7 +784,7 @@
                 </div>
                 <div class="modal-body " style="padding-right: 65px; padding-left: 65px; padding-top: 0px;">
 
-                    <div class="user-decription-black text-center" style="font-size: 25px;" >
+                    <div class="text-center" style="font-family: 'Bemio Italic'; color: #000000;font-size: 25px;" >
                         <p>Agrega un tema</p>
                     </div>
 
@@ -543,10 +802,10 @@
                                 
                             </select>
                         
-                        <div class="col-md-auto user-decription-black mt-2" style=" font-size: 18px; padding: 6px;">
+                            <div class="text-center mt-4" style=" font-size: 18px; padding: 6px;">
                             <input type="submit" class="btn btn-white-normal btn-lg"   value="Adicionar"/>
                             
-                        </div> 
+                        </div>
 
                     </form>
 
@@ -569,7 +828,7 @@
                 </div>
                 <div class="modal-body " style="padding-right: 65px; padding-left: 65px; padding-top: 0px;">
 
-                    <div class="user-decription-black text-center" style="font-size: 25px;" >
+                    <div class="text-center" style="font-family: 'Bemio Italic'; color: #000000;font-size: 25px;" >
                         <p>Agrega un idioma</p>
                     </div>
 
@@ -587,7 +846,7 @@
                                 
                             </select>
                         
-                        <div class="col-md-auto user-decription-black mt-2" style=" font-size: 18px; padding: 6px;">
+                            <div class="text-center mt-4" style=" font-size: 18px; padding: 6px;">
                             <input type="submit" class="btn btn-white-normal btn-lg"   value="Adicionar"/>
                             
                         </div> 
@@ -613,7 +872,7 @@
                 </div>
                 <div class="modal-body ">
 
-                <div class="user-decription-black text-center" style="font-size: 25px;" >
+                <div class="text-center" style="font-family: 'Bemio Italic'; color: #000000;font-size: 25px;" >
                         <p>Agrega un video</p>
                     </div>
 
@@ -628,10 +887,14 @@
                             <input id="newvideo" name="newvideo" class="" type='file' accept="video/mp4, video/*"/>
                             
                         </div>
-                        </br>
-                        <div class="text-center">
-                            <button type="submit" class="btn btn-get-info user-decription btn-lg" >Cambiar video</button>
-                        </div>
+
+                        
+                        
+                        <div class="text-center mt-4" style=" font-size: 18px; padding: 6px;">
+                            <input type="submit" class="btn btn-white-normal btn-lg"   value="Cambiar video"/>
+                            
+                        </div> 
+                        
                         
                     </div>
                 </form>
@@ -657,7 +920,7 @@
                 </div>
                 <div class="modal-body ">
 
-                <div class="user-decription-black text-center" style="font-size: 25px;" >
+                <div class="text-center" style="font-family: 'Bemio Italic'; color: #000000;font-size: 25px;" >
                         <p>Agrega una foto de perfil</p>
                         
                     </div>
@@ -679,6 +942,7 @@
                         </div>
                         
                         <div class="text-center" style="margin-top: 12px;">
+                        <button type="submit" class="btn btn-white-normal btn-lg" >Cambiar foto de perfil</button>
                             <button type="submit" class="btn btn-get-info user-decription btn-lg" >Cambiar foto de perfil</button>
                         </div>
                         
@@ -703,7 +967,7 @@
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
                 <div class="modal-body ">
-                <div class="user-decription-black text-center" style="font-size: 25px;" >
+                <div class="text-center" style="font-family: 'Bemio Italic'; color: #000000;font-size: 25px;" >
                         <p>Agrega algunas fotos a tu galería</p>
                     </div>
                 <form action="/influencer/agregarFotoGaleria" method="POST" class="register-form pt-2" id="agregarFotoGaleria" name="agregarFotoGaleria" enctype="multipart/form-data">
@@ -717,13 +981,18 @@
                             <input id="newfotoGaleria[]" name="newfotoGaleria[]" type='file' multiple="" accept="image/png,image/jpeg"  />
                             
                         </div>
-                        </br>
-                        <div class="text-center">
-                            <button type="submit" class="btn btn-get-info user-decription btn-lg" >Cambiar fotos de tu galería</button>
-                        </div>
+                        
+                        <div class="text-center mt-4" style=" font-size: 18px; padding: 6px;">
+                            <input type="submit" class="btn btn-white-normal btn-lg"   value="Cambiar fotos de tu galería"/>
+                            
+                        </div> 
+
                         
                     </div>
                 </form>
+
+                
+
                 </div>
                 <div class="modal-footer user-decription-black" style="font-weight: bold; "></div>
             </div>
@@ -742,7 +1011,7 @@
                 </div>
                 <div class="modal-body " style="padding-right: 65px; padding-left: 65px; padding-top: 0px;">
 
-                    <div class="user-decription-black text-center" style="font-size: 25px;" >
+                    <div class="text-center" style="font-family: 'Bemio Italic'; color: #000000;font-size: 25px;" >
                         <p>Escribe una empresa o marca</p>
                     </div>
 
@@ -754,17 +1023,15 @@
                         </div>
                         <div class="col mt-4">
                             <select id="tipoempres" name="tipoempres"  class="input-redes" type="text"  placeholder="Marca / Empresa">
-                            <option value="publica">Publica</option>
+                            <option value="publica">Pública</option>
                             <option value="privada">Privada</option>
                                 </select>
                         </div>
                             
-                        
-                        <div class="text-center mt-3" style=" font-size: 18px; padding: 6px;">
+                        <div class="text-center mt-4" style=" font-size: 18px; padding: 6px;">
                             <input type="submit" class="btn btn-white-normal btn-lg"   value="Adicionar"/>
                             
                         </div> 
-
                     </form>
                 </div>
 
@@ -785,8 +1052,8 @@
                 </div>
                 <div class="modal-body " style="padding-right: 65px; padding-left: 65px; padding-top: 0px;">
 
-                    <div class="user-decription-black text-center" style="font-size: 25px;" >
-                        <p>Agrega una nueva forma de Pago</p>
+                    <div class="text-center" style="font-family: 'Bemio Italic'; color: #000000;font-size: 25px;" >
+                        <p>Agrega una nueva forma de pago</p>
                     </div>
 
                     <form action="/influencer/adicionarPago" method="POST" class="register-form pt-2" id="adicionarPago" name="adicionarPago" enctype="multipart/form-data">
@@ -801,10 +1068,7 @@
                             </select>
 
                     
-
-                            
-                        
-                        <div class="text-center mt-3" style=" font-size: 18px; padding: 6px;">
+                            <div class="text-center mt-4" style=" font-size: 18px; padding: 6px;">
                             <input type="submit" class="btn btn-white-normal btn-lg"   value="Adicionar"/>
                             
                         </div> 
@@ -836,12 +1100,13 @@
                         <p>¡HECHO!</p>
                     </div>
                     <div class="text-center user-decription-black" style="font-weight: bold; font-size: 15px">
-                        <p>Los cambios se han realizado correctamente.</p>
+                        <p>Dirigirse a la página principal.</p>
                     </div>
                     
                     <div class="text-center user-decription-black" style="font-weight: bold; font-size: 35px">
                      
-                    <a href="<?=base_url()?>" type="button">CERRAR</a>
+                    <a href="<?php echo base_url("logout")?>" type="button">CERRAR SESIÓN</a>
+                    
                     </div>
                 </div>
                 <div class="modal-footer"></div>

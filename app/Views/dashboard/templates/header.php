@@ -109,6 +109,7 @@
                             <b>LOS SEGUIDORES QUE TU MARCA NECESITA SIGUEN A UN INFLUENCER</b>
                         </li>
                     </ul>
+                    
                     <h5><?= $usuario?></h5>
                     <!-- ============================================================== -->
                     <!-- Right side toggle and nav items -->
@@ -180,12 +181,25 @@
                                 <span class="hide-menu">REGISTRO INFLUENCERS</span>
                             </a>
                         </li>
-                        
+                        <li class="sidebar-item">
+                            <a class="sidebar-link user-decription-black waves-effect waves-dark sidebar-link" href="<?= route_to('estadisticasdash') ?>"
+                                aria-expanded="false">
+                                <i class="mdi mdi-chart-bar"></i>
+                                <span class="hide-menu">ESTADISTICAS</span>
+                            </a>
+                        </li>
                         <li class="sidebar-item">
                             <a class="sidebar-link user-decription-black waves-effect waves-dark sidebar-link" href="<?= route_to('mensajesdash') ?>"
                                 aria-expanded="false">
                                 <i class="mdi mdi-message"></i>
                                 <span class="hide-menu">MENSAJES</span>
+                            </a>
+                        </li>
+                        <li class="sidebar-item">
+                            <a class="sidebar-link user-decription-black waves-effect waves-dark sidebar-link" href="<?= route_to('comentariosdash') ?>"
+                                aria-expanded="false">
+                                <i class="mdi mdi-message-processing"></i>
+                                <span class="hide-menu">VALIDAR COMENTARIOS</span>
                             </a>
                         </li>
                         <li class="sidebar-item">

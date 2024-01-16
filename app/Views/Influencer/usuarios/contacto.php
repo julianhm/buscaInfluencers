@@ -2,7 +2,7 @@
 
 
     <!-- Contact Start -->
-    <div class="container-fluid py-5">
+    <div class="container-fluid py-3">
         <div class="container">
 
             <div class="row g-0 pb-5">
@@ -78,7 +78,7 @@
                         <div class="col-sm-9">
                             <div class="col pt-2" style="margin-bottom: 0px;">
                                 <div class="user-decription-black contact-description-text" style="padding: 6px 0;">
-                                    <p>(57) 123 4567890</p>
+                                    <p>(318) 619-7481</p>
                                 </div>
                             </div>
                         </div>

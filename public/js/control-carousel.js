@@ -31,12 +31,26 @@ owl.owlCarousel({
 $(document).ready(function() {
   var owl2 = $('.owl-two');
     owl2.owlCarousel({
-      items: 2,
+      //items: 2,
       loop: true,
       margin: 10,
       autoplay: true,
       autoplayTimeout: 8000,
-      autoplayHoverPause: true
+      autoplayHoverPause: true,
+      responsive: {
+        0: {
+         items: 1
+        },
+        600: {
+         items: 1
+        },
+        960: {
+         items: 2
+        },
+        1200: {
+         items: 2
+        }
+       }
     }); 
   });
 
@@ -127,7 +141,27 @@ owl5.owlCarousel({
    items: 1
   },
   1200: {
-   items: 2
+   items: 3
   }
  }
 });
+
+
+$(document).ready(function() {
+  var owl = $('.owl-carousel-x');
+  owl.owlCarousel({
+    items: 3,
+    loop: true,
+    margin: 10,
+    nav: true,
+    autoplay: true,
+    autoplayTimeout: 20000,
+    autoplayHoverPause: true
+  });
+  $('.play').on('click', function() {
+    owl.trigger('play.owl.autoplay', [1000])
+  })
+  $('.stop').on('click', function() {
+    owl.trigger('stop.owl.autoplay')
+  })
+})
